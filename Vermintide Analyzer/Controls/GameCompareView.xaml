@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Vermintide_Analyzer.Controls.GameCompareView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <local:FilterDisplay Margin="5" Grid.Column="0" x:Name="FilterDisplay1" FilterChanged="FilterDisplay_FilterChanged" Title="Filter 1" />
+            <local:FilterDisplay Margin="5" Grid.Column="1" x:Name="FilterDisplay2" FilterChanged="FilterDisplay_FilterChanged" Title="Filter 2" />
+        </Grid>
+        <DockPanel DockPanel.Dock="Bottom">
+            <DockPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                    <Setter Property="Background" Value="{StaticResource ThemeDark}" />
+                </Style>
+            </DockPanel.Resources>
+            <TextBlock Width="250" DockPanel.Dock="Left" Name="GamesCount1TextBlock" Margin="5" Text="{Binding GamesCount1}" FontSize="45" />
+            <TextBlock Width="250" DockPanel.Dock="Right" Name="GamesCount2TextBlock" Margin="5" Text="{Binding GamesCount2}" FontSize="45" TextAlignment="Right" />
+            <Button Margin="5" VerticalAlignment="Top" Content=" Compare " FontSize="25" HorizontalAlignment="Center" Click="Compare_Button_Clicked" BorderBrush="{StaticResource ThemeMidtone}" />
+        </DockPanel>
+    </DockPanel>
+</UserControl>

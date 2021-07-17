@@ -1,0 +1,740 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{242B210B-D1C8-40EE-8508-CB56CB37070D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Vermintide_Analyzer</RootNamespace>
+    <AssemblyName>Vermintide Analyzer</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Vermintide Analyzer Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Geared, Version=1.2.8.2, Culture=neutral, PublicKeyToken=7292f245d14ab8bf, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Geared.1.2.9\lib\net45\LiveCharts.Geared.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameCompareView.xaml.cs">
+      <DependentUpon>GameCompareView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MultiSelectComboBox.xaml.cs">
+      <DependentUpon>MultiSelectComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TalentTreeDisplay.xaml.cs">
+      <DependentUpon>TalentTreeDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WeaponDataDisplay.xaml.cs">
+      <DependentUpon>WeaponDataDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WeaponIcon.xaml.cs">
+      <DependentUpon>WeaponIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\FormatDouble.cs" />
+    <Compile Include="Converters\NullableBoolToYesNoEither.cs" />
+    <Compile Include="Converters\GameToDifficultyModifierString.cs" />
+    <Compile Include="GameComparisonWindow.xaml.cs">
+      <DependentUpon>GameComparisonWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IAnalyticsPage.cs" />
+    <Compile Include="BindingProxy.cs" />
+    <Compile Include="Const.cs" />
+    <Compile Include="Controls\CareerDashboard.xaml.cs">
+      <DependentUpon>CareerDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dashboard.xaml.cs">
+      <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FilterDisplay.xaml.cs">
+      <DependentUpon>FilterDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameListView.xaml.cs">
+      <DependentUpon>GameListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameView.xaml.cs">
+      <DependentUpon>GameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NavButton.cs" />
+    <Compile Include="Controls\NavMenu.xaml.cs">
+      <DependentUpon>NavMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotImplemented.xaml.cs">
+      <DependentUpon>NotImplemented.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BoolToVisible.cs" />
+    <Compile Include="Converters\EnumToDisplayString.cs" />
+    <Compile Include="Converters\DifficultyToIcon.cs" />
+    <Compile Include="Converters\WeaponToIcon.cs" />
+    <Compile Include="Converters\RoundResultToBrush.cs" />
+    <Compile Include="Converters\CareerToPortrait.cs" />
+    <Compile Include="Misc\CareerGrouper.cs" />
+    <Compile Include="Misc\MissionGrouper.cs" />
+    <Compile Include="Navigation.cs" />
+    <Compile Include="GameViewWindow.xaml.cs">
+      <DependentUpon>GameViewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StartupWindow.xaml.cs">
+      <DependentUpon>StartupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics\GameAverages.cs" />
+    <Compile Include="Util.cs" />
+    <Page Include="Controls\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CareerDashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DamageTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DamageChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FilterDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameCompareView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MultiSelectComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NavMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NotImplemented.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TalentTreeDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WeaponDataDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WeaponIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameComparisonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\DamageTooltip.xaml.cs">
+      <DependentUpon>DamageTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DamageChart.xaml.cs">
+      <DependentUpon>DamageChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="GameViewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StartupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Career Portraits\Mercenary.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Career Portraits\Battle Wizard.png" />
+    <Resource Include="Images\Career Portraits\Bounty Hunter.png" />
+    <Resource Include="Images\Career Portraits\Foot Knight.png" />
+    <Resource Include="Images\Career Portraits\Grail Knight.png" />
+    <Resource Include="Images\Career Portraits\Handmaiden.png" />
+    <Resource Include="Images\Career Portraits\Huntsman.png" />
+    <Resource Include="Images\Career Portraits\Ironbreaker.png" />
+    <Resource Include="Images\Career Portraits\Outcast Engineer.png" />
+    <Resource Include="Images\Career Portraits\Pyromancer.png" />
+    <Resource Include="Images\Career Portraits\Ranger Veteran.png" />
+    <Resource Include="Images\Career Portraits\Shade.png" />
+    <Resource Include="Images\Career Portraits\Sister of the Thorn.png" />
+    <Resource Include="Images\Career Portraits\Slayer.png" />
+    <Resource Include="Images\Career Portraits\Unchained.png" />
+    <Resource Include="Images\Career Portraits\Waystalker.png" />
+    <Resource Include="Images\Career Portraits\Witch Hunter Captain.png" />
+    <Resource Include="Images\Career Portraits\Zealot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VA.LogReader\VA.LogReader.csproj">
+      <Project>{2a60def8-5f97-417a-bb36-aea63687fe16}</Project>
+      <Name>VA.LogReader</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Career Portraits\Sienna UNKNOWN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Career Portraits\Saltzpyre UNKNOWN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Weapons\Bardin\Axe &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Bardin\Axe.png" />
+    <Resource Include="Images\Weapons\Bardin\Cog Hammer.png" />
+    <Resource Include="Images\Weapons\Bardin\Crossbow.png" />
+    <Resource Include="Images\Weapons\Bardin\Drakefire Pistols.png" />
+    <Resource Include="Images\Weapons\Bardin\Drakegun.png" />
+    <Resource Include="Images\Weapons\Bardin\Dual Axes.png" />
+    <Resource Include="Images\Weapons\Bardin\Dual Hammers.png" />
+    <Resource Include="Images\Weapons\Bardin\Great Axe.png" />
+    <Resource Include="Images\Weapons\Bardin\Grudge-Raker.png" />
+    <Resource Include="Images\Weapons\Bardin\Hammer &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Bardin\Hammer.png" />
+    <Resource Include="Images\Weapons\Bardin\Handgun.png" />
+    <Resource Include="Images\Weapons\Bardin\Masterwork Pistol.png" />
+    <Resource Include="Images\Weapons\Bardin\Throwing Axes.png" />
+    <Resource Include="Images\Weapons\Bardin\Trollhammer Torpedo.png" />
+    <Resource Include="Images\Weapons\Bardin\Two-Handed Hammer.png" />
+    <Resource Include="Images\Weapons\Bardin\War Pick.png" />
+    <Resource Include="Images\Weapons\Kerillian\Deepwood Staff.png" />
+    <Resource Include="Images\Weapons\Kerillian\Dual Daggers.png" />
+    <Resource Include="Images\Weapons\Kerillian\Dual Swords.png" />
+    <Resource Include="Images\Weapons\Kerillian\Elven Axe.png" />
+    <Resource Include="Images\Weapons\Kerillian\Glaive.png" />
+    <Resource Include="Images\Weapons\Kerillian\Hagbane Shortbow.png" />
+    <Resource Include="Images\Weapons\Kerillian\Javelin.png" />
+    <Resource Include="Images\Weapons\Kerillian\Longbow.png" />
+    <Resource Include="Images\Weapons\Kerillian\Moonfire Bow.png" />
+    <Resource Include="Images\Weapons\Kerillian\Spear &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Kerillian\Spear.png" />
+    <Resource Include="Images\Weapons\Kerillian\Swiftbow.png" />
+    <Resource Include="Images\Weapons\Kerillian\Sword &amp; Dagger.png" />
+    <Resource Include="Images\Weapons\Kerillian\Sword.png" />
+    <Resource Include="Images\Weapons\Kerillian\Two-Handed Sword.png" />
+    <Resource Include="Images\Weapons\Kerillian\Volley Crossbow.png" />
+    <Resource Include="Images\Weapons\Markus\Blunderbuss.png" />
+    <Resource Include="Images\Weapons\Markus\Brettonian Longsword.png" />
+    <Resource Include="Images\Weapons\Markus\Brettonian Sword &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Markus\Executioner Sword.png" />
+    <Resource Include="Images\Weapons\Markus\Halberd.png" />
+    <Resource Include="Images\Weapons\Markus\Handgun.png" />
+    <Resource Include="Images\Weapons\Markus\Longbow.png" />
+    <Resource Include="Images\Weapons\Markus\Mace &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Markus\Mace &amp; Sword.png" />
+    <Resource Include="Images\Weapons\Markus\Mace.png" />
+    <Resource Include="Images\Weapons\Markus\Repeater Handgun.png" />
+    <Resource Include="Images\Weapons\Markus\Spear &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Markus\Sword &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Markus\Sword.png" />
+    <Resource Include="Images\Weapons\Markus\Tuskgor Spear.png" />
+    <Resource Include="Images\Weapons\Markus\Two-Handed Hammer.png" />
+    <Resource Include="Images\Weapons\Markus\Two-Handed Sword.png" />
+    <Resource Include="Images\Weapons\Sienna\Beam Staff.png" />
+    <Resource Include="Images\Weapons\Sienna\Bolt Staff.png" />
+    <Resource Include="Images\Weapons\Sienna\Conflagration Staff.png" />
+    <Resource Include="Images\Weapons\Sienna\Coruscation Staff.png" />
+    <Resource Include="Images\Weapons\Sienna\Crowbill.png" />
+    <Resource Include="Images\Weapons\Sienna\Dagger.png" />
+    <Resource Include="Images\Weapons\Sienna\Fire Sword.png" />
+    <Resource Include="Images\Weapons\Sienna\Fireball Staff.png" />
+    <Resource Include="Images\Weapons\Sienna\Flamestorm Staff.png" />
+    <Resource Include="Images\Weapons\Sienna\Flaming Flail.png" />
+    <Resource Include="Images\Weapons\Sienna\Mace.png" />
+    <Resource Include="Images\Weapons\Sienna\Sword.png" />
+    <Resource Include="Images\Weapons\Victor\Axe &amp; Falchion.png" />
+    <Resource Include="Images\Weapons\Victor\Axe.png" />
+    <Resource Include="Images\Weapons\Victor\Billhook.png" />
+    <Resource Include="Images\Weapons\Victor\Brace of Pistols.png" />
+    <Resource Include="Images\Weapons\Victor\Crossbow.png" />
+    <Resource Include="Images\Weapons\Victor\Falchion.png" />
+    <Resource Include="Images\Weapons\Victor\Flail.png" />
+    <Resource Include="Images\Weapons\Victor\Greatsword.png" />
+    <Resource Include="Images\Weapons\Victor\Griffonfoot Pistols.png" />
+    <Resource Include="Images\Weapons\Victor\Rapier.png" />
+    <Resource Include="Images\Weapons\Victor\Repeater Pistol.png" />
+    <Resource Include="Images\Weapons\Victor\Volley Crossbow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Weapons\Unknown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Difficulties\Cataclysm2.png" />
+    <Resource Include="Images\Difficulties\Cataclysm3.png" />
+    <Resource Include="Images\Difficulties\Cataclysm.png" />
+    <Resource Include="Images\Difficulties\Champion.png" />
+    <Resource Include="Images\Difficulties\Legend.png" />
+    <Resource Include="Images\Difficulties\Recruit.png" />
+    <Resource Include="Images\Difficulties\Veteran.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Misc\New.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Difficulties\Cataclysm4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\Talents\Saltzpyre UNKNOWN\" />
+    <Folder Include="Images\Talents\Sienna UNKNOWN\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Talents\Battle Wizard\talent-01.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-02.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-03.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-04.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-05.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-06.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-07.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-08.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-09.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-10.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-11.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-12.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-13.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-14.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-15.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-16.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-17.png" />
+    <Resource Include="Images\Talents\Battle Wizard\talent-18.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-01.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-02.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-03.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-04.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-05.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-06.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-07.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-08.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-09.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-10.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-11.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-12.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-13.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-14.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-15.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-16.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-17.png" />
+    <Resource Include="Images\Talents\Bounty Hunter\talent-18.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-01.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-02.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-03.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-04.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-05.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-06.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-07.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-08.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-09.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-10.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-11.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-12.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-13.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-14.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-15.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-16.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-17.png" />
+    <Resource Include="Images\Talents\Foot Knight\talent-18.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-01.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-02.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-03.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-04.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-05.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-06.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-07.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-08.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-09.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-10.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-11.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-12.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-13.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-14.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-15.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-16.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-17.png" />
+    <Resource Include="Images\Talents\Grail Knight\talent-18.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-01.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-02.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-03.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-04.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-05.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-06.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-07.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-08.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-09.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-10.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-11.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-12.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-13.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-14.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-15.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-16.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-17.png" />
+    <Resource Include="Images\Talents\Handmaiden\talent-18.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-01.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-02.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-03.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-04.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-05.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-06.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-07.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-08.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-09.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-10.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-11.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-12.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-13.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-14.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-15.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-16.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-17.png" />
+    <Resource Include="Images\Talents\Huntsman\talent-18.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-01.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-02.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-03.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-04.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-05.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-06.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-07.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-08.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-09.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-10.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-11.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-12.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-13.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-14.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-15.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-16.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-17.png" />
+    <Resource Include="Images\Talents\Ironbreaker\talent-18.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-01.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-02.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-03.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-04.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-05.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-06.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-07.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-08.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-09.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-10.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-11.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-12.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-13.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-14.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-15.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-16.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-17.png" />
+    <Resource Include="Images\Talents\Mercenary\talent-18.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-01.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-02.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-03.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-04.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-05.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-06.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-07.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-08.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-09.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-10.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-11.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-12.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-13.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-14.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-15.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-16.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-17.png" />
+    <Resource Include="Images\Talents\Outcast Engineer\talent-18.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-01.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-02.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-03.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-04.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-05.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-06.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-07.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-08.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-09.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-10.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-11.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-12.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-13.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-14.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-15.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-16.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-17.png" />
+    <Resource Include="Images\Talents\Pyromancer\talent-18.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-01.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-02.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-03.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-04.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-05.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-06.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-07.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-08.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-09.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-10.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-11.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-12.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-13.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-14.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-15.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-16.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-17.png" />
+    <Resource Include="Images\Talents\Ranger Veteran\talent-18.png" />
+    <Resource Include="Images\Talents\Shade\talent-01.png" />
+    <Resource Include="Images\Talents\Shade\talent-02.png" />
+    <Resource Include="Images\Talents\Shade\talent-03.png" />
+    <Resource Include="Images\Talents\Shade\talent-04.png" />
+    <Resource Include="Images\Talents\Shade\talent-05.png" />
+    <Resource Include="Images\Talents\Shade\talent-06.png" />
+    <Resource Include="Images\Talents\Shade\talent-07.png" />
+    <Resource Include="Images\Talents\Shade\talent-08.png" />
+    <Resource Include="Images\Talents\Shade\talent-09.png" />
+    <Resource Include="Images\Talents\Shade\talent-10.png" />
+    <Resource Include="Images\Talents\Shade\talent-11.png" />
+    <Resource Include="Images\Talents\Shade\talent-12.png" />
+    <Resource Include="Images\Talents\Shade\talent-13.png" />
+    <Resource Include="Images\Talents\Shade\talent-14.png" />
+    <Resource Include="Images\Talents\Shade\talent-15.png" />
+    <Resource Include="Images\Talents\Shade\talent-16.png" />
+    <Resource Include="Images\Talents\Shade\talent-17.png" />
+    <Resource Include="Images\Talents\Shade\talent-18.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-01.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-02.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-03.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-04.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-05.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-06.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-07.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-08.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-09.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-10.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-11.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-12.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-13.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-14.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-15.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-16.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-17.png" />
+    <Resource Include="Images\Talents\Sister of the Thorn\talent-18.png" />
+    <Resource Include="Images\Talents\Slayer\talent-01.png" />
+    <Resource Include="Images\Talents\Slayer\talent-02.png" />
+    <Resource Include="Images\Talents\Slayer\talent-03.png" />
+    <Resource Include="Images\Talents\Slayer\talent-04.png" />
+    <Resource Include="Images\Talents\Slayer\talent-05.png" />
+    <Resource Include="Images\Talents\Slayer\talent-06.png" />
+    <Resource Include="Images\Talents\Slayer\talent-07.png" />
+    <Resource Include="Images\Talents\Slayer\talent-08.png" />
+    <Resource Include="Images\Talents\Slayer\talent-09.png" />
+    <Resource Include="Images\Talents\Slayer\talent-10.png" />
+    <Resource Include="Images\Talents\Slayer\talent-11.png" />
+    <Resource Include="Images\Talents\Slayer\talent-12.png" />
+    <Resource Include="Images\Talents\Slayer\talent-13.png" />
+    <Resource Include="Images\Talents\Slayer\talent-14.png" />
+    <Resource Include="Images\Talents\Slayer\talent-15.png" />
+    <Resource Include="Images\Talents\Slayer\talent-16.png" />
+    <Resource Include="Images\Talents\Slayer\talent-17.png" />
+    <Resource Include="Images\Talents\Slayer\talent-18.png" />
+    <Resource Include="Images\Talents\Unchained\talent-01.png" />
+    <Resource Include="Images\Talents\Unchained\talent-02.png" />
+    <Resource Include="Images\Talents\Unchained\talent-03.png" />
+    <Resource Include="Images\Talents\Unchained\talent-04.png" />
+    <Resource Include="Images\Talents\Unchained\talent-05.png" />
+    <Resource Include="Images\Talents\Unchained\talent-06.png" />
+    <Resource Include="Images\Talents\Unchained\talent-07.png" />
+    <Resource Include="Images\Talents\Unchained\talent-08.png" />
+    <Resource Include="Images\Talents\Unchained\talent-09.png" />
+    <Resource Include="Images\Talents\Unchained\talent-10.png" />
+    <Resource Include="Images\Talents\Unchained\talent-11.png" />
+    <Resource Include="Images\Talents\Unchained\talent-12.png" />
+    <Resource Include="Images\Talents\Unchained\talent-13.png" />
+    <Resource Include="Images\Talents\Unchained\talent-14.png" />
+    <Resource Include="Images\Talents\Unchained\talent-15.png" />
+    <Resource Include="Images\Talents\Unchained\talent-16.png" />
+    <Resource Include="Images\Talents\Unchained\talent-17.png" />
+    <Resource Include="Images\Talents\Unchained\talent-18.png" />
+    <Resource Include="Images\Talents\Unknown.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-01.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-02.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-03.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-04.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-05.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-06.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-07.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-08.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-09.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-10.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-11.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-12.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-13.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-14.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-15.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-16.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-17.png" />
+    <Resource Include="Images\Talents\Waystalker\talent-18.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-01.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-02.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-03.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-04.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-05.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-06.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-07.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-08.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-09.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-10.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-11.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-12.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-13.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-14.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-15.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-16.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-17.png" />
+    <Resource Include="Images\Talents\Witch Hunter Captain\talent-18.png" />
+    <Resource Include="Images\Talents\Zealot\talent-01.png" />
+    <Resource Include="Images\Talents\Zealot\talent-02.png" />
+    <Resource Include="Images\Talents\Zealot\talent-03.png" />
+    <Resource Include="Images\Talents\Zealot\talent-04.png" />
+    <Resource Include="Images\Talents\Zealot\talent-05.png" />
+    <Resource Include="Images\Talents\Zealot\talent-06.png" />
+    <Resource Include="Images\Talents\Zealot\talent-07.png" />
+    <Resource Include="Images\Talents\Zealot\talent-08.png" />
+    <Resource Include="Images\Talents\Zealot\talent-09.png" />
+    <Resource Include="Images\Talents\Zealot\talent-10.png" />
+    <Resource Include="Images\Talents\Zealot\talent-11.png" />
+    <Resource Include="Images\Talents\Zealot\talent-12.png" />
+    <Resource Include="Images\Talents\Zealot\talent-13.png" />
+    <Resource Include="Images\Talents\Zealot\talent-14.png" />
+    <Resource Include="Images\Talents\Zealot\talent-15.png" />
+    <Resource Include="Images\Talents\Zealot\talent-16.png" />
+    <Resource Include="Images\Talents\Zealot\talent-17.png" />
+    <Resource Include="Images\Talents\Zealot\talent-18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Vermintide Analyzer Icon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

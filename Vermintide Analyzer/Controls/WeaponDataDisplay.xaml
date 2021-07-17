@@ -1,0 +1,164 @@
+﻿<UserControl x:Class="Vermintide_Analyzer.Controls.WeaponDataDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <StackPanel Orientation="Horizontal">
+        <local:WeaponIcon Width="100" Height="100" VerticalAlignment="Top" Weapon="{Binding DataContext.Weapon, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+        <Grid ClipToBounds="False">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="{StaticResource ThemeMidtone}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="TextAlignment" Value="Right" />
+                </Style>
+                <Style TargetType="Border" x:Key="SeparatorStyle">
+                    <Setter Property="BorderBrush" Value="{StaticResource ThemeMidtone}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Grid.Column" Value="0" />
+                    <Setter Property="Grid.ColumnSpan" Value="3" />
+                    <Setter Property="VerticalAlignment" Value="Top" />
+                    <Setter Property="Height" Value="3" />
+                    <Setter Property="BorderThickness" Value="3" />
+                </Style>
+            </Grid.Resources>
+            
+            <Border Grid.Row="0" Grid.Column="1" >
+                <TextBlock Text="Total" FontWeight="Bold" TextAlignment="Center" />
+            </Border>
+            <Border Grid.Row="0" Grid.Column="2" >
+                <TextBlock Text="Per-Minute" FontWeight="Bold" />
+            </Border>
+            
+            <Border Grid.Row="1" Grid.Column="0" >
+                <TextBlock Text="Damage dealt" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt to anything (including monsters and allies)." />
+            </Border>
+            <Border Grid.Row="1" Grid.Column="1" >
+                <TextBlock Text="{Binding DamageDealt}" />
+            </Border>
+            <Border Grid.Row="1" Grid.Column="2" >
+                <TextBlock Text="{Binding DamageDealtPerMin}" />
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="0" >
+                <TextBlock Text="(Monster)" FontWeight="Bold" ToolTip="Damage dealt to monsters." />
+            </Border>
+            <Border Grid.Row="2" Grid.Column="1" >
+                <TextBlock Text="{Binding MonsterDamageDealt}" />
+            </Border>
+            <Border Grid.Row="2" Grid.Column="2" >
+                <TextBlock Text="{Binding MonsterDamageDealtPerMin}" />
+            </Border>
+
+            <Border Grid.Row="3" Grid.Column="0" >
+                <TextBlock Text="(Ally)" FontWeight="Bold" ToolTip="Damage dealt to allies (including yourself)." />
+            </Border>
+            <Border Grid.Row="3" Grid.Column="1" >
+                <TextBlock Text="{Binding AllyDamageDealt}" />
+            </Border>
+            <Border Grid.Row="3" Grid.Column="2" >
+                <TextBlock Text="{Binding AllyDamageDealtPerMin}" />
+            </Border>
+
+            <!--<Border Grid.Row="4" Grid.Column="0" ToolTip="Measures seconds of stagger applied to enemies." >
+                <TextBlock Text="Stagger dealt" FontWeight="Bold" TextAlignment="Left" />
+            </Border>
+            <Border Grid.Row="4" Grid.Column="1" >
+                <TextBlock Text="{Binding StaggerDealt}" />
+            </Border>
+            <Border Grid.Row="4" Grid.Column="2" >
+                <TextBlock Text="{Binding StaggerDealtPerMin}" />
+            </Border>-->
+
+            <Border Grid.Row="4" Grid.Column="0" >
+                <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt beyond enemies remaining health (wasted damage)." />
+            </Border>
+            <Border Grid.Row="4" Grid.Column="1" >
+                <TextBlock Text="{Binding OverkillDamage}" />
+            </Border>
+            <Border Grid.Row="4" Grid.Column="2" >
+                <TextBlock Text="{Binding OverkillDamagePerMin}" />
+            </Border>
+
+            <Border Grid.Row="5" Grid.Column="0" >
+                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" />
+            </Border>
+            <Border Grid.Row="5" Grid.Column="1" >
+                <TextBlock Text="{Binding EnemiesKilled}" />
+            </Border>
+            <Border Grid.Row="5" Grid.Column="2" >
+                <TextBlock Text="{Binding EnemiesKilledPerMin}" />
+            </Border>
+
+            <Border Grid.Row="6" Grid.Column="0" >
+                <TextBlock Text="(Elites)" FontWeight="Bold" />
+            </Border>
+            <Border Grid.Row="6" Grid.Column="1" >
+                <TextBlock Text="{Binding ElitesKilled}" />
+            </Border>
+            <Border Grid.Row="6" Grid.Column="2" >
+                <TextBlock Text="{Binding ElitesKilledPerMin}" />
+            </Border>
+
+            <Border Grid.Row="7" Grid.Column="0" >
+                <TextBlock Text="(Specials)" FontWeight="Bold" />
+            </Border>
+            <Border Grid.Row="7" Grid.Column="1" >
+                <TextBlock Text="{Binding SpecialsKilled}" />
+            </Border>
+            <Border Grid.Row="7" Grid.Column="2" >
+                <TextBlock Text="{Binding SpecialsKilledPerMin}" />
+            </Border>
+
+            <Border Grid.Row="8" Grid.Column="0" >
+                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" />
+            </Border>
+            <Border Grid.Row="8" Grid.Column="1" >
+                <TextBlock Text="{Binding Headshots}" />
+            </Border>
+            <Border Grid.Row="8" Grid.Column="2" >
+                <TextBlock Text="{Binding HeadshotsPerMin}" />
+            </Border>
+
+            <Border Grid.Row="9" Grid.Column="0" >
+                <TextBlock Text="Headshot %" FontWeight="Bold" TextAlignment="Left" />
+            </Border>
+            <Border Grid.Row="9" Grid.Column="1" >
+                <TextBlock Text="{Binding HeadshotPercent}" />
+            </Border>
+            <Border Grid.Row="9" Grid.Column="2" >
+                <TextBlock Text="-" />
+            </Border>
+
+            <!-- Separators -->
+            <Border Grid.Row="1" Style="{StaticResource SeparatorStyle}" />
+            <Border Grid.Row="4" Style="{StaticResource SeparatorStyle}" />
+            <Border Grid.Row="5" Style="{StaticResource SeparatorStyle}" />
+            <Border Grid.Row="8" Style="{StaticResource SeparatorStyle}" />
+        </Grid>
+    </StackPanel>
+</UserControl>

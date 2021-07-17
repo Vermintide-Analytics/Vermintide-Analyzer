@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Vermintide_Analyzer.Controls.CareerDashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             xmlns:log="clr-namespace:VA.LogReader;assembly=VA.LogReader"
+             mc:Ignorable="d" 
+             Width="265"
+             Height="170"
+             d:DesignHeight="100" d:DesignWidth="100" Name="control"
+             BorderBrush="{StaticResource ThemeDark}" BorderThickness="2">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="CareerNameText" Grid.Row="0" FontSize="20" Text="{Binding ElementName=control, Path=CareerName}" TextWrapping="Wrap" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource ThemeLighter}" />
+        <Grid x:Name="PerformanceBar" Margin="15,0" VerticalAlignment="Bottom" Grid.Row="1" Height="{Binding ElementName=control, Path=BarHeight}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="WonGamesColumn" Width="{Binding ElementName=control, Path=BarWinWidth}" />
+                <ColumnDefinition x:Name="IncompleteGamesColumn" Width="{Binding ElementName=control, Path=BarQuitWidth}" />
+                <ColumnDefinition x:Name="LostGamesColumn" Width="{Binding ElementName=control, Path=BarLossWidth}" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Fill="{StaticResource DataGood}" />
+            <Rectangle Grid.Column="1" Fill="{StaticResource DataPlain}" />
+            <Rectangle Grid.Column="2" Fill="{StaticResource DataBad}" />
+        </Grid>
+        <DockPanel Margin="15,0" LastChildFill="True" Grid.Row="2">
+            <TextBlock DockPanel.Dock="Left" x:Name="WonGamesText" Text="{Binding ElementName=control, Path=NumWins}" FontSize="20" VerticalAlignment="Top" Foreground="{StaticResource DataGood}" />
+            <TextBlock DockPanel.Dock="Right" x:Name="LostGamesText" Text="{Binding ElementName=control, Path=NumLosses}" FontSize="20" VerticalAlignment="Top" Foreground="{StaticResource DataBad}" />
+            <Image x:Name="CareerIcon" Margin="0,5" Source="{Binding ElementName=control, Path=PortraitImagePath}" />
+        </DockPanel>
+        <TextBlock Grid.Row="3" Margin="15,0" x:Name="CountedGamesText" FontSize="25" Text="{Binding ElementName=control, Path=CountedGames}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{StaticResource ThemeLighter}" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,231 @@
+﻿<Window x:Class="Vermintide_Analyzer.GameComparisonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Vermintide_Analyzer"
+        mc:Ignorable="d"
+        Title="" Height="700" Width="800"
+        MinHeight="700" MinWidth="800"
+        Background="{StaticResource ThemeDarker}"
+        BorderBrush="{StaticResource ThemeMidtone}" BorderThickness="2">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Comparing games where..." FontSize="30" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="to games where..." FontSize="30" HorizontalAlignment="Right" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Filter1Description}" MaxWidth="360" Foreground="Red" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Filter2Description}" MaxWidth="360" Foreground="Red" FontSize="15" TextWrapping="Wrap" HorizontalAlignment="Right" />
+        </Grid>
+        <Grid Width="350" Name="StatsGrid">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="{StaticResource ThemeMidtone}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <!--<RowDefinition />-->
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Rectangle Grid.Row="0" Grid.Column="{Binding BetterWinLossRatioColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="2" Grid.Column="{Binding BetterTimeAlivePercentColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="3" Grid.Column="{Binding BetterTimeDownedPercentColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="4" Grid.Column="{Binding BetterTimeDeadPercentColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="5" Grid.Column="{Binding BetterDamageDealtColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="6" Grid.Column="{Binding BetterMonsterDamageDealtColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="7" Grid.Column="{Binding BetterAllyDamageDealtColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="8" Grid.Column="{Binding BetterOverkillDamageDealtColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="9" Grid.Column="{Binding BetterEnemiesKilledColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="10" Grid.Column="{Binding BetterElitesKilledColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="11" Grid.Column="{Binding BetterSpecialsKilledColumn}" Fill="{StaticResource GreenBackground}" />
+            <!--<Rectangle Grid.Row="12" Grid.Column="{Binding BetterStaggerDealtColumn}" Fill="{StaticResource GreenBackground}" />-->
+            <Rectangle Grid.Row="12" Grid.Column="{Binding BetterDamageTakenColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="13" Grid.Column="{Binding BetterTimesDownedColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="14" Grid.Column="{Binding BetterTimesDiedColumn}" Fill="{StaticResource GreenBackground}" />
+            
+            <Border Grid.Column="1" Grid.Row="0">
+                <TextBlock Text="Win/Loss Ratio" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="1">
+                <TextBlock Text="Duration (minutes)" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="2">
+                <TextBlock Text="Time Alive" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="3">
+                <TextBlock Text="Time Downed" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="4">
+                <TextBlock Text="Time Dead" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="5">
+                <TextBlock Text="Damage per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="6">
+                <TextBlock Text="Monster Damage per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="7">
+                <TextBlock Text="Ally Damage per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="8">
+                <TextBlock Text="Overkill Damage per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="9">
+                <TextBlock Text="Kills per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="10">
+                <TextBlock Text="Elite Kills per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="11">
+                <TextBlock Text="Special Kills per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <!--<Border Grid.Column="1" Grid.Row="12">
+                <TextBlock Text="Stagger per Minute" HorizontalAlignment="Center" />
+            </Border>-->
+            <Border Grid.Column="1" Grid.Row="12">
+                <TextBlock Text="Damage Taken per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="13">
+                <TextBlock Text="Times Downed" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="14">
+                <TextBlock Text="Times Killed" HorizontalAlignment="Center" />
+            </Border>
+
+            
+            <Border Grid.Column="0" Grid.Row="0">
+                <TextBlock Text="{Binding Averages1.WinLossRatio, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="1">
+                <TextBlock Text="{Binding Averages1.DurationMinutes, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="2">
+                <TextBlock Text="{Binding Averages1.TimeAlivePercent, Converter={StaticResource FormatPercent}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="3">
+                <TextBlock Text="{Binding Averages1.TimeDownedPercent, Converter={StaticResource FormatPercent}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="4">
+                <TextBlock Text="{Binding Averages1.TimeDeadPercent, Converter={StaticResource FormatPercent}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="5">
+                <TextBlock Text="{Binding Averages1.DamageDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="6">
+                <TextBlock Text="{Binding Averages1.MonsterDamageDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="7">
+                <TextBlock Text="{Binding Averages1.AllyDamageDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="8">
+                <TextBlock Text="{Binding Averages1.OverKillDamagePerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="9">
+                <TextBlock Text="{Binding Averages1.EnemiesKilledPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="10">
+                <TextBlock Text="{Binding Averages1.ElitesKilledPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="11">
+                <TextBlock Text="{Binding Averages1.SpecialsKilledPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <!--<Border Grid.Column="0" Grid.Row="12">
+                <TextBlock Text="{Binding Averages1.StaggerDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>-->
+            <Border Grid.Column="0" Grid.Row="12">
+                <TextBlock Text="{Binding Averages1.DamageTakenPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="13">
+                <TextBlock Text="{Binding Averages1.TimesDowned, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="14">
+                <TextBlock Text="{Binding Averages1.TimesDied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+
+            <Border Grid.Column="2" Grid.Row="0">
+                <TextBlock Text="{Binding Averages2.WinLossRatio, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="1">
+                <TextBlock Text="{Binding Averages2.DurationMinutes, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="2">
+                <TextBlock Text="{Binding Averages2.TimeAlivePercent, Converter={StaticResource FormatPercent}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="3">
+                <TextBlock Text="{Binding Averages2.TimeDownedPercent, Converter={StaticResource FormatPercent}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="4">
+                <TextBlock Text="{Binding Averages2.TimeDeadPercent, Converter={StaticResource FormatPercent}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="5">
+                <TextBlock Text="{Binding Averages2.DamageDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="6">
+                <TextBlock Text="{Binding Averages2.MonsterDamageDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="7">
+                <TextBlock Text="{Binding Averages2.AllyDamageDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="8">
+                <TextBlock Text="{Binding Averages2.OverKillDamagePerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="9">
+                <TextBlock Text="{Binding Averages2.EnemiesKilledPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="10">
+                <TextBlock Text="{Binding Averages2.ElitesKilledPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="11">
+                <TextBlock Text="{Binding Averages2.SpecialsKilledPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <!--<Border Grid.Column="2" Grid.Row="12">
+                <TextBlock Text="{Binding Averages2.StaggerDealtPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>-->
+            <Border Grid.Column="2" Grid.Row="12">
+                <TextBlock Text="{Binding Averages2.DamageTakenPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="13">
+                <TextBlock Text="{Binding Averages2.TimesDowned, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="14">
+                <TextBlock Text="{Binding Averages2.TimesDied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+        </Grid>
+    </StackPanel>
+</Window>

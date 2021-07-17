@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="Vermintide_Analyzer.Controls.Dashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             xmlns:analyzer="clr-namespace:Vermintide_Analyzer"
+             mc:Ignorable="d" 
+             d:DesignHeight="525" d:DesignWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="1060" />
+            <ColumnDefinition MinWidth="200" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="850" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <local:CareerDashboard Grid.Row="0" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Mercenary" />
+            <local:CareerDashboard Grid.Row="0" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Huntsman" />
+            <local:CareerDashboard Grid.Row="0" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Foot_Knight" />
+            <local:CareerDashboard Grid.Row="0" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Grail_Knight" />
+            <local:CareerDashboard Grid.Row="1" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Ranger_Veteran" />
+            <local:CareerDashboard Grid.Row="1" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Ironbreaker" />
+            <local:CareerDashboard Grid.Row="1" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Slayer" />
+            <local:CareerDashboard Grid.Row="1" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Outcast_Engineer" />
+            <local:CareerDashboard Grid.Row="2" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Waystalker" />
+            <local:CareerDashboard Grid.Row="2" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Handmaiden" />
+            <local:CareerDashboard Grid.Row="2" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Shade" />
+            <local:CareerDashboard Grid.Row="2" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Sister_of_the_Thorn" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Witch_Hunter_Captain" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Bounty_Hunter" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Zealot" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Saltzpyre_UNKNOWN" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Battle_Wizard" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Pyromancer" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Unchained" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Sienna_UNKNOWN" />
+
+        </Grid>
+        <StackPanel Grid.Column="1" Margin="10">
+            <Border Margin="0,10" BorderBrush="{StaticResource ThemeLight}" BorderThickness="2">
+                <StackPanel Margin="10,0">
+                    <Label Content="Difficulty" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ThemeLighter}" />
+                    <local:MultiSelectComboBox
+                        Margin="0,0,0,5"
+                        ItemSource="{Binding DifficultyFilterValues}"
+                        Selected="{Binding DifficultyStrings}"
+                        InitiallySelected="{Binding DifficultyFilterValues}"
+                        AllValues="{Binding DifficultyFilterValues}"
+                        SelectionChanged="Difficulty_SelectionChanged"/>
+                </StackPanel>
+            </Border>
+            <ToggleButton Width="Auto" x:Name="ShowQuitGamesButton" Content="Include incomplete games" IsChecked="{Binding ShowQuitGames, Mode=TwoWay}" />
+            <Button x:Name="DeleteAllGamesButton" Content="DELETE ALL DATA" Click="DeleteAllGamesButton_Click" />
+        </StackPanel>
+    </Grid>
+    
+</UserControl>

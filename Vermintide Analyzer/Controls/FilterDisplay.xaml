@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="Vermintide_Analyzer.Controls.FilterDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             xmlns:log="clr-namespace:VA.LogReader;assembly=VA.LogReader"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="500">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+    </UserControl.Resources>
+    <StackPanel Margin="5,0">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock x:Name="TitleText" FontSize="30" FontWeight="Bold" Foreground="{StaticResource ThemeLighter}" Text="{Binding Title}" />
+            <Button Content="Reset" Margin="15,16,0,0" Padding="3" Click="Reset_Button_Click" />
+        </StackPanel>
+        <Rectangle Margin="0,5" Height="4" Fill="{StaticResource ThemeMidtone}" />
+        <Grid Width="400" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Label Content="Game Version" />
+                <local:MultiSelectComboBox x:Name="GameVersionDropdown"
+                        ItemSource="{Binding GameVersionValues}"
+                        Selected="{Binding Filter.GameVersion}"
+                        InitiallySelected="{Binding GameVersionValues}"
+                        AllValues="{Binding GameVersionValues}"
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+            </StackPanel>
+        </Grid>
+        <Rectangle Margin="0,5" Height="2" Fill="{StaticResource ThemeMidtone}" />
+        <Grid Width="400" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Label Content="Career" />
+                <local:MultiSelectComboBox x:Name="CareerDropdown"
+                        ItemSource="{Binding CareerFilterValues}"
+                        Selected="{Binding CareerStrings}"
+                        InitiallySelected="{Binding CareerFilterValues}"
+                        AllValues="{Binding CareerFilterValues}"
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+            </StackPanel>
+        </Grid>
+        <Rectangle Margin="0,5" Height="2" Fill="{StaticResource ThemeMidtone}" />
+        <Grid Width="400" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                <Label Content="Difficulty" />
+                <local:MultiSelectComboBox x:Name="DifficultyDropdown"
+                        ItemSource="{Binding DifficultyFilterValues}"
+                        Selected="{Binding DifficultyStrings}"
+                        InitiallySelected="{Binding DifficultyFilterValues}"
+                        AllValues="{Binding DifficultyFilterValues}"
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                <Label Content="Deathwish" />
+                <ComboBox x:Name="DeathwishDropdown"
+                    FontSize="14"
+                    ItemsSource="{Binding YesNoEither}"
+                    SelectedItem="{Binding Filter.Deathwish, Mode=TwoWay, Converter={StaticResource NullableBoolToYesNoEither}}"
+                    SelectionChanged="ComboBox_SelectionChanged" />
+                <Label Content="Onslaught" />
+                <local:MultiSelectComboBox x:Name="OnslaughtDropdown"
+                    ItemSource="{Binding OnslaughtFilterValues}"
+                    Selected="{Binding OnslaughtStrings}"
+                    InitiallySelected="{Binding OnslaughtFilterValues}"
+                    AllValues="{Binding OnslaughtFilterValues}"
+                    SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+
+                <Label FontSize="18" Foreground="{StaticResource ThemeLighter}" Content="Empowered" />
+
+                <ComboBox x:Name="EmpoweredDropdown"
+                    FontSize="14"
+                    ItemsSource="{Binding YesNoEither}"
+                    SelectedItem="{Binding Filter.Empowered, Mode=TwoWay, Converter={StaticResource NullableBoolToYesNoEither}}"
+                    SelectionChanged="ComboBox_SelectionChanged" />
+            </StackPanel>
+        </Grid>
+        <Rectangle Margin="0,5" Height="2" Fill="{StaticResource ThemeMidtone}" />
+        <Grid Width="400" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Label Content="Mission" />
+                <local:MultiSelectComboBox x:Name="MissionDropdown"
+                        ItemSource="{Binding MissionFilterValues}"
+                        Selected="{Binding MissionStrings}"
+                        InitiallySelected="{Binding MissionFilterValues}"
+                        AllValues="{Binding MissionFilterValues}"
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+            </StackPanel>
+        </Grid>
+        
+        <Rectangle Margin="0,5" Height="2" Fill="{StaticResource ThemeMidtone}" />
+    </StackPanel>
+</UserControl>

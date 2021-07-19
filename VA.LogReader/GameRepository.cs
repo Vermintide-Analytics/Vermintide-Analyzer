@@ -165,6 +165,12 @@ namespace VA.LogReader
             }
         }
 
+        public void DeleteInvalidGame(InvalidGame g)
+        {
+            InvalidGames.Remove(g);
+            new FileInfo(g.FilePath).Delete();
+        }
+
         public void DeleteInvalidGames()
         {
             foreach(var invalid in InvalidGames)

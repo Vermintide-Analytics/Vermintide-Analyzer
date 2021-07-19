@@ -53,6 +53,7 @@
             <converters:NullableBoolToYesNoEither  x:Key="NullableBoolToYesNoEither" />
             <converters:GameToDifficultyModifierString x:Key="GameToDifficultyModifierString" />
 
+            <converters:ParseErrorToDisplayString x:Key="ParseErrorToDisplayString" />
             <converters:CareerToDisplayString x:Key="CareerToDisplayString" />
             <converters:CampaignToDisplayString x:Key="CampaignToDisplayString" />
 

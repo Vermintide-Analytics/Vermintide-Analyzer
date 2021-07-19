@@ -20,4 +20,14 @@ namespace Vermintide_Analyzer.Converters
 
     public class CareerToDisplayString : EnumToDisplayString<CAREER> { }
     public class CampaignToDisplayString : EnumToDisplayString<CAMPAIGN> { }
+
+    public class ParseErrorToDisplayString : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => ((ParseError)value).ForDisplay().SplitCamelCase();
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            throw new NotImplementedException();
+    }
+
 }

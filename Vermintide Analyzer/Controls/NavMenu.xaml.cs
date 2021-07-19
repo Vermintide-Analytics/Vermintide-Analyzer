@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VA.LogReader;
 
 namespace Vermintide_Analyzer.Controls
 {
@@ -20,6 +21,8 @@ namespace Vermintide_Analyzer.Controls
     /// </summary>
     public partial class NavMenu : UserControl
     {
+        public bool ShowInvalidGamesButton => GameRepository.Instance.InvalidGames.Any();
+
         public NavMenu()
         {
             InitializeComponent();

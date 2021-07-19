@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,6 @@ namespace VA.LogReader
 {
     public static class Extension
     {
-        public static bool HasError(this ParseError error) => error != ParseError.None;
         public static bool MeleeOnly(this CAREER career) =>
             career == CAREER.Grail_Knight || career == CAREER.Slayer;
         public static IEnumerable<Enum> GetFlags(this Enum flags)
@@ -136,6 +136,10 @@ namespace VA.LogReader
         public static bool IsLoss(this ROUND_RESULT r) => r == ROUND_RESULT.Loss;
         public static bool IsQuit(this ROUND_RESULT r) => r == ROUND_RESULT.Quit;
         public static bool IsWin(this ROUND_RESULT r) => r == ROUND_RESULT.Win;
+        #endregion
+
+        #region ParseError
+        public static bool HasError(this ParseError error) => error != ParseError.None;
         #endregion
     }
 }

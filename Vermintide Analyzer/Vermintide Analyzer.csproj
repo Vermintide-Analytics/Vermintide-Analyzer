@@ -95,6 +95,9 @@
     <Compile Include="Controls\GameCompareView.xaml.cs">
       <DependentUpon>GameCompareView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InvalidGamesView.xaml.cs">
+      <DependentUpon>InvalidGamesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MultiSelectComboBox.xaml.cs">
       <DependentUpon>MultiSelectComboBox.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
     <Page Include="Controls\GameCompareView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\InvalidGamesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\GameListView.xaml">
       <SubType>Designer</SubType>

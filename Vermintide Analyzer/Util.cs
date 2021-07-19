@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -23,6 +24,16 @@ namespace Vermintide_Analyzer
         public static Task ContinueWithSafe(this Task t, Action<Task> continuation) =>
             t.ContinueWith((task) => { SafeInvoke(continuation, task); });
 
+        public static string SplitCamelCase(this string str) =>
+            Regex.Replace(
+                Regex.Replace(
+                    str,
+                    @"(\P{Ll})(\P{Ll}\p{Ll})",
+                    "$1 $2"
+                ),
+                @"(\p{Ll})(\P{Ll})",
+                "$1 $2"
+            );
 
         public static IEnumerable<string> FilterOptions(Type enumType, params Enum[] exclusions)
         {

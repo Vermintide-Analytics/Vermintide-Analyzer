@@ -18,6 +18,10 @@
             <Style TargetType="TextBlock">
                 <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
             </Style>
+            <Style TargetType="lvc:DefaultLegend">
+                <Setter Property="Width" Value="105" />
+                <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+            </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -287,9 +291,6 @@
                             <lvc:Axis.Separator>
                                 <lvc:Separator Step="60" />
                             </lvc:Axis.Separator>
-                            <lvc:Axis.Sections>
-                                <lvc:AxisSection Value="10" SectionWidth="0" Label="Something" Stroke="{StaticResource DataCareer}" StrokeThickness="1" />
-                            </lvc:Axis.Sections>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
@@ -303,7 +304,7 @@
                         <lvcbase:SeriesCollection>
                             <lvc:ScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding PlainDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                             <lvc:ScatterSeries Title="Monsters" Fill="#C5B300" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <lvc:ScatterSeries Title="Allies" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <lvc:ScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                         </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>

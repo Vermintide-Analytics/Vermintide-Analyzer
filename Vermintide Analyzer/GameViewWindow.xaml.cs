@@ -173,14 +173,10 @@ namespace Vermintide_Analyzer
 
         private void ConstructSections()
         {
-            DamageDealtBySourceChart.AxisX[0].Sections = new SectionsCollection();
-            DamageDealtByTargetChart.AxisX[0].Sections = new SectionsCollection();
             //StaggerDealtChart.AxisX[0].Sections = new SectionsCollection();
             DamageTakenChart.AxisX[0].Sections = new SectionsCollection();
             CurrentHealthChart.AxisX[0].Sections = new SectionsCollection();
 
-            SetAxisSections(DamageDealtBySourceChart.AxisX[0].Sections);
-            SetAxisSections(DamageDealtByTargetChart.AxisX[0].Sections);
             //SetAxisSections(StaggerDealtChart.AxisX[0].Sections);
             SetAxisSections(DamageTakenChart.AxisX[0].Sections);
             SetAxisSections(CurrentHealthChart.AxisX[0].Sections);

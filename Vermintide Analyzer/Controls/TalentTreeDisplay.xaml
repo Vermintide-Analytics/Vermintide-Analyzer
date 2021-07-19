@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="200">
     <Grid x:Name="MainGrid" Width="160">
         <Grid.Resources>
-            <SolidColorBrush x:Key="ShadingRectangleFill" Color="Black" Opacity=".68" />
+            <SolidColorBrush x:Key="ShadingRectangleFill" Color="Black" Opacity=".75" />
             <Style TargetType="TextBlock" x:Key="TalentNameStyle">
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontWeight" Value="Bold" />

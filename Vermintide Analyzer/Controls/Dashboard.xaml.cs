@@ -60,12 +60,6 @@ namespace Vermintide_Analyzer.Controls
         }
         #endregion
 
-        private void DeleteAllGamesButton_Click(object sender, RoutedEventArgs e)
-        {
-            GameRepository.Instance.DeleteAllGames();
-            UpdateDisplay();
-        }
-
         private void UpdateDisplay()
         {
             foreach (var careerDash in this.FindVisualChildren<CareerDashboard>())

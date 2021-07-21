@@ -91,6 +91,7 @@ namespace Vermintide_Analyzer.Controls
             DeathwishDropdown.SelectedItem = "Either";
             EmpoweredDropdown.SelectedItem = "Either";
 
+            GameVersionDropdown.ResetSelection();
             CareerDropdown.ResetSelection();
             DifficultyDropdown.ResetSelection();
             MissionDropdown.ResetSelection();

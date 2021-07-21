@@ -62,7 +62,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void Delete_These_Games_Click(object sender, RoutedEventArgs e)
         {
-            if (!ConfirmWithDialog()) return;
+            if (!Util.ConfirmWithDialog()) return;
 
             GameRepository.Instance.DeleteGames(Games);
             RefreshDisplay();
@@ -70,16 +70,13 @@ namespace Vermintide_Analyzer.Controls
 
         private void Delete_Selected_Game_Click(object sender, RoutedEventArgs e)
         {
-            if (!ConfirmWithDialog()) return;
+            if (!Util.ConfirmWithDialog()) return;
 
             if (GamesList.SelectedItem is GameHeader gh)
             {
                 GameRepository.Instance.DeleteGame(gh);
                 RefreshDisplay();
             }
-        }
-
-        private bool ConfirmWithDialog() =>
-            MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }            
     }
 }

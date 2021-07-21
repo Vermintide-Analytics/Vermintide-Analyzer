@@ -79,5 +79,8 @@ namespace Vermintide_Analyzer
                 }
             }
         }
+
+        public static bool ConfirmWithDialog(string prompt = "Are you sure?", string title = "") =>
+            MessageBox.Show(prompt, title, MessageBoxButton.YesNo) == MessageBoxResult.Yes;
     }
 }

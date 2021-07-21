@@ -52,7 +52,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void Delete_Selected_Game_Click(object sender, RoutedEventArgs e)
         {
-            if (!ConfirmWithDialog()) return;
+            if (!Util.ConfirmWithDialog()) return;
 
             if (GamesList.SelectedItem is InvalidGame g)
             {
@@ -61,11 +61,10 @@ namespace Vermintide_Analyzer.Controls
             }
         }
 
-        private bool ConfirmWithDialog() =>
-            MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-
         private void Delete_All_Click(object sender, RoutedEventArgs e)
         {
+            if (!Util.ConfirmWithDialog()) return;
+
             GameRepository.Instance.DeleteInvalidGames();
             RefreshDisplay();
         }

@@ -27,7 +27,8 @@ namespace Vermintide_Analyzer.Controls
         public string EmailAddress => "VermintideAnalytics@gmail.com";
         public string DiscordID => "Prismism#5276";
         public string AnalyzerVersion =>
-            $"{Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Minor}";
+            $"{AssemblyVersion.Major}.{AssemblyVersion.Minor}.{AssemblyVersion.Build}";
+        private Version AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version;
         public string SchemaVersion => Schema.SCHEMA_VERSION;
 
         public AboutView()
@@ -36,10 +37,7 @@ namespace Vermintide_Analyzer.Controls
             DataContext = this;
         }
 
-        public void OnNavigatedTo()
-        {
-            
-        }
+        public void OnNavigatedTo() { }
 
         private void Copy_Email_Click(object sender, RoutedEventArgs e)
         {

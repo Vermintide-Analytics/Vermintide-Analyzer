@@ -9,13 +9,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView x:Name="GamesList" Grid.Column="0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Content="Delete All" Width="150" FontSize="17" HorizontalAlignment="Left" Margin="5,0" Click="Delete_All_Click" />
+        <ListView x:Name="GamesList" Grid.Row="1"
                   ItemsSource="{Binding Games}" HorizontalContentAlignment="Stretch"
                   Background="{StaticResource ThemeDarker}" BorderThickness="0"
                   SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="log:InvalidGame">
-                    <Border Height="78" BorderBrush="{StaticResource ThemeLight}" BorderThickness="1">
+                    <Border Height="78" BorderBrush="{StaticResource ThemeLight}" Background="{StaticResource ThemeDarker}" BorderThickness="1">
                         <Border.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Delete" Click="Delete_Selected_Game_Click" />

@@ -63,5 +63,11 @@ namespace Vermintide_Analyzer.Controls
 
         private bool ConfirmWithDialog() =>
             MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+
+        private void Delete_All_Click(object sender, RoutedEventArgs e)
+        {
+            GameRepository.Instance.DeleteInvalidGames();
+            RefreshDisplay();
+        }
     }
 }

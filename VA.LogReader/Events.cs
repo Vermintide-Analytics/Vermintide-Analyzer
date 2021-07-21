@@ -15,7 +15,16 @@ namespace VA.LogReader
         {
             Difficulty = (DIFFICULTY)((payload & Bitmask.DIFFICULTY) >> Bitshift.DIFFICULTY);
             Career = (CAREER)((payload & Bitmask.CAREER) >> Bitshift.CAREER);
-            Campaign = (CAMPAIGN)((payload & Bitmask.CAMPAIGN) >> Bitshift.CAMPAIGN);
+            byte campaignVal = (byte)((payload & Bitmask.CAMPAIGN) >> Bitshift.CAMPAIGN);
+            if(Enum.IsDefined(typeof(CAMPAIGN), campaignVal))
+            {
+                Campaign = (CAMPAIGN)campaignVal;
+            }
+            else
+            {
+                Campaign = CAMPAIGN.Unknown;
+            }
+
             Mission = (byte)((payload & Bitmask.MISSION) >> Bitshift.MISSION);
         }
 
@@ -51,6 +60,7 @@ namespace VA.LogReader
     
     public class Damage_Dealt : Event
     {
+        public bool Crit { get; private set; }
         public bool Headshot { get; private set; }
         public DAMAGE_TARGET Target { get; private set; }
         public DAMAGE_SOURCE Source { get; private set; }
@@ -58,21 +68,23 @@ namespace VA.LogReader
 
         private Damage_Dealt(uint payload)
         {
+            Crit = ((payload & Bitmask.CRIT) >> Bitshift.CRIT) == 1;
             Headshot = ((payload & Bitmask.HEADSHOT) >> Bitshift.HEADSHOT) == 1;
             Target = (DAMAGE_TARGET)((payload & Bitmask.TARGET) >> Bitshift.TARGET);
             Source = (DAMAGE_SOURCE)((payload & Bitmask.DAMAGE_SOURCE) >> Bitshift.DAMAGE_SOURCE);
             Damage = ((payload & Bitmask.DAMAGE_INT) >> Bitshift.DAMAGE_INT) + ((payload & Bitmask.DAMAGE_FRACTION) >> Bitshift.DAMAGE_FRACTION) / 4.0f;
         }
-
         public static Event Create(uint payload) => new Damage_Dealt(payload);
     }
 
     public class Damage_Taken : Event
     {
+        public DAMAGE_TAKEN_SOURCE Source { get; private set; }
         public float Damage { get; private set; }
 
         private Damage_Taken(uint payload)
         {
+            Source = (DAMAGE_TAKEN_SOURCE)((payload & Bitmask.DAMAGE_TAKEN_SOURCE) >> Bitshift.DAMAGE_TAKEN_SOURCE);
             Damage = ((payload & Bitmask.DAMAGE_INT) >> Bitshift.DAMAGE_INT) + ((payload & Bitmask.DAMAGE_FRACTION) >> Bitshift.DAMAGE_FRACTION) / 4.0f;
         }
 

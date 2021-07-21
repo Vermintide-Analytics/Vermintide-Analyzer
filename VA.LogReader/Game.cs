@@ -123,8 +123,12 @@ namespace VA.LogReader
         public double HeadshotsPerMin { get; private set; } = double.NaN;
         #endregion
 
+        #region Damage Taken
         public double TotalDamageTaken { get; private set; } = double.NaN;
         public double DamageTakenPerMin { get; private set; } = double.NaN;
+        public double FriendlyFireTaken { get; private set; } = double.NaN;
+        public double FriendlyFireTakenPerMin { get; private set; } = double.NaN;
+        #endregion
 
         #region Player State
         public int TimesDowned { get; private set; } = 0;
@@ -187,8 +191,11 @@ namespace VA.LogReader
             Headshots = damageEvents.Where(e => e.Headshot).Count();
             HeadshotsPerMin = Headshots / DurationMinutes;
 
-            TotalDamageTaken = Events.Where(e => e is Damage_Taken).Cast<Damage_Taken>().Sum(e => e.Damage);
+            var damageTakenEvents = Events.Where(e => e is Damage_Taken).Cast<Damage_Taken>();
+            TotalDamageTaken = damageTakenEvents.Sum(e => e.Damage);
             DamageTakenPerMin = TotalDamageTaken / DurationMinutes;
+            FriendlyFireTaken = damageTakenEvents.Where(e => e.Source.IsFriendlyFire()).Sum(e => e.Damage);
+            FriendlyFireTakenPerMin = FriendlyFireTaken / DurationMinutes;
 
             CalculatePlayerStateTimes();
         }
@@ -281,7 +288,7 @@ namespace VA.LogReader
                 byte[] buffer = new byte[Event.BYTES];
                 int lastReadCount = 0;
 
-                // Read header, which is the first 6 bytes
+                // Read header, which is the first HEADER_BYTES bytes
                 byte[] headerBuffer = new byte[HEADER_BYTES];
                 lastReadCount = reader.Read(headerBuffer, 0, HEADER_BYTES);
                 if(lastReadCount < HEADER_BYTES)
@@ -297,12 +304,12 @@ namespace VA.LogReader
                 }
 
                 lastReadCount = reader.Read(buffer, 0, Event.BYTES);
-                while (lastReadCount == 5)
+                while (lastReadCount == Event.BYTES)
                 {
                     var eventType = Event.GetEventType(buffer[2]);
                     if (!eventType.HasValue)
                     {
-                        Console.WriteLine($"Bad event type \"{buffer[2] >> 4}\", skipping...");
+                        Console.WriteLine($"Bad event type \"{buffer[2] >> Bitshift.EVENT_TYPE}\", skipping...");
                         continue;
                     }
                     var newEvent = Event.CreateEvent(eventType.Value, buffer);
@@ -313,7 +320,7 @@ namespace VA.LogReader
                     lastReadCount = reader.Read(buffer, 0, Event.BYTES);
                 }
 
-                // The data wasn't a multiple of 5 bytes, say something
+                // The data wasn't a multiple of Event.BYTES bytes, say something
                 if (lastReadCount > 0)
                 {
                     throw new InvalidDataException();
@@ -397,7 +404,16 @@ namespace VA.LogReader
             Career = evt.Career;
             Campaign = evt.Campaign;
             var shift = Campaign.MissionEnumShift();
-            Mission = (MISSION)((evt.Mission + 1) << shift);
+            long adjustedMissionVal = ((evt.Mission + 1) << shift);
+
+            if(Enum.IsDefined(typeof(MISSION), adjustedMissionVal))
+            {
+                Mission = (MISSION)adjustedMissionVal;
+            }
+            else
+            {
+                Mission = MISSION.Unknown;
+            }
         }
 
         private void ParseRoundEnd(Round_End evt)

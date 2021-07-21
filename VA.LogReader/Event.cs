@@ -6,7 +6,7 @@ namespace VA.LogReader
 {
     public abstract class Event
     {
-        public const int BYTES = 5;
+        public const int BYTES = 6;
 
         public float RawTime { get; private set; }
         public float Time { get; set; }
@@ -26,7 +26,7 @@ namespace VA.LogReader
 
         public static Event CreateEvent(EventType eventType, byte[] bytes)
         {
-            uint payload = (uint)((bytes[2] << 16) + (bytes[3] << 8) + (bytes[4]));
+            uint payload = (uint)((bytes[2] << 24) + (bytes[3] << 16) + (bytes[4] << 8) + (bytes[5]));
             payload &= Bitmask.PAYLOAD;
 
             Event result = null;
@@ -77,20 +77,16 @@ namespace VA.LogReader
     public enum EventType : byte
     {
         Round_Start = 0,
-        Player_State = 1,
-        Current_Health = 2,
-        Damage_Dealt = 3,
-        Damage_Taken = 4,
-        Enemy_Killed = 5,
-        Talent_Tree = 6,
-        Weapon_Set = 7,
-        Enemy_Staggered = 8,
-        // UNUSED = 9,
-        // UNUSED = 10,
-        // UNUSED = 11,
-        // UNUSED = 12,
-        // UNUSED = 13,
-        // UNUSED = 14,
-        Round_End = 15
+        Round_End = 1,
+        Weapon_Set = 2,
+        Talent_Tree = 3,
+        Player_State = 4,
+        Current_Health = 5,
+        Damage_Dealt = 6,
+        Enemy_Staggered = 7,
+        Enemy_Killed = 8,
+        Damage_Taken = 9,
+        
+        // 10 through 64 UNUSED
     }
 }

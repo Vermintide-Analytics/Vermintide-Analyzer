@@ -9,7 +9,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
         mc:Ignorable="d"
-        Title="" Height="900" Width="1400"
+        Title="" Height="950" Width="1400"
         MinHeight="900" MinWidth="1400"
         Background="{StaticResource ThemeDarker}"
         BorderBrush="{StaticResource ThemeMidtone}" BorderThickness="2">
@@ -36,7 +36,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition MinHeight="300" />
+                        <RowDefinition MinHeight="350" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <controls:WeaponDataDisplay Grid.Row="0" Grid.Column="0" Weapon="{Binding DataContext.Game.StartingWeapon1, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
@@ -102,6 +102,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <!--<RowDefinition />-->
+                                <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
@@ -221,6 +222,16 @@
                                 <TextBlock Text="{Binding DamageTakenPerMin}" />
                             </Border>
 
+                            <Border Grid.Row="10" Grid.Column="0" >
+                                <TextBlock Text="(Friendly Fire)" FontWeight="Bold" TextAlignment="Right" />
+                            </Border>
+                            <Border Grid.Row="10" Grid.Column="1" >
+                                <TextBlock Text="{Binding FriendlyFireTaken}" />
+                            </Border>
+                            <Border Grid.Row="10" Grid.Column="2" >
+                                <TextBlock Text="{Binding FriendlyFireTakenPerMin}" />
+                            </Border>
+
                             <!-- Separators -->
                             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
@@ -302,9 +313,9 @@
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.Series>
                         <lvcbase:SeriesCollection>
-                            <lvc:ScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding PlainDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <lvc:ScatterSeries Title="Monsters" Fill="#C5B300" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <lvc:ScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding PlainDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Monsters" Fill="#C5B300" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                         </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>
@@ -331,10 +342,10 @@
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.Series>
                         <lvcbase:SeriesCollection>
-                            <lvc:ScatterSeries Title="Weapon 1" Fill="{StaticResource DataWeapon1}" Values="{Binding Weapon1DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <lvc:ScatterSeries Title="Weapon 2" Fill="{StaticResource DataWeapon2}" Values="{Binding Weapon2DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <lvc:ScatterSeries Title="Career" Fill="{StaticResource DataCareer}" Values="{Binding CareerDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <lvc:ScatterSeries Title="Other" Fill="{StaticResource DataOther}" Values="{Binding OtherDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Weapon 1" Fill="{StaticResource DataWeapon1}" Values="{Binding Weapon1DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Weapon 2" Fill="{StaticResource DataWeapon2}" Values="{Binding Weapon2DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Career" Fill="{StaticResource DataCareer}" Values="{Binding CareerDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Other" Fill="{StaticResource DataOther}" Values="{Binding OtherDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                         </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>
@@ -388,7 +399,10 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.Series>
-                        <geared:GScatterSeries Title="Damage Taken" Fill="White" Values="{Binding DamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                        <lvcbase:SeriesCollection>
+                            <geared:GScatterSeries Title="Damage Taken" Fill="White" Values="{Binding DamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding FriendlyFireTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                        </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>
                 <Rectangle Height="1" Fill="{StaticResource ThemeMidtone}" />

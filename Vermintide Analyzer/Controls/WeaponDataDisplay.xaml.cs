@@ -63,6 +63,9 @@ namespace Vermintide_Analyzer.Controls
         public string HeadshotsPerMin => DispDouble(Weapon.HeadshotsPerMin);
         public string HeadshotPercent => $"{DispDouble(Weapon.HeadshotPercentage)}%";
 
+        public string AverageCritMultiplier => $"x{DispDouble(Weapon.AverageCritMultiplier)}";
+        public string CritPercent => $"{DispDouble(Weapon.CritPercentage)}%";
+
         public void UpdateDisplay()
         {
             foreach(var textBlock in this.FindVisualChildren<TextBlock>())

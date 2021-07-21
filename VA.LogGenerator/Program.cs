@@ -16,7 +16,11 @@ namespace LogGenerator
 
         static Random rand = new Random();
 
-        static byte[] dataBytes = new byte[3];
+        static int TIMESTAMP_BYTES = 2;
+        static int PAYLOAD_BYTES = VA.LogReader.Event.BYTES - TIMESTAMP_BYTES;
+        static byte[] dataBytes = new byte[PAYLOAD_BYTES];
+
+        static int PAYLOAD_BITS = PAYLOAD_BYTES * 8;
 
         static Func<ROUND_RESULT> resultGenerator;
 
@@ -24,10 +28,11 @@ namespace LogGenerator
 
         static List<Tuple<float, Action<FS>>> LogGenerators = new List<Tuple<float, Action<FS>>>()
         {
-            { new Tuple<float, Action<FS>>(100, WriteDamageDealt) },
+            { new Tuple<float, Action<FS>>(85, WriteNonCritDamageDealt) },
+            { new Tuple<float, Action<FS>>(15, WriteCritDamageDealt) },
             { new Tuple<float, Action<FS>>(5, WriteDamageTaken) },
             { new Tuple<float, Action<FS>>(40, WriteEnemyKilled) },
-            { new Tuple<float, Action<FS>>(60, WriteEnemyStaggered) },
+            //{ new Tuple<float, Action<FS>>(60, WriteEnemyStaggered) },
             { new Tuple<float, Action<FS>>(20, WriteCurrentHealth) },
             { new Tuple<float, Action<FS>>(0.15f, WritePlayerState) },
         };
@@ -124,7 +129,7 @@ namespace LogGenerator
             data += (long)diff << Bitshift.DIFFICULTY;
             data += (long)car << Bitshift.CAREER;
             data += (long)camp << Bitshift.CAMPAIGN;
-            data += ((long)mission >> missionShift) << Bitshift.MISSION;
+            data += (((long)mission >> missionShift) - 1) << Bitshift.MISSION;
 
             WriteLog(s, data);
             return (diff, car, camp);
@@ -134,8 +139,8 @@ namespace LogGenerator
         {
             long data = Event(EventType.Weapon_Set);
 
-            data += RandomMeleeWeapon() << 8;
-            data += RandomRangedWeapon();
+            data += RandomMeleeWeapon() << Bitshift.WEAPON1;
+            data += RandomRangedWeapon() << Bitshift.WEAPON2;
 
             WriteLog(s, data);
         }
@@ -148,18 +153,23 @@ namespace LogGenerator
             WriteLog(s, data);
         }
 
-        static void WriteDamageDealt(FS s)
+        static void WriteDamageDealt(FS s, bool crit)
         {
             long data = Event(EventType.Damage_Dealt);
 
+            long critVal = crit ? 1 : 0;
+            data += critVal << Bitshift.CRIT;
             data += (long)RandomTarget() << Bitshift.TARGET;
             data += (long)RandomSource() << Bitshift.DAMAGE_SOURCE;
 
-            data += rand.Next(0, 255) & Bitmask.DAMAGE_INT;
+            data += rand.Next(crit ? 100 : 0, crit ? 255 : 150) & Bitmask.DAMAGE_INT;
             data += rand.Next() & Bitmask.DAMAGE_FRACTION;
 
             WriteLog(s, data);
         }
+
+        static void WriteNonCritDamageDealt(FS s) => WriteDamageDealt(s, false);
+        static void WriteCritDamageDealt(FS s) => WriteDamageDealt(s, true);
 
         static void WriteDamageTaken(FS s)
         {
@@ -254,7 +264,7 @@ namespace LogGenerator
             return (CAMPAIGN)CampaignVals.GetValue(rand.Next(CampaignVals.Length));
         }
 
-        static Array MissionVals = Enum.GetValues(typeof(MISSION));
+        static Array MissionVals = Enum.GetValues(typeof(MISSION)).Cast<MISSION>().Where(v => v != MISSION.Unknown).ToArray();
         static MISSION RandomMission()
         {
             return (MISSION)MissionVals.GetValue(rand.Next(MissionVals.Length));
@@ -302,7 +312,7 @@ namespace LogGenerator
 
         static byte RandomByte(byte max = 255) => (byte)rand.Next(0, max + 1);
 
-        static long Event(EventType type) => (long)type << 20;
+        static long Event(EventType type) => ((long)type << Bitshift.EVENT_TYPE) << (PAYLOAD_BITS - 8);
 
         static void WriteLog(FS s, long data)
         {
@@ -318,16 +328,18 @@ namespace LogGenerator
 
         static void SetDataBytes(long val)
         {
-            dataBytes[2] = (byte)(val);
-            dataBytes[1] = (byte)(val >> 8);
-            dataBytes[0] = (byte)(val >> 16);
+            for (int count = 0; count < PAYLOAD_BYTES; count++)
+            {
+                dataBytes[PAYLOAD_BYTES - count - 1] = (byte)(val >> (count * 8));
+            }
         }
 
         static void WriteDataBytes(FS s)
         {
-            s.WriteByte(dataBytes[0]);
-            s.WriteByte(dataBytes[1]);
-            s.WriteByte(dataBytes[2]);
+            for(int count = 0; count < PAYLOAD_BYTES; count++)
+            {
+                s.WriteByte(dataBytes[count]);
+            }
         }
     }
 }

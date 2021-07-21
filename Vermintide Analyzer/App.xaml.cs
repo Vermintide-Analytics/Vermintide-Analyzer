@@ -14,13 +14,6 @@ namespace Vermintide_Analyzer
     /// </summary>
     public partial class App : Application
     {
-        void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            if (e.Exception.StackTrace.StartsWith("   at LiveCharts.Geared.GearedValues"))
-            {
-                e.Handled = true;
-                return;
-            }
-        }
+
     }
 }

@@ -102,13 +102,17 @@ namespace VA.LogReader
 		Bogenhafen = 3,
 		Ubersreik = 4,
 		Winds_of_Magic = 5,
-		Chaos_Wastes = 6
+		Chaos_Wastes = 6,
+
+		Unknown = 15
 	}
 
 	// All missions in a single enum
 	// 4 bits (15 missions slots) given for each Campaign
 	public enum MISSION : long
 	{
+		Unknown = 0,
+
 		// Misc
 		A_Quiet_Drink = 1 << Enums.MISC_MISSION_SHIFT,
 
@@ -208,6 +212,14 @@ namespace VA.LogReader
 	{
 		Push = 0,
 		Other = 1
+	}
+
+	public enum DAMAGE_TAKEN_SOURCE : byte
+	{
+		Enemy = 0,
+		Special = 1,
+		Monster = 2,
+		Ally = 3
 	}
 
 	public enum PLAYER_STATE : byte

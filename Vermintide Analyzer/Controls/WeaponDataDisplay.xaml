@@ -20,6 +20,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -154,11 +156,32 @@
                 <TextBlock Text="-" />
             </Border>
 
+            <Border Grid.Row="10" Grid.Column="0" >
+                <TextBlock Text="Avg Crit Multi" FontWeight="Bold" TextAlignment="Left" ToolTip="Average damage from crits divided by average damage from non-crits" />
+            </Border>
+            <Border Grid.Row="10" Grid.Column="1" >
+                <TextBlock Text="{Binding AverageCritMultiplier}" />
+            </Border>
+            <Border Grid.Row="10" Grid.Column="2" >
+                <TextBlock Text="-" />
+            </Border>
+
+            <Border Grid.Row="11" Grid.Column="0" >
+                <TextBlock Text="Crit %" FontWeight="Bold" TextAlignment="Left" />
+            </Border>
+            <Border Grid.Row="11" Grid.Column="1" >
+                <TextBlock Text="{Binding CritPercent}" />
+            </Border>
+            <Border Grid.Row="11" Grid.Column="2" >
+                <TextBlock Text="-" />
+            </Border>
+
             <!-- Separators -->
             <Border Grid.Row="1" Style="{StaticResource SeparatorStyle}" />
             <Border Grid.Row="4" Style="{StaticResource SeparatorStyle}" />
             <Border Grid.Row="5" Style="{StaticResource SeparatorStyle}" />
             <Border Grid.Row="8" Style="{StaticResource SeparatorStyle}" />
+            <Border Grid.Row="10" Style="{StaticResource SeparatorStyle}" />
         </Grid>
     </StackPanel>
 </UserControl>

@@ -8,6 +8,7 @@ namespace VA.LogReader
 {
     public class WeaponData
     {
+        public const byte UNKNOWN_WEAPON = 63;
         #region Static Weapon Dictionaries
         public static Dictionary<byte, string> WeaponsMarkus = new Dictionary<byte, string>()
         {
@@ -127,7 +128,7 @@ namespace VA.LogReader
         public double Duration { get; set; }
         public double DurationMinutes { get; set; }
 
-        public string WeaponName => Weapons[Hero][WeaponId];
+        public string WeaponName => WeaponId == UNKNOWN_WEAPON ? "Unknown Weapon" : Weapons[Hero][WeaponId];
         public bool Ranged => WeaponId >= 32;
 
         public List<Event> Events { get; private set; } = new List<Event>();
@@ -184,6 +185,11 @@ namespace VA.LogReader
         public double HeadshotsPerMin { get; private set; } = double.NaN;
         public double HeadshotPercentage { get; private set; } = double.NaN;
         #endregion
+
+        #region Crits
+        public double AverageCritMultiplier { get; private set; } = double.NaN;
+        public double CritPercentage { get; private set; } = double.NaN;
+        #endregion
         #endregion
 
         #region Public Functions
@@ -197,6 +203,17 @@ namespace VA.LogReader
             TotalDamage = damageEvents.Sum(e => e.Damage);
             DamagePerMin = TotalDamage / DurationMinutes;
             AvgDamage = TotalDamage / numDamageEvents;
+
+            var nonCritDamageEvents = damageEvents.Where(e => !e.Crit);
+            var critDamageEvents = damageEvents.Where(e => e.Crit);
+            if(nonCritDamageEvents.Any() && critDamageEvents.Any())
+            {
+                var averageNonCritDamage = nonCritDamageEvents.Average(e => e.Damage);
+                var averageCritDamage = critDamageEvents.Average(e => e.Damage);
+                AverageCritMultiplier = averageCritDamage / averageNonCritDamage;
+            }
+            var numCritDamageEvents = critDamageEvents.Count();
+            CritPercentage = 100f * numCritDamageEvents / numDamageEvents;
 
             var monsterDamageEvents = damageEvents.Where(e => e.Target == DAMAGE_TARGET.Monster);
             var numMonsterDamageEvents = monsterDamageEvents.Count();

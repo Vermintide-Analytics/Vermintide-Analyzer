@@ -6,8 +6,7 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:converters="clr-namespace:Vermintide_Analyzer.Converters"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             StartupUri="StartupWindow.xaml"
-             DispatcherUnhandledException="Application_DispatcherUnhandledException">
+             StartupUri="StartupWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="ThemeDarkerTranslucent" Color="#010107" Opacity="0.8" />

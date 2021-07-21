@@ -127,9 +127,17 @@ namespace VA.LogReader
             {
                 return CAMPAIGN.Helmgart;
             }
-            return CAMPAIGN.Misc;
+            if (l >> Enums.MISC_MISSION_SHIFT > 0)
+            {
+                return CAMPAIGN.Misc;
+            }
+            return CAMPAIGN.Unknown;
         }
         public static bool IsChaosWastes(this MISSION m) => m.Campaign() == CAMPAIGN.Chaos_Wastes;
+        #endregion
+
+        #region DAMAGE_TAKEN_SOURCE
+        public static bool IsFriendlyFire(this DAMAGE_TAKEN_SOURCE source) => source == DAMAGE_TAKEN_SOURCE.Ally;
         #endregion
 
         #region ROUND_RESULT

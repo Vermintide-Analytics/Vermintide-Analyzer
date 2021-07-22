@@ -170,10 +170,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DamageChart.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -236,9 +232,6 @@
     </Compile>
     <Compile Include="Controls\DamageTooltip.xaml.cs">
       <DependentUpon>DamageTooltip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DamageChart.xaml.cs">
-      <DependentUpon>DamageChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -56,6 +56,8 @@ namespace Vermintide_Analyzer.Controls
         public string CareerName => Career.ForDisplay().Contains("UNKNOWN") ? "-" : Career.ForDisplay();
         public string PortraitImagePath => $"/Images/Career Portraits/{CareerName}.png";
 
+        public string IconClickTooltip => $"View {CareerName} games";
+
         public int NumGames => GameRepository.Instance.GameHeaders.Count(gh => DifficultyFilter.Contains(gh.Difficulty) && gh.Career == Career);
         public int NumWins => GameRepository.Instance.GameHeaders.Count(gh => DifficultyFilter.Contains(gh.Difficulty) && gh.Career == Career && gh.Result.IsWin());
         public int NumLosses => GameRepository.Instance.GameHeaders.Count(gh => DifficultyFilter.Contains(gh.Difficulty) && gh.Career == Career && gh.Result.IsLoss());
@@ -86,6 +88,7 @@ namespace Vermintide_Analyzer.Controls
         {
             UpdateText(CareerNameText);
             CareerIcon.GetBindingExpression(Image.SourceProperty).UpdateTarget();
+            UpdateTooltip(CareerIcon);
         }
 
         public void UpdateDisplay()
@@ -101,9 +104,26 @@ namespace Vermintide_Analyzer.Controls
         }
 
         private void UpdateText(FrameworkElement elem) => elem.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+        private void UpdateTooltip(FrameworkElement elem) => elem.GetBindingExpression(ToolTipProperty).UpdateTarget();
         private void UpdateWidth(FrameworkElement elem) => elem.GetBindingExpression(WidthProperty).UpdateTarget();
         private void UpdateHeight(FrameworkElement elem) => elem.GetBindingExpression(HeightProperty).UpdateTarget();
         private void UpdateColWidth(FrameworkContentElement elem) => elem.GetBindingExpression(ColumnDefinition.WidthProperty).UpdateTarget();
         private void UpdateRowHeight(FrameworkContentElement elem) => elem.GetBindingExpression(RowDefinition.HeightProperty).UpdateTarget();
+
+        private void CareerIcon_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if(Navigation.Pages[NavPage.GameView] is GameListView gameListView)
+            {
+                // Reset the filter on the game list page
+                gameListView.FilterDisplay.ResetFilter();
+
+                // Set the CAREER filter on the game list page to be only the clicked career
+                gameListView.FilterDisplay.Filter.Career.RemoveAll(c => c != Career);
+                gameListView.FilterDisplay.RefreshDisplay();
+
+                // Open the game list page
+                Navigation.NavigateTo(NavPage.GameView);
+            }
+        }
     }
 }

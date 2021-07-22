@@ -140,5 +140,14 @@ namespace Vermintide_Analyzer.Controls
                 items.SelectedItems.Add(item);
             }
         }
+
+        public void SyncSelection(IEnumerable<string> newSelection)
+        {
+            items.SelectedItems.Clear();
+            foreach(var item in newSelection)
+            {
+                items.SelectedItems.Add(item);
+            }
+        }
     }
 }

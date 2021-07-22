@@ -86,7 +86,7 @@ namespace Vermintide_Analyzer.Controls
             MissionDropdown.ItemSource = missionGroupView;
         }
 
-        private void ResetFilter()
+        public void ResetFilter()
         {
             DeathwishDropdown.SelectedItem = "Either";
             EmpoweredDropdown.SelectedItem = "Either";
@@ -98,7 +98,28 @@ namespace Vermintide_Analyzer.Controls
             OnslaughtDropdown.ResetSelection();
         }
 
-        private void RaiseFilterChanged() => FilterChanged?.Invoke();
+        private void RefreshBindingLists()
+        {
+            CareerDropdown.SyncSelection(Filter.Career.Select(c => c.ForDisplay()).ToList());
+            DifficultyDropdown.SyncSelection(Filter.Difficulty.Select(d => d.ForDisplay()).ToList());
+            MissionDropdown.SyncSelection(Filter.Mission.Select(m => m.ForDisplay()).ToList());
+            OnslaughtDropdown.SyncSelection(Filter.Onslaught.Select(o => o.ForDisplay()).ToList());
+        }
+
+        public void RefreshDisplay()
+        {
+            RefreshBindingLists();
+
+            GameVersionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            CareerDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            DifficultyDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            MissionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            DeathwishDropdown.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+            OnslaughtDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            EmpoweredDropdown.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+        }
+
+        public void RaiseFilterChanged() => FilterChanged?.Invoke();
 
         private void MultiSelectComboBox_SelectionChanged(MultiSelectComboBox source, List<string> newSelection)
         {

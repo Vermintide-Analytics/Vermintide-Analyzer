@@ -48,6 +48,8 @@ namespace Vermintide_Analyzer
         public GearedValues<ScatterPoint> OtherStaggerPoints { get; set; } = new GearedValues<ScatterPoint>();
 
         public GearedValues<ScatterPoint> DamageTakenPoints { get; set; } = new GearedValues<ScatterPoint>();
+        public GearedValues<ScatterPoint> SpecialDamageTakenPoints { get; set; } = new GearedValues<ScatterPoint>();
+        public GearedValues<ScatterPoint> MonsterDamageTakenPoints { get; set; } = new GearedValues<ScatterPoint>();
         public GearedValues<ScatterPoint> FriendlyFireTakenPoints { get; set; } = new GearedValues<ScatterPoint>();
 
         public Func<double, string> TimeFormatter { get; set; } = (time) => (time / 60).ToString();
@@ -154,7 +156,9 @@ namespace Vermintide_Analyzer
             PushStaggerPoints.AddRange(AllStaggerPoints.Where(p => p.Item1.Source == STAGGER_SOURCE.Push).Select(p => p.Item2));
             OtherStaggerPoints.AddRange(AllStaggerPoints.Where(p => p.Item1.Source == STAGGER_SOURCE.Other).Select(p => p.Item2));
 
-            DamageTakenPoints.AddRange(AllDamageTakenPoints.Where(p => !p.Item1.Source.IsFriendlyFire()).Select(p => p.Item2));
+            DamageTakenPoints.AddRange(AllDamageTakenPoints.Where(p => p.Item1.Source == DAMAGE_TAKEN_SOURCE.Enemy).Select(p => p.Item2));
+            SpecialDamageTakenPoints.AddRange(AllDamageTakenPoints.Where(p => p.Item1.Source == DAMAGE_TAKEN_SOURCE.Special).Select(p => p.Item2));
+            MonsterDamageTakenPoints.AddRange(AllDamageTakenPoints.Where(p => p.Item1.Source == DAMAGE_TAKEN_SOURCE.Monster).Select(p => p.Item2));
             FriendlyFireTakenPoints.AddRange(AllDamageTakenPoints.Where(p => p.Item1.Source.IsFriendlyFire()).Select(p => p.Item2));
 
             var allHealthEvents = Game.Events.Where(e => e.Type == EventType.Current_Health).Cast<Current_Health>().ToList();

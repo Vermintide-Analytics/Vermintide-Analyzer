@@ -314,7 +314,7 @@
                     <lvc:CartesianChart.Series>
                         <lvcbase:SeriesCollection>
                             <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding PlainDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Monsters" Fill="#C5B300" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Monsters" Fill="{StaticResource DataMonster}" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                             <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                         </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>
@@ -400,7 +400,9 @@
                     </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.Series>
                         <lvcbase:SeriesCollection>
-                            <geared:GScatterSeries Title="Damage Taken" Fill="White" Values="{Binding DamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding DamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Specials" Fill="{StaticResource DataSpecial}" Values="{Binding SpecialDamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            <geared:GScatterSeries Title="Monsters" Fill="{StaticResource DataMonster}" Values="{Binding MonsterDamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                             <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding FriendlyFireTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
                         </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>

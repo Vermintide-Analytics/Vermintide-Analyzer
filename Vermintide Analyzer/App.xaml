@@ -28,8 +28,8 @@
             <SolidColorBrush x:Key="NeonOrange" Color="#FFA400" />
             
             <SolidColorBrush x:Key="DataEnemy" Color="White" />
-            <SolidColorBrush x:Key="DataMonster" Color="#0099F9" />
-            <SolidColorBrush x:Key="DataSpecial" Color="Pink" />
+            <SolidColorBrush x:Key="DataMonster" Color="#C5B300" />
+            <SolidColorBrush x:Key="DataSpecial" Color="Green" />
 
             <SolidColorBrush x:Key="DataWeapon1" Color="Green" />
             <SolidColorBrush x:Key="DataWeapon2" Color="SaddleBrown" />

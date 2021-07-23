@@ -96,15 +96,15 @@ namespace VA.LogReader
 
 	public enum CAMPAIGN : byte
 	{
-		Misc = 0,
-		Helmgart = 1,
-		Drachenfels = 2,
-		Bogenhafen = 3,
-		Ubersreik = 4,
-		Winds_of_Magic = 5,
-		Chaos_Wastes = 6,
+		Unknown = 0,
 
-		Unknown = 15
+		Misc = 1,
+		Helmgart = 2,
+		Drachenfels = 3,
+		Bogenhafen = 4,
+		Ubersreik = 5,
+		Winds_of_Magic = 6,
+		Chaos_Wastes = 7
 	}
 
 	// All missions in a single enum

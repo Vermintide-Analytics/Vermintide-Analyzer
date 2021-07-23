@@ -41,6 +41,9 @@ namespace VA.LogReader
                 case EventType.Enemy_Staggered:
                     result = Enemy_Staggered.Create(payload);
                     break;
+                case EventType.Temp_HP_Gained:
+                    result = Temp_HP_Gained.Create(payload);
+                    break;
                 case EventType.Enemy_Killed:
                     result = Enemy_Killed.Create(payload);
                     break;
@@ -86,7 +89,8 @@ namespace VA.LogReader
         Enemy_Staggered = 7,
         Enemy_Killed = 8,
         Damage_Taken = 9,
+        Temp_HP_Gained = 10,
         
-        // 10 through 64 UNUSED
+        // 11 through 63 UNUSED
     }
 }

@@ -130,6 +130,13 @@ namespace VA.LogReader
         public double FriendlyFireTakenPerMin { get; private set; } = double.NaN;
         #endregion
 
+        #region Temp HP Generated
+        public double TotalUncappedTempHPGained { get; private set; } = double.NaN;
+        public double UncappedTempHPGainedPerMin { get; private set; } = double.NaN;
+        public double TotalCappedTempHPGained { get; private set; } = double.NaN;
+        public double CappedTempHPGainedPerMin { get; private set; } = double.NaN;
+        #endregion
+
         #region Player State
         public int TimesDowned { get; private set; } = 0;
         public int TimesDied { get; private set; } = 0;
@@ -196,6 +203,12 @@ namespace VA.LogReader
             DamageTakenPerMin = TotalDamageTaken / DurationMinutes;
             FriendlyFireTaken = damageTakenEvents.Where(e => e.Source.IsFriendlyFire()).Sum(e => e.Damage);
             FriendlyFireTakenPerMin = FriendlyFireTaken / DurationMinutes;
+
+            var tempHPGainedEvents = Events.Where(e => e is Temp_HP_Gained).Cast<Temp_HP_Gained>();
+            TotalUncappedTempHPGained = tempHPGainedEvents.Sum(e => e.UncappedHeal);
+            UncappedTempHPGainedPerMin = TotalUncappedTempHPGained / DurationMinutes;
+            TotalCappedTempHPGained = tempHPGainedEvents.Sum(e => e.CappedHeal);
+            CappedTempHPGainedPerMin = TotalCappedTempHPGained / DurationMinutes;
 
             CalculatePlayerStateTimes();
         }
@@ -404,7 +417,7 @@ namespace VA.LogReader
             Career = evt.Career;
             Campaign = evt.Campaign;
             var shift = Campaign.MissionEnumShift();
-            long adjustedMissionVal = ((evt.Mission + 1) << shift);
+            long adjustedMissionVal = evt.Mission << shift;
 
             if(Enum.IsDefined(typeof(MISSION), adjustedMissionVal))
             {

@@ -30,6 +30,7 @@ namespace LogGenerator
         {
             { new Tuple<float, Action<FS>>(85, WriteNonCritDamageDealt) },
             { new Tuple<float, Action<FS>>(15, WriteCritDamageDealt) },
+            { new Tuple<float, Action<FS>>(35, WriteTempHPGained) },
             { new Tuple<float, Action<FS>>(5, WriteDamageTaken) },
             { new Tuple<float, Action<FS>>(40, WriteEnemyKilled) },
             //{ new Tuple<float, Action<FS>>(60, WriteEnemyStaggered) },
@@ -170,6 +171,19 @@ namespace LogGenerator
 
         static void WriteNonCritDamageDealt(FS s) => WriteDamageDealt(s, false);
         static void WriteCritDamageDealt(FS s) => WriteDamageDealt(s, true);
+
+        static void WriteTempHPGained(FS s)
+        {
+            long data = Event(EventType.Temp_HP_Gained);
+
+            int uncapped_heal = rand.Next(0, 100);
+            data += (uncapped_heal << Bitshift.UNCAPPED_HEAL_INT) & Bitmask.UNCAPPED_HEAL_INT;
+            data += (rand.Next() << Bitshift.UNCAPPED_HEAL_FRACTION) & Bitmask.UNCAPPED_HEAL_FRACTION;
+            data += (rand.Next(0, uncapped_heal+1) << Bitshift.CAPPED_HEAL_INT) & Bitmask.CAPPED_HEAL_INT;
+            data += (rand.Next() << Bitshift.CAPPED_HEAL_FRACTION) & Bitmask.CAPPED_HEAL_FRACTION;
+
+            WriteLog(s, data);
+        }
 
         static void WriteDamageTaken(FS s)
         {

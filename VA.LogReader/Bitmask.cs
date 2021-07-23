@@ -22,6 +22,11 @@ namespace VA.LogReader
         public const uint PERMANENT_HEALTH      = 0b_00_0000_1111_1111_1100_0000_0000;
         public const uint TEMPORARY_HEALTH      = 0b_00_0000_0000_0000_0011_1111_1111;
 
+        public const uint UNCAPPED_HEAL_INT     = 0b_00_1111_1111_1100_0000_0000_0000;
+        public const uint UNCAPPED_HEAL_FRACTION= 0b_00_0000_0000_0011_0000_0000_0000;
+        public const uint CAPPED_HEAL_INT       = 0b_00_0000_0000_0000_1111_1111_1100;
+        public const uint CAPPED_HEAL_FRACTION  = 0b_00_0000_0000_0000_0000_0000_0011;
+
         public const uint CRIT                  = 0b_00_0001_0000_0000_0000_0000_0000;
         public const uint HEADSHOT              = 0b_00_0000_1000_0000_0000_0000_0000;
         public const uint TARGET                = 0b_00_0000_0110_0000_0000_0000_0000;
@@ -59,6 +64,11 @@ namespace VA.LogReader
 
         public const int PERMANENT_HEALTH       = 10;
         public const int TEMPORARY_HEALTH       = 0;
+
+        public const int UNCAPPED_HEAL_INT      = 14;
+        public const int UNCAPPED_HEAL_FRACTION = 12;
+        public const int CAPPED_HEAL_INT        = 2;
+        public const int CAPPED_HEAL_FRACTION   = 0;
 
         public const int CRIT                   = 20;
         public const int HEADSHOT               = 19;

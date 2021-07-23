@@ -77,6 +77,20 @@ namespace VA.LogReader
         public static Event Create(uint payload) => new Damage_Dealt(payload);
     }
 
+    public class Temp_HP_Gained : Event
+    {
+        public float UncappedHeal { get; private set; }
+        public float CappedHeal { get; private set; }
+
+        private Temp_HP_Gained(uint payload)
+        {
+            UncappedHeal = ((payload & Bitmask.UNCAPPED_HEAL_INT) >> Bitshift.UNCAPPED_HEAL_INT) + ((payload & Bitmask.UNCAPPED_HEAL_FRACTION) >> Bitshift.UNCAPPED_HEAL_FRACTION) / 4.0f;
+            CappedHeal = ((payload & Bitmask.CAPPED_HEAL_INT) >> Bitshift.CAPPED_HEAL_INT) + ((payload & Bitmask.CAPPED_HEAL_FRACTION) >> Bitshift.CAPPED_HEAL_FRACTION) / 4.0f;
+        }
+
+        public static Event Create(uint payload) => new Temp_HP_Gained(payload);
+    }
+
     public class Damage_Taken : Event
     {
         public DAMAGE_TAKEN_SOURCE Source { get; private set; }

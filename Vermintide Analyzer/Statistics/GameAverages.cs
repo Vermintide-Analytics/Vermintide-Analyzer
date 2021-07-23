@@ -44,7 +44,13 @@ namespace Vermintide_Analyzer.Statistics
 
         [AverageFromGame(nameof(Game.DamageTakenPerMin))]
         public double DamageTakenPerMin { get; private set; } = 0;
-        
+
+        [AverageFromGame(nameof(Game.UncappedTempHPGainedPerMin))]
+        public double UncappedTempHPGainedPerMin { get; private set; } = 0;
+
+        [AverageFromGame(nameof(Game.CappedTempHPGainedPerMin))]
+        public double CappedTempHPGainedPerMin { get; private set; } = 0;
+
         [AverageFromGame(nameof(Game.TimesDowned))]
         public double TimesDowned { get; private set; } = 0;
         [AverageFromGame(nameof(Game.TimesDied))]

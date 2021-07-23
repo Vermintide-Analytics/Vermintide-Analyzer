@@ -44,6 +44,8 @@ namespace Vermintide_Analyzer
         public int BetterSpecialsKilledColumn { get; set; } = 1;
         //public int BetterStaggerDealtColumn { get; set; } = 1;
         public int BetterDamageTakenColumn { get; set; } = 1;
+        public int BetterUncappedTempHPColumn { get; set; } = 1;
+        public int BetterCappedTempHPColumn { get; set; } = 1;
         public int BetterTimesDownedColumn { get; set; } = 1;
         public int BetterTimesDiedColumn { get; set; } = 1;
         #endregion
@@ -69,6 +71,8 @@ namespace Vermintide_Analyzer
             BetterSpecialsKilledColumn = GetHighlightColumn(nameof(GameAverages.SpecialsKilledPerMin));
             //BetterStaggerDealtColumn = GetHighlightColumn(nameof(GameAverages.StaggerDealtPerMin));
             BetterDamageTakenColumn = GetHighlightColumn(nameof(GameAverages.DamageDealtPerMin), true);
+            BetterUncappedTempHPColumn = GetHighlightColumn(nameof(GameAverages.UncappedTempHPGainedPerMin));
+            BetterCappedTempHPColumn = GetHighlightColumn(nameof(GameAverages.CappedTempHPGainedPerMin));
             BetterTimesDownedColumn = GetHighlightColumn(nameof(GameAverages.TimesDowned), true);
             BetterTimesDiedColumn = GetHighlightColumn(nameof(GameAverages.TimesDied), true);
 

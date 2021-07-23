@@ -84,6 +84,11 @@ namespace Vermintide_Analyzer
         public string FriendlyFireTaken => DispDouble(Game.FriendlyFireTaken);
         public string FriendlyFireTakenPerMin => DispDouble(Game.FriendlyFireTakenPerMin);
 
+        public string UncappedTempHPGained => DispDouble(Game.TotalUncappedTempHPGained);
+        public string UncappedTempHPGainedPerMin => DispDouble(Game.UncappedTempHPGainedPerMin);
+        public string CappedTempHPGained => DispDouble(Game.TotalCappedTempHPGained);
+        public string CappedTempHPGainedPerMin => DispDouble(Game.CappedTempHPGainedPerMin);
+
         public string TimesDowned => Game.TimesDowned.ToString();
         public string TimesDied => Game.TimesDied.ToString();
         public string TimeDownedPercent => $"{DispDouble(Game.TimeDownedPercent)}%";

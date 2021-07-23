@@ -109,6 +109,8 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -213,7 +215,7 @@
                             </Border>
 
                             <Border Grid.Row="9" Grid.Column="0" >
-                                <TextBlock Text="Damage Taken" FontWeight="Bold" TextAlignment="Left" />
+                                <TextBlock Text="Damage Taken" FontWeight="Bold" />
                             </Border>
                             <Border Grid.Row="9" Grid.Column="1" >
                                 <TextBlock Text="{Binding DamageTaken}" />
@@ -232,12 +234,33 @@
                                 <TextBlock Text="{Binding FriendlyFireTakenPerMin}" />
                             </Border>
 
+                            <Border Grid.Row="11" Grid.Column="0" >
+                                <TextBlock Text="THP (uncapped)" FontWeight="Bold" ToolTip="Temporary HP gained, INCLUDING what is wasted beyond your maximum health." />
+                            </Border>
+                            <Border Grid.Row="11" Grid.Column="1" >
+                                <TextBlock Text="{Binding UncappedTempHPGained}" />
+                            </Border>
+                            <Border Grid.Row="11" Grid.Column="2" >
+                                <TextBlock Text="{Binding UncappedTempHPGainedPerMin}" />
+                            </Border>
+
+                            <Border Grid.Row="12" Grid.Column="0" >
+                                <TextBlock Text="THP (capped)" FontWeight="Bold" ToolTip="Temporary HP gained, EXCLUDING what is wasted beyond your maximum health." />
+                            </Border>
+                            <Border Grid.Row="12" Grid.Column="1" >
+                                <TextBlock Text="{Binding CappedTempHPGained}" />
+                            </Border>
+                            <Border Grid.Row="12" Grid.Column="2" >
+                                <TextBlock Text="{Binding CappedTempHPGainedPerMin}" />
+                            </Border>
+
                             <!-- Separators -->
                             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
+                            <Border Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                         </Grid>
                         <StackPanel Margin="5" DockPanel.Dock="Left">
                             <Grid Margin="5" Background="{StaticResource GreenBackground}">

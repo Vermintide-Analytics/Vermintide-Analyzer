@@ -62,6 +62,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Rectangle Grid.Row="0" Grid.Column="{Binding BetterWinLossRatioColumn}" Fill="{StaticResource GreenBackground}" />
             <Rectangle Grid.Row="2" Grid.Column="{Binding BetterTimeAlivePercentColumn}" Fill="{StaticResource GreenBackground}" />
@@ -76,8 +78,10 @@
             <Rectangle Grid.Row="11" Grid.Column="{Binding BetterSpecialsKilledColumn}" Fill="{StaticResource GreenBackground}" />
             <!--<Rectangle Grid.Row="12" Grid.Column="{Binding BetterStaggerDealtColumn}" Fill="{StaticResource GreenBackground}" />-->
             <Rectangle Grid.Row="12" Grid.Column="{Binding BetterDamageTakenColumn}" Fill="{StaticResource GreenBackground}" />
-            <Rectangle Grid.Row="13" Grid.Column="{Binding BetterTimesDownedColumn}" Fill="{StaticResource GreenBackground}" />
-            <Rectangle Grid.Row="14" Grid.Column="{Binding BetterTimesDiedColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="13" Grid.Column="{Binding BetterUncappedTempHPColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="14" Grid.Column="{Binding BetterCappedTempHPColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="15" Grid.Column="{Binding BetterTimesDownedColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="16" Grid.Column="{Binding BetterTimesDiedColumn}" Fill="{StaticResource GreenBackground}" />
             
             <Border Grid.Column="1" Grid.Row="0">
                 <TextBlock Text="Win/Loss Ratio" HorizontalAlignment="Center" />
@@ -122,9 +126,15 @@
                 <TextBlock Text="Damage Taken per Minute" HorizontalAlignment="Center" />
             </Border>
             <Border Grid.Column="1" Grid.Row="13">
-                <TextBlock Text="Times Downed" HorizontalAlignment="Center" />
+                <TextBlock Text="Uncapped THP per Minute" HorizontalAlignment="Center" />
             </Border>
             <Border Grid.Column="1" Grid.Row="14">
+                <TextBlock Text="Capped THP per Minute" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="15">
+                <TextBlock Text="Times Downed" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="16">
                 <TextBlock Text="Times Killed" HorizontalAlignment="Center" />
             </Border>
 
@@ -172,12 +182,19 @@
                 <TextBlock Text="{Binding Averages1.DamageTakenPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
             </Border>
             <Border Grid.Column="0" Grid.Row="13">
-                <TextBlock Text="{Binding Averages1.TimesDowned, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Averages1.UncappedTempHPGainedPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
             </Border>
             <Border Grid.Column="0" Grid.Row="14">
+                <TextBlock Text="{Binding Averages1.CappedTempHPGainedPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="15">
+                <TextBlock Text="{Binding Averages1.TimesDowned, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="16">
                 <TextBlock Text="{Binding Averages1.TimesDied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
             </Border>
 
+            
             <Border Grid.Column="2" Grid.Row="0">
                 <TextBlock Text="{Binding Averages2.WinLossRatio, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
             </Border>
@@ -221,9 +238,15 @@
                 <TextBlock Text="{Binding Averages2.DamageTakenPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
             </Border>
             <Border Grid.Column="2" Grid.Row="13">
-                <TextBlock Text="{Binding Averages2.TimesDowned, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+                <TextBlock Text="{Binding Averages2.UncappedTempHPGainedPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
             </Border>
             <Border Grid.Column="2" Grid.Row="14">
+                <TextBlock Text="{Binding Averages2.CappedTempHPGainedPerMin, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="15">
+                <TextBlock Text="{Binding Averages2.TimesDowned, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="16">
                 <TextBlock Text="{Binding Averages2.TimesDied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
             </Border>
         </Grid>

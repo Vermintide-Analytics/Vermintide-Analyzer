@@ -14,6 +14,7 @@ namespace VA.LogReader
 		public const int UBERSREIK_MISSION_SHIFT = 16;
 		public const int WOM_MISSION_SHIFT = 20;
 		public const int CHAOS_WASTES_MISSION_SHIFT = 24;
+		public const int WEAVES_MISSION_SHIFT = 28;
 	}
 
 
@@ -104,7 +105,8 @@ namespace VA.LogReader
 		Bogenhafen = 4,
 		Ubersreik = 5,
 		Winds_of_Magic = 6,
-		Chaos_Wastes = 7
+		Chaos_Wastes = 7,
+		Weave = 8
 	}
 
 	// All missions in a single enum
@@ -185,7 +187,25 @@ namespace VA.LogReader
 		[Description("A portion of damage inflicted on a player is also inflicted on other players in close proximity.")]
 		Baleful_Empathy = 12 << Enums.CHAOS_WASTES_MISSION_SHIFT,
 		[Description("Players suffer damage over time. Drinking potions restores health lost to Unquenchable Thirst.")]
-		Unquenchable_Thirst = 13 << Enums.CHAOS_WASTES_MISSION_SHIFT
+		Unquenchable_Thirst = 13 << Enums.CHAOS_WASTES_MISSION_SHIFT,
+
+		//Weaves
+		[Description("Primal totems can be found in the Weave, empowering enemies. Attack the totems to destroy them.")]
+		Amber = 1 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("Slaying an enemy releases a vengeful spirit to stalk its killer for a time. Spirits deal heavy damage, so keep them at a distance.")]
+		Amethyst = 2 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("All attacks inflict burning on the victim - whether delivered by heroes or enemies.")]
+		Bright = 3 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("Watch out for the circles for warning of incoming lightning strikes. Lightning damages both heroes and enemies.")]
+		Celestial = 4 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("Armoured enemies are tougher, but killing one grants a metalstorm aura that damages foes.")]
+		Gold = 5 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("An enemy's identity is concealed until it gets close. While concealed, enemies take reduced damage.")]
+		Grey = 6 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("Brambles form from the life Essence of slain enemies. Moving into the bramble inflicts damage and reduces your movement speed.")]
+		Jade = 7 << Enums.WEAVES_MISSION_SHIFT,
+		[Description("Hysh drives impurity from the soul, reducing maximum health over time but increasing attack speed through renewed zeal. Standing next to beacons reverses the purging's effects.")]
+		Light = 8 << Enums.WEAVES_MISSION_SHIFT
 	}
 
 	public enum HITZONE : byte

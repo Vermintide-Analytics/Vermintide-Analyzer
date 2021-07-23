@@ -94,6 +94,7 @@ namespace VA.LogReader
                 case CAMPAIGN.Ubersreik: return Enums.UBERSREIK_MISSION_SHIFT;
                 case CAMPAIGN.Winds_of_Magic: return Enums.WOM_MISSION_SHIFT;
                 case CAMPAIGN.Chaos_Wastes: return Enums.CHAOS_WASTES_MISSION_SHIFT;
+                case CAMPAIGN.Weave: return Enums.WEAVES_MISSION_SHIFT;
             }
             return 0;
         }
@@ -103,7 +104,11 @@ namespace VA.LogReader
         public static CAMPAIGN Campaign(this MISSION m)
         {
             long l = (long)m;
-            if(l >> Enums.CHAOS_WASTES_MISSION_SHIFT > 0)
+            if (l >> Enums.WEAVES_MISSION_SHIFT > 0)
+            {
+                return CAMPAIGN.Weave;
+            }
+            if (l >> Enums.CHAOS_WASTES_MISSION_SHIFT > 0)
             {
                 return CAMPAIGN.Chaos_Wastes;
             }

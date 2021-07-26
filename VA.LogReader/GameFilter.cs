@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace VA.LogReader
@@ -112,40 +113,44 @@ namespace VA.LogReader
         private bool MatchEmpowered(GameHeader gh) =>
             !Empowered.HasValue || gh.Empowered == Empowered.Value;
 
+        private const string ALL_GAMES = "ALL GAMES";
+        private const string ENABLED = "enabled";
+        private const string DISABLED = "disabled";
+
         public override string ToString()
         {
             List<string> output = new List<string>();
-            var version = GameVersionString;
+            var version = GameVersionToString();
             if (version != null)
             {
                 output.Add(version);
             }
-            var diff = DifficultyString;
+            var diff = DifficultyToString();
             if (diff != null)
             {
                 output.Add(diff);
             }
-            var career = CareerString;
+            var career = CareerToString();
             if (career != null)
             {
                 output.Add(career);
             }
-            var mission = MissionString;
+            var mission = MissionToString();
             if (mission != null)
             {
                 output.Add(mission);
             }
-            var dw = DeathwishString;
+            var dw = DeathwishToString();
             if (dw != null)
             {
                 output.Add(dw);
             }
-            var ons = OnslaughtString;
+            var ons = OnslaughtToString();
             if (ons != null)
             {
                 output.Add(ons);
             }
-            var emp = EmpoweredString;
+            var emp = EmpoweredToString();
             if (emp != null)
             {
                 output.Add(emp);
@@ -153,84 +158,128 @@ namespace VA.LogReader
 
             if(!output.Any())
             {
-                output.Add("ALL GAMES");
+                output.Add(ALL_GAMES);
             }
 
             return string.Join(" AND ", output);
         }
 
-        private string GameVersionString
+        public static GameFilter FromString(string input)
         {
-            get
+            return new GameFilter()
             {
-                if (IsFilterSetAll(GameVersion, GameRepository.Instance.GameVersions)) return null;
-                if (!GameVersion.Any()) return "NO GAME VERSION";
-
-                return $"Game Version in ({GetFilterSetString(GameVersion)})";
-            }
+                GameVersion = ReadGameVersion(input),
+                Difficulty = ReadDifficulty(input),
+                Career = ReadCareer(input),
+                Mission = ReadMission(input),
+                Deathwish = ReadDeathwish(input),
+                Onslaught = ReadOnslaught(input),
+                Empowered = ReadEmpowered(input)
+            };
         }
 
-        private string DifficultyString
+        private string GameVersionToString()
         {
-            get
-            {
-                if (IsFilterSetAll(Difficulty)) return null;
-                if (!Difficulty.Any()) return "NO DIFFICULTY";
+            if (IsFilterSetAll(GameVersion, GameRepository.Instance.GameVersions)) return null;
+            if (!GameVersion.Any()) return "NO GAME VERSION";
 
-                return $"Difficulty in ({GetFilterSetString(Difficulty)})";
-            }
+            return $"Game Version in ({GetFilterSetString(GameVersion)})";
         }
 
-        private string CareerString
-        {
-            get
-            {
-                if (IsFilterSetAll(Career)) return null;
-                if (!Career.Any()) return "NO CAREER";
+        private string DifficultyToString() => EnumListToString(nameof(Difficulty), Difficulty);
+        private string CareerToString() => EnumListToString(nameof(Career), Career);
+        private string MissionToString() => EnumListToString(nameof(Mission), Mission);
+        private string DeathwishToString() => NullableBoolToString(nameof(Deathwish), Deathwish);
+        private string OnslaughtToString() => EnumListToString(nameof(Onslaught), Onslaught);
+        private string EmpoweredToString() => NullableBoolToString(nameof(Empowered), Empowered);
 
-                return $"Career in ({GetFilterSetString(Career)})";
-            }
-        }
-        private string MissionString
+        private string EnumListToString<T>(string propertyName, List<T> propertyValue) where T : Enum
         {
-            get
-            {
-                if (IsFilterSetAll(Mission)) return null;
-                if (!Mission.Any()) return "NO MISSION";
+            if (IsFilterSetAll(propertyValue)) return null;
+            if (!propertyValue.Any()) return $"NO {propertyName.ToUpper()}";
 
-                return $"Mission in ({GetFilterSetString(Mission)})";
-            }
+            return $"{propertyName} in ({GetFilterSetString(propertyValue)})";
         }
 
-        private string DeathwishString
+        private string NullableBoolToString(string propertyName, bool? propertyValue)
         {
-            get
-            {
-                if (!Deathwish.HasValue) return null;
-                if (Deathwish.Value) return "Deathwish enabled";
-                return $"Deathwish disabled";
-            }
+            if (!propertyValue.HasValue) return null;
+            if (propertyValue.Value) return $"{propertyName} {ENABLED}";
+            return $"{propertyName} {DISABLED}";
         }
 
-        private string OnslaughtString
+        private static List<string> ReadGameVersion(string filterString)
         {
-            get
+            if (filterString.Contains($"NO GAME VERSION"))
             {
-                if (IsFilterSetAll(Onslaught)) return null;
-                if (!Onslaught.Any()) return "No Onslaught";
-
-                return $"Onslaught in ({GetFilterSetString(Onslaught)})";
+                return new List<string>();
             }
+            var match = Regex.Match(filterString, $"Game Version in \\((.*)\\)");
+            if (match == null || match.Groups.Count < 2 || string.IsNullOrEmpty(match.Groups[1].Value))
+            {
+                return GameRepository.Instance.GameVersions.ToList();
+            }
+
+            var result = new List<string>();
+            var matchString = match.Groups[1].Value;
+            var valueStrings = matchString.Split(',');
+            foreach (var val in valueStrings)
+            {
+                if (!string.IsNullOrEmpty(val))
+                {
+                    if(GameRepository.Instance.GameVersions.Contains(val))
+                    {
+                        result.Add(val);
+                    }
+                }
+            }
+            return result;
+        }
+        private static List<DIFFICULTY> ReadDifficulty(string filterString) => ReadEnumList<DIFFICULTY>(filterString, nameof(Difficulty));
+        private static List<CAREER> ReadCareer(string filterString) => ReadEnumList<CAREER>(filterString, nameof(Career));
+        private static List<MISSION> ReadMission(string filterString) => ReadEnumList<MISSION>(filterString, nameof(Mission));
+        private static bool? ReadDeathwish(string filterString) => ReadNullableBool(filterString, nameof(Deathwish));
+        private static List<ONSLAUGHT_TYPE> ReadOnslaught(string filterString) => ReadEnumList<ONSLAUGHT_TYPE>(filterString, nameof(Onslaught));
+        private static bool? ReadEmpowered(string filterString) => ReadNullableBool(filterString, nameof(Empowered));
+
+        private static List<T> ReadEnumList<T>(string filterString, string propertyName) where T : Enum
+        {
+            if(filterString.Contains($"NO {propertyName.ToUpper()}"))
+            {
+                return new List<T>();
+            }
+            var match = Regex.Match(filterString, $"{propertyName} in \\((.*)\\)");
+            if(match == null || match.Groups.Count < 2 || string.IsNullOrEmpty(match.Groups[1].Value))
+            {
+                return Enum.GetValues(typeof(T)).Cast<T>().ToList();
+            }
+
+            var result = new List<T>();
+            var matchString = match.Groups[1].Value;
+            var valueStrings = matchString.Split(',');
+            foreach(var val in valueStrings)
+            {
+                var parsed = Enum.Parse(typeof(T), val);
+                if (parsed != null && Enum.IsDefined(typeof(T), parsed))
+                {
+                    result.Add((T)parsed);
+                }
+            }
+            return result;
         }
 
-        private string EmpoweredString
+        private static bool? ReadNullableBool(string filterString, string propertyName)
         {
-            get
+            if (filterString.Contains($"{propertyName} {ENABLED}"))
             {
-                if (!Empowered.HasValue) return null;
-                if (Empowered.Value) return "Empowered enabled";
-                return $"Empowered disabled";
+                return true;
             }
+            if (filterString.Contains($"{propertyName} {DISABLED}"))
+            {
+                return false;
+            }
+
+            return null;
         }
 
         private bool IsFilterSetAll<T>(IEnumerable<T> selectorVal, IEnumerable<T> allValues)
@@ -265,6 +314,16 @@ namespace VA.LogReader
                 set += $"{flag},\u200B"; // \u200B is a space that doesn't take up any space. This is useful for helping text wrapping
             }
             return set.Trim(',', '\u200B');
+        }
+
+        public static IEnumerable<string> FilterOptions(Type enumType, params Enum[] exclusions)
+        {
+            var list = Enum.GetValues(enumType)
+                        .Cast<Enum>()
+                        .Where(val => !exclusions.Contains(val))
+                        .Select(val => val.ForDisplay());
+
+            return list;
         }
     }
 }

@@ -35,16 +35,6 @@ namespace Vermintide_Analyzer
                 "$1 $2"
             );
 
-        public static IEnumerable<string> FilterOptions(Type enumType, params Enum[] exclusions)
-        {
-            var list = Enum.GetValues(enumType)
-                        .Cast<Enum>()
-                        .Where(val => !exclusions.Contains(val))
-                        .Select(val => val.ForDisplay());
-
-            return list;
-        }
-
         public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject depObj) where T : DependencyObject
         {
             if (depObj == null)

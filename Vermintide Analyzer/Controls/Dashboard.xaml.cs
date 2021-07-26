@@ -41,9 +41,9 @@ namespace Vermintide_Analyzer.Controls
         }
 
         public IEnumerable<DIFFICULTY> DifficultyFilter => DifficultyStrings.Select(str => str.FromDisplay<DIFFICULTY>());
-        public List<string> DifficultyStrings { get; set; } = new List<string>(Util.FilterOptions(typeof(DIFFICULTY)));
+        public List<string> DifficultyStrings { get; set; } = new List<string>(GameFilter.FilterOptions(typeof(DIFFICULTY)));
 
-        public List<string> DifficultyFilterValues => Util.FilterOptions(typeof(DIFFICULTY)).ToList();
+        public List<string> DifficultyFilterValues => GameFilter.FilterOptions(typeof(DIFFICULTY)).ToList();
 
 
         public Dashboard()

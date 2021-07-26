@@ -58,10 +58,10 @@ namespace Vermintide_Analyzer.Controls
         public List<string> OnslaughtStrings { get; set; } = new List<string>();
 
         public List<string> GameVersionValues => GameRepository.Instance.GameVersions.ToList();
-        public List<string> CareerFilterValues => Util.FilterOptions(typeof(CAREER)).ToList();
-        public List<string> DifficultyFilterValues => Util.FilterOptions(typeof(DIFFICULTY)).ToList();
-        public List<string> MissionFilterValues => Util.FilterOptions(typeof(MISSION)).ToList();
-        public List<string> OnslaughtFilterValues => Util.FilterOptions(typeof(ONSLAUGHT_TYPE)).ToList();
+        public List<string> CareerFilterValues => GameFilter.FilterOptions(typeof(CAREER)).ToList();
+        public List<string> DifficultyFilterValues => GameFilter.FilterOptions(typeof(DIFFICULTY)).ToList();
+        public List<string> MissionFilterValues => GameFilter.FilterOptions(typeof(MISSION)).ToList();
+        public List<string> OnslaughtFilterValues => GameFilter.FilterOptions(typeof(ONSLAUGHT_TYPE)).ToList();
 
         public string[] YesNoEither { get; } = new string[3]
         {

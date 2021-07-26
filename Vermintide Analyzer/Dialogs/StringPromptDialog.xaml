@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vermintide_Analyzer.Dialogs"
         mc:Ignorable="d"
-        Width="450" Height="100"
+        Width="450" SizeToContent="Height"
         Background="{StaticResource ThemeDarker}"
         Title="">
     <Window.Resources>
@@ -22,7 +22,7 @@
     <StackPanel Margin="5">
         <StackPanel Orientation="Horizontal">
             <TextBlock x:Name="PromptLabel" Text="Enter your value here:" />
-            <TextBox x:Name="ResponseTextBox" MinWidth="300" MaxWidth="300" />
+            <TextBox x:Name="ResponseTextBox" MinWidth="300" MaxWidth="300" TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
             <Button Margin="3" Content="Ok" Click="OKButton_Click" />

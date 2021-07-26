@@ -57,6 +57,7 @@
             <converters:CampaignToDisplayString x:Key="CampaignToDisplayString" />
 
             <converters:BoolToVisible x:Key="BoolToVisible" />
+            <converters:BoolToCollapsed x:Key="BoolToCollapsed" />
             <converters:DifficultyToIcon x:Key="DifficultyToIcon" />
             <converters:WeaponToIcon x:Key="WeaponToIcon" />
             <converters:RoundResultToBrush x:Key="RoundResultToBrush" />

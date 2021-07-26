@@ -67,6 +67,7 @@
             <DoubleCollection x:Key="SeparatorStrokeDashArray">3</DoubleCollection>
             <system:Double x:Key="SeriesStrokeThickness">0</system:Double>
 
+
             <Style TargetType="TabControl">
                 <Setter Property="BorderThickness" Value="0" />
             </Style>
@@ -76,6 +77,17 @@
 
             <Style TargetType="RadioButton">
                 <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+            </Style>
+            
+            <Style TargetType="ToolTip">
+                <Style.Triggers>
+                    <Trigger Property="Content" Value="{x:Static system:String.Empty}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Trigger>
+                    <Trigger Property="Content" Value="{x:Null}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <Style TargetType="lvc:CartesianChart">

@@ -8,10 +8,10 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
         mc:Ignorable="d"
-        Title="Vermintide Analyzer" Height="1000" Width="1600" Background="{StaticResource ThemeDarker}">
+        Title="Vermintide Analyzer" MinHeight="605" MinWidth="1220" Height="1000" Width="1600" Background="{StaticResource ThemeDarker}">
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="250" Width="250" />
+            <ColumnDefinition MinWidth="200" Width="200" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <controls:NavMenu Grid.Column="0" />

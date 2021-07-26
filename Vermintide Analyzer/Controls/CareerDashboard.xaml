@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
              xmlns:log="clr-namespace:VA.LogReader;assembly=VA.LogReader"
              mc:Ignorable="d" 
-             Width="265"
-             Height="170"
+             MinWidth="132"
+             MinHeight="85"
              d:DesignHeight="100" d:DesignWidth="100" Name="control"
              BorderBrush="{StaticResource ThemeDark}" BorderThickness="2">
     <Grid>

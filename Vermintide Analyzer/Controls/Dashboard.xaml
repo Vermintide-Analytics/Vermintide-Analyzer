@@ -9,11 +9,11 @@
              d:DesignHeight="525" d:DesignWidth="400">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="1060" />
-            <ColumnDefinition MinWidth="200" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="850" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>

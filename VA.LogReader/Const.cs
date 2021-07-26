@@ -9,7 +9,8 @@ namespace VA.LogReader
     public class Const
     {
         public const string NEW_LOG_DIR = "%appdata%\\Fatshark\\Vermintide 2";
-        public const string PROGRAM_DATA_DIR = "%appdata%\\Vermintide Analyzer";
+        public const string APP_DATA_DIR = "%appdata%\\Vermintide Analyzer";
         public const string GAME_DIR = "Games";
+        public const string DATA_DIR = "Data";
     }
 }

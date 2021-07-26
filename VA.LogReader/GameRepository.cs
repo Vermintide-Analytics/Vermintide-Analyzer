@@ -25,9 +25,11 @@ namespace VA.LogReader
         #endregion
 
         private static readonly string NewGamesDir = Environment.ExpandEnvironmentVariables(Const.NEW_LOG_DIR);
-        private static readonly string AllGamesRootDir = Environment.ExpandEnvironmentVariables(Path.Combine(Const.PROGRAM_DATA_DIR, Const.GAME_DIR));
-        private static readonly string LocalGamesRootDir = Environment.ExpandEnvironmentVariables(Path.Combine(AllGamesRootDir, Schema.SCHEMA_VERSION));
+        private static readonly string AppDataDir = Environment.ExpandEnvironmentVariables(Const.APP_DATA_DIR);
+        private static readonly string AllGamesRootDir = Path.Combine(AppDataDir, Const.GAME_DIR);
+        private static readonly string LocalGamesRootDir = Path.Combine(AllGamesRootDir, Schema.SCHEMA_VERSION);
         private static readonly string InvalidGamesDir = Path.Combine(AllGamesRootDir, "Invalid");
+        private static readonly string DataDir = Path.Combine(AppDataDir, Const.DATA_DIR);
 
         public List<GameHeader> GameHeaders { get; private set; } = new List<GameHeader>();
         public List<GameHeader> NewGameHeaders { get; private set; } = new List<GameHeader>();
@@ -52,7 +54,11 @@ namespace VA.LogReader
                     }
                 }
             }
-            if(!Directory.Exists(Path.Combine(InvalidGamesDir)))
+            if(!Directory.Exists(InvalidGamesDir))
+            {
+                return false;
+            }
+            if(!Directory.Exists(DataDir))
             {
                 return false;
             }
@@ -70,6 +76,7 @@ namespace VA.LogReader
                 }
             }
             Directory.CreateDirectory(InvalidGamesDir);
+            Directory.CreateDirectory(DataDir);
         }
 
 
@@ -137,7 +144,7 @@ namespace VA.LogReader
         public void DeleteAllGames()
         {
             foreach (var path in Directory.GetFiles(
-                Environment.ExpandEnvironmentVariables(Path.Combine(Const.PROGRAM_DATA_DIR, Const.GAME_DIR)),
+                Environment.ExpandEnvironmentVariables(Path.Combine(Const.APP_DATA_DIR, Const.GAME_DIR)),
                 "*.VA",
                 SearchOption.AllDirectories))
             {

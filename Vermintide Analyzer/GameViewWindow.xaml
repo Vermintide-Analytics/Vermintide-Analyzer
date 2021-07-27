@@ -43,8 +43,31 @@
                     <controls:WeaponDataDisplay Grid.Row="0" Grid.Column="1" Weapon="{Binding DataContext.Game.StartingWeapon2, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
                     <DockPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" LastChildFill="False">
                         <StackPanel DockPanel.Dock="Right">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Game Version: " FontWeight="Bold" />
+                            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="Custom Notes: " FontWeight="Bold" TextDecorations="Underline" />
+                                <StackPanel HorizontalAlignment="Right" Cursor="Hand">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="White" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="False">
+                                                    <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <TextBlock x:Name="CustomNoteTextBlock" Text="{Binding DataContext.Game.CustomNotes}"
+                                           MaxWidth="300" TextTrimming="CharacterEllipsis" MouseUp="Make_Note_For_Game_Click"
+                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource BoolToVisible}}" />
+                                    <TextBlock x:Name="MakeNoteTextBlock" Text="(none)"
+                                           MaxWidth="300" MouseUp="Make_Note_For_Game_Click"
+                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource BoolToCollapsed}}" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="Game Version: " FontWeight="Bold" TextDecorations="Underline" />
                                 <TextBlock Text="{Binding DataContext.Game.GameVersion, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
                             </StackPanel>
                         </StackPanel>

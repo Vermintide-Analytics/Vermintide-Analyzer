@@ -22,6 +22,8 @@
                     <Border Height="70" BorderBrush="{StaticResource ThemeLight}" BorderThickness="1" MouseUp="Game_Clicked">
                         <Border.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="Make Note" Click="Make_Note_For_Selected_Game_Click" />
+                                <Separator />
                                 <MenuItem Header="Delete" Click="Delete_Selected_Game_Click" />
                             </ContextMenu>
                         </Border.ContextMenu>
@@ -41,6 +43,25 @@
                                 <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameStartDate}" />
                                 <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameStartTime}" />
                                 <Image Source="/Images/Misc/New.png" Width="50" Visibility="{Binding IsNew, Converter={StaticResource BoolToVisible}}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,5" DockPanel.Dock="Right">
+                                <TextBlock Text="ⓘ" FontSize="25" Cursor="Hand" MouseUp="Make_Note_For_Selected_Game_Click"
+                                           ToolTip="{Binding CustomNotes}"
+                                           ToolTipService.ShowDuration="60000"
+                                           Visibility="{Binding HasCustomNotes, Converter={StaticResource BoolToVisible}}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="White" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="False">
+                                                    <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </DockPanel>
                     </Border>

@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VA.LogReader;
 using Vermintide_Analyzer.Controls;
+using Vermintide_Analyzer.Dialogs;
 
 namespace Vermintide_Analyzer
 {
@@ -276,5 +277,38 @@ namespace Vermintide_Analyzer
 
 
         private string DispDouble(double f) => f.ToString("F2");
+
+        #region Event Handlers
+        private void Make_Note_For_Game_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new StringPromptDialog("Notes:", Game.HasCustomNotes ? Game.CustomNotes : "", "Notes for this game");
+            if (dialog.ShowDialog() == true)
+            {
+                if (string.IsNullOrWhiteSpace(dialog.ResponseText))
+                {
+                    GameRepository.Instance.GameNotes.Remove(Game.FilePath);
+                }
+                else if (GameRepository.Instance.GameNotes.ContainsKey(Game.FilePath))
+                {
+                    GameRepository.Instance.GameNotes[Game.FilePath] = dialog.ResponseText;
+                }
+                else
+                {
+                    GameRepository.Instance.GameNotes.Add(Game.FilePath, dialog.ResponseText);
+                }
+
+                // Update the game UI
+                CustomNoteTextBlock.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+                CustomNoteTextBlock.GetBindingExpression(VisibilityProperty).UpdateTarget();
+                MakeNoteTextBlock.GetBindingExpression(VisibilityProperty).UpdateTarget();
+
+                // Update the game list UI
+                (Navigation.Pages[NavPage.GameView] as GameListView)?.RefreshDisplay();
+
+                GameRepository.Instance.WriteGameNotesToDisk();
+            }
+            e.Handled = true;
+        }
+        #endregion
     }
 }

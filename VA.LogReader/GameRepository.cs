@@ -30,6 +30,7 @@ namespace VA.LogReader
         private static readonly string LocalGamesRootDir = Path.Combine(AllGamesRootDir, Schema.SCHEMA_VERSION);
         private static readonly string InvalidGamesDir = Path.Combine(AllGamesRootDir, "Invalid");
         private static readonly string DataDir = Path.Combine(AppDataDir, Const.DATA_DIR);
+        private static readonly string GameNotesFilePath = Path.Combine(DataDir, "Custom-Game-Notes.txt");
 
         public List<GameHeader> GameHeaders { get; private set; } = new List<GameHeader>();
         public List<GameHeader> NewGameHeaders { get; private set; } = new List<GameHeader>();
@@ -41,6 +42,8 @@ namespace VA.LogReader
             .Distinct();
 
         public List<InvalidGame> InvalidGames { get; private set; } = new List<InvalidGame>();
+
+        public Dictionary<string, string> GameNotes { get; private set; } = new Dictionary<string, string>();
 
         public bool CheckDirectories()
         {
@@ -141,22 +144,37 @@ namespace VA.LogReader
             return newGameHeaders;
         }
 
-        public void DeleteAllGames()
+        public void WriteGameNotesToDisk() => File.WriteAllLines(GameNotesFilePath, GameNotes.Select(kvp => $"{kvp.Key},{kvp.Value}"));
+
+        public void ReadGameNotesFromDisk()
         {
-            foreach (var path in Directory.GetFiles(
-                Environment.ExpandEnvironmentVariables(Path.Combine(Const.APP_DATA_DIR, Const.GAME_DIR)),
-                "*.VA",
-                SearchOption.AllDirectories))
+            GameNotes.Clear();
+
+            if(!File.Exists(GameNotesFilePath))
             {
-                new FileInfo(path).Delete();
+                return;
             }
 
-            GameHeaders.Clear();
-            NewGameHeaders.Clear();
+            foreach(var line in File.ReadAllLines(GameNotesFilePath))
+            {
+                var lineSegments = line.Split(new char[] { ',' }, 2);
+                if(lineSegments.Length > 1)
+                {
+                    GameNotes.Add(lineSegments[0], lineSegments[1]);
+                }
+            }
         }
 
-        public void DeleteGame(GameHeader game)
+        public void DeleteGame(GameHeader game, bool doMiscIO = true)
         {
+            if(GameNotes.ContainsKey(game.FilePath))
+            {
+                GameNotes.Remove(game.FilePath);
+                if(doMiscIO)
+                {
+                    WriteGameNotesToDisk();
+                }
+            }
             new FileInfo(game.FilePath).Delete();
             GameHeaders.Remove(game);
             NewGameHeaders.Remove(game);
@@ -168,8 +186,9 @@ namespace VA.LogReader
             var list = games.ToList();
             foreach(var gh in list)
             {
-                DeleteGame(gh);
+                DeleteGame(gh, false);
             }
+            WriteGameNotesToDisk();
         }
 
         public void DeleteInvalidGame(InvalidGame g)

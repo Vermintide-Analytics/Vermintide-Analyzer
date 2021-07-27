@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VA.LogReader;
+using Vermintide_Analyzer.Dialogs;
 
 namespace Vermintide_Analyzer.Controls
 {
@@ -33,7 +34,7 @@ namespace Vermintide_Analyzer.Controls
             FilterDisplay.Filter.OnFilterChange += (propName) => RefreshDisplay();
         }
 
-        private void RefreshDisplay()
+        public void RefreshDisplay()
         {
             GamesList.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
             GamesCountTextBlock.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
@@ -77,6 +78,32 @@ namespace Vermintide_Analyzer.Controls
                 GameRepository.Instance.DeleteGame(gh);
                 RefreshDisplay();
             }
-        }            
+        }
+
+        private void Make_Note_For_Selected_Game_Click(object sender, RoutedEventArgs e)
+        {
+            if (GamesList.SelectedItem is GameHeader gh)
+            {
+                var dialog = new StringPromptDialog("Notes:", gh.HasCustomNotes ? gh.CustomNotes : "", "Notes for this game");
+                if (dialog.ShowDialog() == true)
+                {
+                    if(string.IsNullOrWhiteSpace(dialog.ResponseText))
+                    {
+                        GameRepository.Instance.GameNotes.Remove(gh.FilePath);
+                    }
+                    else if(GameRepository.Instance.GameNotes.ContainsKey(gh.FilePath))
+                    {
+                        GameRepository.Instance.GameNotes[gh.FilePath] = dialog.ResponseText;
+                    }
+                    else
+                    {
+                        GameRepository.Instance.GameNotes.Add(gh.FilePath, dialog.ResponseText);
+                    }
+                    RefreshDisplay();
+                    GameRepository.Instance.WriteGameNotesToDisk();
+                }
+                e.Handled = true;
+            }
+        }
     }
 }

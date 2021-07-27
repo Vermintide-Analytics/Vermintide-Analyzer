@@ -19,6 +19,9 @@ namespace VA.LogReader
         public string FilePath { get; set; }
         public DateTime GameStart { get; set; }
 
+        public bool HasCustomNotes => GameRepository.Instance.GameNotes.ContainsKey(FilePath);
+        public string CustomNotes => HasCustomNotes ? GameRepository.Instance.GameNotes[FilePath] : string.Empty;
+
         #region Compiled Data
         public ParseError Error { get; private set; } = ParseError.None;
 
@@ -385,9 +388,8 @@ namespace VA.LogReader
 
         private static DateTime? StartTimeFromFileName(string fileName)
         {
-            fileName = fileName.Replace(".VA", "");
-            DateTime result;
-            if(DateTime.TryParseExact(fileName, LOG_DATE_TIME_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out result))
+            string dateTimeString = fileName.Replace(".VA", "");
+            if(DateTime.TryParseExact(dateTimeString, LOG_DATE_TIME_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime result))
             {
                 return result;
             }

@@ -70,7 +70,7 @@ namespace Vermintide_Analyzer
             BetterElitesKilledColumn = GetHighlightColumn(nameof(GameAverages.ElitesKilledPerMin));
             BetterSpecialsKilledColumn = GetHighlightColumn(nameof(GameAverages.SpecialsKilledPerMin));
             //BetterStaggerDealtColumn = GetHighlightColumn(nameof(GameAverages.StaggerDealtPerMin));
-            BetterDamageTakenColumn = GetHighlightColumn(nameof(GameAverages.DamageDealtPerMin), true);
+            BetterDamageTakenColumn = GetHighlightColumn(nameof(GameAverages.DamageTakenPerMin), true);
             BetterUncappedTempHPColumn = GetHighlightColumn(nameof(GameAverages.UncappedTempHPGainedPerMin));
             BetterCappedTempHPColumn = GetHighlightColumn(nameof(GameAverages.CappedTempHPGainedPerMin));
             BetterTimesDownedColumn = GetHighlightColumn(nameof(GameAverages.TimesDowned), true);

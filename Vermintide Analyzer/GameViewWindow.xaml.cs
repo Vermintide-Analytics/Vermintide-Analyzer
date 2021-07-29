@@ -23,6 +23,7 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Messages;
+using Vermintide_Analyzer.Misc;
 
 namespace Vermintide_Analyzer
 {
@@ -133,21 +134,11 @@ namespace Vermintide_Analyzer
 
         #region Toast
         public Notifier ToastNotifier { get; set; }
-
         #endregion
 
         public GameViewWindow(Game g)
         {
-            ToastNotifier = new Notifier((cfg) =>
-            {
-                cfg.Dispatcher = Application.Current.Dispatcher;
-                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(5), MaximumNotificationCount.FromCount(5));
-                cfg.PositionProvider = new WindowPositionProvider(
-                    parentWindow: this,
-                    corner: Corner.BottomRight,
-                    offsetX: 10,
-                    offsetY: 10);
-            });
+            ToastNotifier = Toast.MakeNotifier(this);
 
             Game = g;
 

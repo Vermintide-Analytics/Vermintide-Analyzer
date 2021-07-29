@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Vermintide_Analyzer.Controls;
 using LiveCharts.Geared;
 using System.Windows.Media;
+using ToastNotifications;
+using Vermintide_Analyzer.Misc;
 
 namespace Vermintide_Analyzer
 {
@@ -16,8 +18,17 @@ namespace Vermintide_Analyzer
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance { get; private set; }
+
+        #region Toast
+        public Notifier ToastNotifier { get; set; }
+        #endregion
+
         public MainWindow()
         {
+            Instance = this;
+            ToastNotifier = Toast.MakeNotifier(this);
+
             InitializeComponent();
             DataContext = this;
 

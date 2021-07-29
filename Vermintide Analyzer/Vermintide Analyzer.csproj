@@ -158,6 +158,7 @@
     <Compile Include="Converters\CareerToPortrait.cs" />
     <Compile Include="Misc\CareerGrouper.cs" />
     <Compile Include="Misc\MissionGrouper.cs" />
+    <Compile Include="Misc\Toast.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="GameViewWindow.xaml.cs">
       <DependentUpon>GameViewWindow.xaml</DependentUpon>

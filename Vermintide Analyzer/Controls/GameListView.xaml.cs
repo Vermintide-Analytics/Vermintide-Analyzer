@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToastNotifications.Messages;
 using VA.LogReader;
 using Vermintide_Analyzer.Dialogs;
 
@@ -65,8 +66,10 @@ namespace Vermintide_Analyzer.Controls
         {
             if (!Util.ConfirmWithDialog()) return;
 
+            int count = Games.Count();
             GameRepository.Instance.DeleteGames(Games);
             RefreshDisplay();
+            MainWindow.Instance.ToastNotifier.ShowInformation($"{count} game{(count == 1 ? "" : "s")} deleted");
         }
 
         private void Delete_Selected_Game_Click(object sender, RoutedEventArgs e)
@@ -77,6 +80,7 @@ namespace Vermintide_Analyzer.Controls
             {
                 GameRepository.Instance.DeleteGame(gh);
                 RefreshDisplay();
+                MainWindow.Instance.ToastNotifier.ShowInformation($"Game deleted");
             }
         }
 

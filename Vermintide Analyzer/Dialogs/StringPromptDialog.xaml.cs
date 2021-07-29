@@ -25,6 +25,8 @@ namespace Vermintide_Analyzer.Dialogs
             PromptText = promptText;
             Title = titleText;
             ResponseText = prefillValue;
+            ResponseTextBox.CaretIndex = int.MaxValue;
+            ResponseTextBox.Focus();
         }
 
         public string PromptText

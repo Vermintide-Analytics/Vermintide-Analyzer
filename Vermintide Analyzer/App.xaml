@@ -155,6 +155,10 @@
                           BasedOn="{StaticResource SeriesStyle}"/>
             <Style TargetType="lvc:VerticalStackedAreaSeries" 
                           BasedOn="{StaticResource SeriesStyle}"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

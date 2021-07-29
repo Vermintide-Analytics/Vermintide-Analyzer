@@ -18,6 +18,11 @@ using System.Windows.Shapes;
 using VA.LogReader;
 using Vermintide_Analyzer.Controls;
 using Vermintide_Analyzer.Dialogs;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Position;
+using ToastNotifications.Messages.Core;
+using ToastNotifications.Messages;
 
 namespace Vermintide_Analyzer
 {
@@ -126,8 +131,24 @@ namespace Vermintide_Analyzer
         }
         #endregion
 
+        #region Toast
+        public Notifier ToastNotifier { get; set; }
+
+        #endregion
+
         public GameViewWindow(Game g)
         {
+            ToastNotifier = new Notifier((cfg) =>
+            {
+                cfg.Dispatcher = Application.Current.Dispatcher;
+                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(5), MaximumNotificationCount.FromCount(5));
+                cfg.PositionProvider = new WindowPositionProvider(
+                    parentWindow: this,
+                    corner: Corner.BottomRight,
+                    offsetX: 10,
+                    offsetY: 10);
+            });
+
             Game = g;
 
             Game.RecalculateStats();
@@ -310,5 +331,17 @@ namespace Vermintide_Analyzer
             e.Handled = true;
         }
         #endregion
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.F12)
+            {
+                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)MainGrid.ActualWidth, (int)MainGrid.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+                renderTargetBitmap.Render(MainGrid);
+                Clipboard.SetImage(renderTargetBitmap);
+
+                ToastNotifier.ShowInformation("Screenshot copied to clipboard");
+            }
+        }
     }
 }

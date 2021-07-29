@@ -12,7 +12,8 @@
         Title="" Height="950" Width="1400"
         MinHeight="900" MinWidth="1400"
         Background="{StaticResource ThemeDarker}"
-        BorderBrush="{StaticResource ThemeMidtone}" BorderThickness="2">
+        BorderBrush="{StaticResource ThemeMidtone}" BorderThickness="2"
+        KeyUp="Window_KeyUp">
     <Grid x:Name="MainGrid">
         <Grid.Resources>
             <Style TargetType="TextBlock">

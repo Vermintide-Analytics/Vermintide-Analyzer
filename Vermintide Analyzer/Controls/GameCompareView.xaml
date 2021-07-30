@@ -12,8 +12,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <local:FilterDisplay Margin="5" Grid.Column="0" x:Name="FilterDisplay1" FilterChanged="FilterDisplay_FilterChanged" Title="Filter 1" />
-            <local:FilterDisplay Margin="5" Grid.Column="1" x:Name="FilterDisplay2" FilterChanged="FilterDisplay_FilterChanged" Title="Filter 2" />
+            <local:FilterDisplay Margin="5" Grid.Column="0" x:Name="FilterDisplay1" SavedFiltersChanged="FilterDisplay_SavedFiltersChanged" FilterChanged="FilterDisplay_FilterChanged" Title="Filter 1" />
+            <local:FilterDisplay Margin="5" Grid.Column="1" x:Name="FilterDisplay2" SavedFiltersChanged="FilterDisplay_SavedFiltersChanged" FilterChanged="FilterDisplay_FilterChanged" Title="Filter 2" />
         </Grid>
         <DockPanel DockPanel.Dock="Bottom">
             <DockPanel.Resources>

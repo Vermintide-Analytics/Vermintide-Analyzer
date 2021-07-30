@@ -16,7 +16,21 @@
     <StackPanel Margin="5,0">
         <StackPanel Orientation="Horizontal">
             <TextBlock x:Name="TitleText" FontSize="30" FontWeight="Bold" Foreground="{StaticResource ThemeLighter}" Text="{Binding Title}" />
-            <Button Content="Reset" Margin="15,16,0,0" Padding="3" Click="Reset_Button_Click" />
+            <Button Content="Reset" Margin="10,16,0,0" Padding="3" Click="Reset_Button_Click" />
+            <Rectangle Width="2" Fill="{StaticResource ThemeMidtone}" Margin="5,0" />
+            <StackPanel>
+                <Button Content="Import" Padding="3,1,3,2" Click="Import_Button_Click" />
+                <Button Content="Export" Padding="3,1,3,2" Click="Export_Button_Click" />
+            </StackPanel>
+            <Button Content="Save" Padding="3" Click="Save_Button_Click" />
+            <Rectangle Width="2" Fill="{StaticResource ThemeMidtone}" Margin="5,0" />
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Load" Padding="3,1" Click="Load_Button_Click" />
+                    <Button Content="Delete" Margin="10,0,0,0" Padding="3,1" Click="Delete_Button_Click" />
+                </StackPanel>
+                <ComboBox x:Name="SelectedFilterName" ItemsSource="{Binding SavedFilters}"  />
+            </StackPanel>
         </StackPanel>
         <Rectangle Margin="0,5" Height="4" Fill="{StaticResource ThemeMidtone}" />
         <Grid Width="400" HorizontalAlignment="Left">

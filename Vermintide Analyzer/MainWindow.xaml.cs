@@ -10,6 +10,7 @@ using LiveCharts.Geared;
 using System.Windows.Media;
 using ToastNotifications;
 using Vermintide_Analyzer.Misc;
+using ToastNotifications.Messages;
 
 namespace Vermintide_Analyzer
 {
@@ -35,5 +36,9 @@ namespace Vermintide_Analyzer
             Navigation.ContentPane = ContentPane;
             Navigation.NavigateTo(NavPage.Dashboard);
         }
+
+        public void ShowError(string msg) => ToastNotifier?.ShowError(msg);
+        public void ShowInformation(string msg) => ToastNotifier?.ShowInformation(msg);
+        public void ShowSuccess(string msg) => ToastNotifier?.ShowSuccess(msg);
     }
 }

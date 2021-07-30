@@ -164,6 +164,8 @@ namespace VA.LogReader
             return string.Join(" AND ", output);
         }
 
+        public static Regex FilterRegex { get; } = new Regex(@"^((?:(?:[\w]+ in \(\S+\)|[\w]+ (?:en|dis)abled|NO [\w]+]) AND )+(?:[\w]+ in \(\S+\)|[\w]+ (?:en|dis)abled|NO [\w]+])|ALL GAMES)$");
+
         public static GameFilter FromString(string input)
         {
             return new GameFilter()
@@ -176,6 +178,28 @@ namespace VA.LogReader
                 Onslaught = ReadOnslaught(input),
                 Empowered = ReadEmpowered(input)
             };
+        }
+
+        public void UpdateFromString(string input)
+        {
+            GameVersion.Clear();
+            GameVersion.AddRange(ReadGameVersion(input));
+
+            Difficulty.Clear();
+            Difficulty.AddRange(ReadDifficulty(input));
+
+            Career.Clear();
+            Career.AddRange(ReadCareer(input));
+
+            Mission.Clear();
+            Mission.AddRange(ReadMission(input));
+
+            Deathwish = ReadDeathwish(input);
+
+            Onslaught.Clear();
+            Onslaught.AddRange(ReadOnslaught(input));
+
+            Empowered = ReadEmpowered(input);
         }
 
         private string GameVersionToString()
@@ -214,7 +238,7 @@ namespace VA.LogReader
             {
                 return new List<string>();
             }
-            var match = Regex.Match(filterString, $"Game Version in \\((.*)\\)");
+            var match = Regex.Match(filterString, $@"Game Version in \((\S+)\)");
             if (match == null || match.Groups.Count < 2 || string.IsNullOrEmpty(match.Groups[1].Value))
             {
                 return GameRepository.Instance.GameVersions.ToList();
@@ -222,7 +246,7 @@ namespace VA.LogReader
 
             var result = new List<string>();
             var matchString = match.Groups[1].Value;
-            var valueStrings = matchString.Split(',');
+            var valueStrings = matchString.Split(new string[] { $"," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var val in valueStrings)
             {
                 if (!string.IsNullOrEmpty(val))
@@ -248,7 +272,7 @@ namespace VA.LogReader
             {
                 return new List<T>();
             }
-            var match = Regex.Match(filterString, $"{propertyName} in \\((.*)\\)");
+            var match = Regex.Match(filterString, $@"{propertyName} in \((\S+)\)");
             if(match == null || match.Groups.Count < 2 || string.IsNullOrEmpty(match.Groups[1].Value))
             {
                 return Enum.GetValues(typeof(T)).Cast<T>().ToList();
@@ -256,7 +280,7 @@ namespace VA.LogReader
 
             var result = new List<T>();
             var matchString = match.Groups[1].Value;
-            var valueStrings = matchString.Split(',');
+            var valueStrings = matchString.Split(new string[] { $"," }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var val in valueStrings)
             {
                 var parsed = Enum.Parse(typeof(T), val);
@@ -311,9 +335,9 @@ namespace VA.LogReader
             string set = string.Empty;
             foreach (var flag in selectorVal)
             {
-                set += $"{flag},\u200B"; // \u200B is a space that doesn't take up any space. This is useful for helping text wrapping
+                set += $"{flag},";
             }
-            return set.Trim(',', '\u200B');
+            return set.Trim(',');
         }
 
         public static IEnumerable<string> FilterOptions(Type enumType, params Enum[] exclusions)

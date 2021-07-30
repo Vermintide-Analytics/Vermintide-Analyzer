@@ -27,8 +27,8 @@ namespace Vermintide_Analyzer
         public GameFilter Filter1 { get; set; }
         public GameFilter Filter2 { get; set; }
 
-        public string Filter1Description => Filter1.ToString();
-        public string Filter2Description => Filter2.ToString();
+        public string Filter1Description => Filter1.ToString().Replace(",", $",{Const.SILENT_SPACE}");
+        public string Filter2Description => Filter2.ToString().Replace(",", $",{Const.SILENT_SPACE}");
 
         #region Highlighting
         public int BetterWinLossRatioColumn { get; set; } = 1;

@@ -31,6 +31,7 @@ namespace VA.LogReader
         private static readonly string InvalidGamesDir = Path.Combine(AllGamesRootDir, "Invalid");
         private static readonly string DataDir = Path.Combine(AppDataDir, Const.DATA_DIR);
         private static readonly string GameNotesFilePath = Path.Combine(DataDir, "Custom-Game-Notes.txt");
+        private static readonly string GameFiltersFilePath = Path.Combine(DataDir, "Game-Filters.txt");
 
         public List<GameHeader> GameHeaders { get; private set; } = new List<GameHeader>();
         public List<GameHeader> NewGameHeaders { get; private set; } = new List<GameHeader>();
@@ -44,6 +45,7 @@ namespace VA.LogReader
         public List<InvalidGame> InvalidGames { get; private set; } = new List<InvalidGame>();
 
         public Dictionary<string, string> GameNotes { get; private set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> GameFilters { get; private set; } = new Dictionary<string, string>();
 
         public bool CheckDirectories()
         {
@@ -161,6 +163,27 @@ namespace VA.LogReader
                 if(lineSegments.Length > 1)
                 {
                     GameNotes.Add(lineSegments[0], lineSegments[1]);
+                }
+            }
+        }
+
+        public void WriteGameFiltersToDisk() => File.WriteAllLines(GameFiltersFilePath, GameFilters.Select(kvp => $"{kvp.Key},{kvp.Value}"));
+
+        public void ReadGameFiltersFromDisk()
+        {
+            GameFilters.Clear();
+
+            if (!File.Exists(GameFiltersFilePath))
+            {
+                return;
+            }
+
+            foreach (var line in File.ReadAllLines(GameFiltersFilePath))
+            {
+                var lineSegments = line.Split(new char[] { ',' }, 2);
+                if (lineSegments.Length > 1)
+                {
+                    GameFilters.Add(lineSegments[0], lineSegments[1]);
                 }
             }
         }

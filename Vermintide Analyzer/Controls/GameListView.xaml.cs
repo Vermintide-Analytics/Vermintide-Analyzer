@@ -55,6 +55,7 @@ namespace Vermintide_Analyzer.Controls
         public void OnNavigatedTo()
         {
             RefreshDisplay();
+            FilterDisplay.RefreshSavedFilters();
         }
 
         private void FilterDisplay_FilterChanged()
@@ -88,7 +89,7 @@ namespace Vermintide_Analyzer.Controls
         {
             if (GamesList.SelectedItem is GameHeader gh)
             {
-                var dialog = new StringPromptDialog("Notes:", gh.HasCustomNotes ? gh.CustomNotes : "", "Notes for this game");
+                var dialog = new StringPromptDialog(Window.GetWindow(this), "Notes:", gh.HasCustomNotes ? gh.CustomNotes : "");
                 if (dialog.ShowDialog() == true)
                 {
                     if(string.IsNullOrWhiteSpace(dialog.ResponseText))

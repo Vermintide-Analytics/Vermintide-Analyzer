@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VA.LogReader;
+using Vermintide_Analyzer.Dialogs;
 using Vermintide_Analyzer.Misc;
 
 namespace Vermintide_Analyzer.Controls
@@ -25,6 +26,9 @@ namespace Vermintide_Analyzer.Controls
     public partial class FilterDisplay : UserControl
     {
         #region Events
+        public delegate void SavedFiltersChangedEvent();
+        public event SavedFiltersChangedEvent SavedFiltersChanged;
+
         public delegate void FilterChangedEvent();
         public event FilterChangedEvent FilterChanged;
         #endregion
@@ -51,6 +55,8 @@ namespace Vermintide_Analyzer.Controls
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(GameFilter), typeof(FilterDisplay), new PropertyMetadata(null));
         #endregion
+
+        public IEnumerable<string> SavedFilters => GameRepository.Instance.GameFilters.Keys.OrderBy(str => str);
 
         public List<string> CareerStrings { get; set; } = new List<string>();
         public List<string> DifficultyStrings { get; set; } = new List<string>();
@@ -100,6 +106,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void RefreshBindingLists()
         {
+            GameVersionDropdown.SyncSelection(Filter.GameVersion.ToList());
             CareerDropdown.SyncSelection(Filter.Career.Select(c => c.ForDisplay()).ToList());
             DifficultyDropdown.SyncSelection(Filter.Difficulty.Select(d => d.ForDisplay()).ToList());
             MissionDropdown.SyncSelection(Filter.Mission.Select(m => m.ForDisplay()).ToList());
@@ -123,7 +130,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void MultiSelectComboBox_SelectionChanged(MultiSelectComboBox source, List<string> newSelection)
         {
-            if(source == CareerDropdown)
+            if (source == CareerDropdown)
             {
                 Filter.Career.Clear();
                 Filter.Career.AddRange(CareerStrings.Select(str => str.FromDisplay<CAREER>()));
@@ -155,6 +162,118 @@ namespace Vermintide_Analyzer.Controls
         private void Reset_Button_Click(object sender, RoutedEventArgs e)
         {
             ResetFilter();
+        }
+
+        public void RaiseSavedFiltersChanged() => SavedFiltersChanged?.Invoke();
+
+        public void RefreshSavedFilters()
+        {
+            SelectedFilterName.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateTarget();
+        }
+
+        private void Save_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var namePromptDlg = new StringPromptDialog(Window.GetWindow(this), "Filter Name:", "");
+            var result = namePromptDlg.ShowDialog();
+            if(result.HasValue && result.Value)
+            {
+                if(string.IsNullOrWhiteSpace(namePromptDlg.ResponseText))
+                {
+                    MainWindow.Instance.ShowError("You must enter a name");
+                }
+                else
+                {
+                    if(GameRepository.Instance.GameFilters.ContainsKey(namePromptDlg.ResponseText))
+                    {
+                        if(Util.ConfirmWithDialog("There is already a filter with this name. Overwrite it?"))
+                        {
+                            GameRepository.Instance.GameFilters[namePromptDlg.ResponseText] = Filter.ToString();
+                        }
+                    }
+                    else
+                    {
+                        GameRepository.Instance.GameFilters.Add(namePromptDlg.ResponseText, Filter.ToString());
+                        GameRepository.Instance.WriteGameFiltersToDisk();
+                        RefreshSavedFilters();
+                        RaiseSavedFiltersChanged();
+                    }
+                }
+            }
+        }
+
+        private void Load_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var name = (string)SelectedFilterName.SelectedItem;
+            
+            if(name != null)
+            {
+                if(GameRepository.Instance.GameFilters.ContainsKey(name))
+                {
+                    Filter.UpdateFromString(GameRepository.Instance.GameFilters[name]);
+                    RefreshDisplay();
+                    RaiseFilterChanged();
+                }
+                else
+                {
+                    MainWindow.Instance.ShowError($"Could not load saved filter \"{name}\"");
+                }
+            }
+        }
+
+        private void Delete_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var name = (string)SelectedFilterName.SelectedItem;
+            
+            if(name != null)
+            {
+                if(GameRepository.Instance.GameFilters.Remove(name))
+                {
+                    MainWindow.Instance.ShowSuccess($"Saved filter \"{name}\" deleted");
+                    GameRepository.Instance.WriteGameFiltersToDisk();
+                    RefreshSavedFilters();
+                    RaiseSavedFiltersChanged();
+                }
+                else
+                {
+                    MainWindow.Instance.ShowError($"Could not remove saved filter \"{name}\"");
+                }
+            }
+        }
+
+        private void Export_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(Filter.ToString());
+            MainWindow.Instance.ShowInformation("Filter copied to clipboard");
+        }
+
+        private void Import_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(Clipboard.ContainsText() && GameFilter.FilterRegex.IsMatch(Clipboard.GetText().Trim()))
+            {
+                Filter.UpdateFromString(Clipboard.GetText());
+                MainWindow.Instance.ShowInformation("Filter imported from clipboard");
+                RefreshDisplay();
+                RaiseFilterChanged();
+            }
+            else
+            {
+                var filterInputDlg = new StringPromptDialog(Window.GetWindow(this), "Filter Text:", "");
+                var result = filterInputDlg.ShowDialog();
+                if (result.HasValue && result.Value)
+                {
+                    if(GameFilter.FilterRegex.IsMatch(filterInputDlg.ResponseText.Trim()))
+                    {
+                        Filter.UpdateFromString(filterInputDlg.ResponseText);
+                        MainWindow.Instance.ShowSuccess("Filter imported");
+                        RefreshDisplay();
+                        RaiseFilterChanged();
+                    }
+                    else
+                    {
+                        MainWindow.Instance.ShowError("Failed to import filter, invalid format");
+                    }
+                }
+            }
         }
     }
 }

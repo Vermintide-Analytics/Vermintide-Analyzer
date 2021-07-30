@@ -46,6 +46,8 @@ namespace Vermintide_Analyzer.Controls
         public void OnNavigatedTo()
         {
             RefreshDisplay();
+            FilterDisplay1.RefreshSavedFilters();
+            FilterDisplay2.RefreshSavedFilters();
         }
 
         private void Compare_Button_Clicked(object sender, RoutedEventArgs e)
@@ -63,6 +65,12 @@ namespace Vermintide_Analyzer.Controls
         private void FilterDisplay_FilterChanged()
         {
             RefreshDisplay();
+        }
+
+        private void FilterDisplay_SavedFiltersChanged()
+        {
+            FilterDisplay1.RefreshSavedFilters();
+            FilterDisplay2.RefreshSavedFilters();
         }
     }
 }

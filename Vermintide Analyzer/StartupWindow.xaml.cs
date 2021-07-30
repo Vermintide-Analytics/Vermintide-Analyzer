@@ -87,6 +87,7 @@ namespace Vermintide_Analyzer
             BeginStep("Finishing up...");
             GameRepository.Instance.GameHeaders.Sort((gh1, gh2) => gh2.GameStart.CompareTo(gh1.GameStart));
             GameRepository.Instance.ReadGameNotesFromDisk();
+            GameRepository.Instance.ReadGameFiltersFromDisk();
             Thread.Sleep(STARTUP_DELAY);
 
             Util.SafeInvoke(() =>

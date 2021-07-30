@@ -293,7 +293,7 @@ namespace Vermintide_Analyzer
         #region Event Handlers
         private void Make_Note_For_Game_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new StringPromptDialog("Notes:", Game.HasCustomNotes ? Game.CustomNotes : "", "Notes for this game");
+            var dialog = new StringPromptDialog(this, "Notes:", Game.HasCustomNotes ? Game.CustomNotes : "");
             if (dialog.ShowDialog() == true)
             {
                 if (string.IsNullOrWhiteSpace(dialog.ResponseText))

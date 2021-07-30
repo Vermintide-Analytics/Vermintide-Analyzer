@@ -19,11 +19,11 @@ namespace Vermintide_Analyzer.Dialogs
     /// </summary>
     public partial class StringPromptDialog : Window
     {
-        public StringPromptDialog(string promptText, string prefillValue, string titleText = "")
+        public StringPromptDialog(Window owner, string promptText, string prefillValue)
         {
+            Owner = owner;
             InitializeComponent();
             PromptText = promptText;
-            Title = titleText;
             ResponseText = prefillValue;
             ResponseTextBox.CaretIndex = int.MaxValue;
             ResponseTextBox.Focus();

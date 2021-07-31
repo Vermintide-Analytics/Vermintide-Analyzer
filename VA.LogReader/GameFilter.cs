@@ -164,7 +164,7 @@ namespace VA.LogReader
             return string.Join(" AND ", output);
         }
 
-        public static Regex FilterRegex { get; } = new Regex(@"^((?:(?:[\w]+ in \(\S+\)|[\w]+ (?:en|dis)abled|NO [\w]+]) AND )+(?:[\w]+ in \(\S+\)|[\w]+ (?:en|dis)abled|NO [\w]+])|ALL GAMES)$");
+        public static Regex FilterRegex { get; } = new Regex(@"^((?:(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+]) AND )+(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+])|ALL GAMES)$");
 
         public static GameFilter FromString(string input)
         {

@@ -571,7 +571,7 @@ namespace Vermintide_Analyzer.Controls
 
         public void UpdateDisplay()
         {
-            foreach(var image in MainGrid.FindVisualChildren<Image>())
+            foreach(var image in MainGrid.FindLogicalChildren<Image>())
             {
                 image.GetBindingExpression(Image.SourceProperty).UpdateTarget();
             }

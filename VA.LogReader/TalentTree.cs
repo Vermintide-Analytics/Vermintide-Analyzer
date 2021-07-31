@@ -8,6 +8,8 @@ namespace VA.LogReader
 {
     public class TalentTree
     {
+        public float StartTime { get; private set; }
+
         [TalentPosition(1, 1)]
         public bool R1C1 { get; private set; }
         [TalentPosition(1, 2)]
@@ -52,6 +54,8 @@ namespace VA.LogReader
 
         public TalentTree(Talent_Tree talentEvent)
         {
+            StartTime = talentEvent.Time;
+
             R1C1 = talentEvent.R1C1;
             R1C2 = talentEvent.R1C2;
             R1C3 = talentEvent.R1C3;
@@ -81,7 +85,7 @@ namespace VA.LogReader
         {
             foreach (var prop in typeof(TalentTree).GetProperties())
             {
-                if ((bool)prop.GetValue(this))
+                if (prop.PropertyType == typeof(bool) && (bool)prop.GetValue(this))
                 {
                     yield return ((TalentPositionAttribute)Attribute.GetCustomAttribute(prop, typeof(TalentPositionAttribute))).Position;
                 }

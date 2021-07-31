@@ -68,7 +68,7 @@ namespace Vermintide_Analyzer.Controls
 
         public void UpdateDisplay()
         {
-            foreach(var textBlock in this.FindVisualChildren<TextBlock>())
+            foreach(var textBlock in this.FindLogicalChildren<TextBlock>())
             {
                 textBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
             }
@@ -77,7 +77,6 @@ namespace Vermintide_Analyzer.Controls
         public WeaponDataDisplay()
         {
             InitializeComponent();
-            DataContext = this;
         }
 
         private string DispDouble(double f) => f.ToString("F2");

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vermintide_Analyzer"
         xmlns:controls="clr-namespace:Vermintide_Analyzer.Controls"
+        xmlns:models="clr-namespace:Vermintide_Analyzer.Models"
         xmlns:lvcbase="clr-namespace:LiveCharts;assembly=LiveCharts"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
@@ -38,11 +39,43 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition MinHeight="350" />
+                        <RowDefinition MinHeight="370" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <controls:WeaponDataDisplay Grid.Row="0" Grid.Column="0" Weapon="{Binding DataContext.Game.StartingWeapon1, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
-                    <controls:WeaponDataDisplay Grid.Row="0" Grid.Column="1" Weapon="{Binding DataContext.Game.StartingWeapon2, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
+                    <TabControl Grid.Column="0" ItemsSource="{Binding Weapon1TabItems}" Background="{StaticResource ThemeDarker}" SelectedIndex="0">
+                        <TabControl.ItemContainerStyle>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowWeapon1Tabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
+                            </Style>
+                        </TabControl.ItemContainerStyle>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate DataType="models:WeaponTabItem">
+                                <TextBlock Text="{Binding Header}" ToolTip="{Binding Tooltip}" />
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate DataType="models:WeaponTabItem">
+                                <controls:WeaponDataDisplay Weapon="{Binding Weapon}" />
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                    <TabControl Grid.Column="1" ItemsSource="{Binding Weapon2TabItems}" Background="{StaticResource ThemeDarker}" SelectedIndex="0">
+                        <TabControl.ItemContainerStyle>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowWeapon2Tabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
+                            </Style>
+                        </TabControl.ItemContainerStyle>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate DataType="models:WeaponTabItem">
+                                <TextBlock Text="{Binding Header}" ToolTip="{Binding Tooltip}" />
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate DataType="models:WeaponTabItem">
+                                <controls:WeaponDataDisplay Weapon="{Binding Weapon}" />
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
                     <DockPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" LastChildFill="False">
                         <StackPanel DockPanel.Dock="Right">
                             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -62,10 +95,10 @@
                                     </StackPanel.Resources>
                                     <TextBlock x:Name="CustomNoteTextBlock" Text="{Binding DataContext.Game.CustomNotes}"
                                            MaxWidth="300" TextTrimming="CharacterEllipsis" MouseUp="Make_Note_For_Game_Click"
-                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource BoolToVisible}}" />
+                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
                                     <TextBlock x:Name="MakeNoteTextBlock" Text="(none)"
                                            MaxWidth="300" MouseUp="Make_Note_For_Game_Click"
-                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource BoolToCollapsed}}" />
+                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource TrueCollapsedFalseVisible}}" />
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -334,7 +367,23 @@
                             </Grid>
                         </StackPanel>
                     </DockPanel>
-                    <controls:TalentTreeDisplay Grid.Column="1" HorizontalAlignment="Left" Career="{Binding Game.Career}" Talents="{Binding Game.StartingTalents}" />
+                    <TabControl Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TalentTabItems}" Background="{StaticResource ThemeDarker}" SelectedIndex="0">
+                        <TabControl.ItemContainerStyle>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowTalentTabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
+                            </Style>
+                        </TabControl.ItemContainerStyle>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate DataType="models:TalentTabItem">
+                                <TextBlock Text="{Binding Header}" ToolTip="{Binding Tooltip}" />
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate DataType="models:TalentTabItem">
+                                <controls:TalentTreeDisplay Career="{Binding Career}" Talents="{Binding Talents}" />
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
                 </Grid>
             </DockPanel>
         </Grid>

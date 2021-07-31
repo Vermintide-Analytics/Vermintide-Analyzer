@@ -35,23 +35,6 @@ namespace Vermintide_Analyzer
                 "$1 $2"
             );
 
-        public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj == null)
-                yield break;
-
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-            {
-                var child = VisualTreeHelper.GetChild(depObj, i);
-
-                if (child is T t)
-                    yield return t;
-
-                foreach (T childOfChild in FindVisualChildren<T>(child))
-                    yield return childOfChild;
-            }
-        }
-
         public static IEnumerable<T> FindLogicalChildren<T>(this DependencyObject depObj) where T : DependencyObject
         {
             if (depObj == null)

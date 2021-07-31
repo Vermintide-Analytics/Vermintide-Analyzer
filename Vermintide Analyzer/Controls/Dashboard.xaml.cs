@@ -33,7 +33,7 @@ namespace Vermintide_Analyzer.Controls
             {
                 mShowQuitGames = value;
                 NotifyPropertyChanged();
-                foreach(var careerDash in this.FindVisualChildren<CareerDashboard>())
+                foreach(var careerDash in this.FindLogicalChildren<CareerDashboard>())
                 {
                     careerDash.UpdateDisplayMode(mShowQuitGames);
                 }
@@ -62,7 +62,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void UpdateDisplay()
         {
-            foreach (var careerDash in this.FindVisualChildren<CareerDashboard>())
+            foreach (var careerDash in this.FindLogicalChildren<CareerDashboard>())
             {
                 careerDash.UpdateDisplay();
             }

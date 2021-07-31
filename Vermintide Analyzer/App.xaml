@@ -46,6 +46,8 @@
 
             <SolidColorBrush x:Key="GreenBackground" Color="#004500" />
 
+            <converters:BindingDebugger  x:Key="BindingDebugger" />
+            
             <converters:FormatDouble  x:Key="FormatDouble" />
             <converters:FormatPercent  x:Key="FormatPercent" />
 
@@ -56,8 +58,9 @@
             <converters:CareerToDisplayString x:Key="CareerToDisplayString" />
             <converters:CampaignToDisplayString x:Key="CampaignToDisplayString" />
 
-            <converters:BoolToVisible x:Key="BoolToVisible" />
-            <converters:BoolToCollapsed x:Key="BoolToCollapsed" />
+            <converters:TrueVisibleFalseCollapsed x:Key="TrueVisibleFalseCollapsed" />
+            <converters:TrueVisibleFalseHidden x:Key="TrueVisibleFalseHidden" />
+            <converters:TrueCollapsedFalseVisible x:Key="TrueCollapsedFalseVisible" />
             <converters:DifficultyToIcon x:Key="DifficultyToIcon" />
             <converters:WeaponToIcon x:Key="WeaponToIcon" />
             <converters:RoundResultToBrush x:Key="RoundResultToBrush" />

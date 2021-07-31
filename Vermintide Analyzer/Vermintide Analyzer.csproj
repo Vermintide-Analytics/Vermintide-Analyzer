@@ -116,6 +116,7 @@
     <Compile Include="Controls\WeaponIcon.xaml.cs">
       <DependentUpon>WeaponIcon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BindingDebugger.cs" />
     <Compile Include="Converters\FormatDouble.cs" />
     <Compile Include="Converters\NullableBoolToYesNoEither.cs" />
     <Compile Include="Converters\GameToDifficultyModifierString.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="Controls\NotImplemented.xaml.cs">
       <DependentUpon>NotImplemented.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\BoolToVisible.cs" />
+    <Compile Include="Converters\BoolToVisibility.cs" />
     <Compile Include="Converters\EnumToDisplayString.cs" />
     <Compile Include="Converters\DifficultyToIcon.cs" />
     <Compile Include="Converters\WeaponToIcon.cs" />
@@ -159,6 +160,8 @@
     <Compile Include="Misc\CareerGrouper.cs" />
     <Compile Include="Misc\MissionGrouper.cs" />
     <Compile Include="Misc\Toast.cs" />
+    <Compile Include="Models\WeaponTabItem.cs" />
+    <Compile Include="Models\TalentTabItem.cs" />
     <Compile Include="Navigation.cs" />
     <Compile Include="GameViewWindow.xaml.cs">
       <DependentUpon>GameViewWindow.xaml</DependentUpon>

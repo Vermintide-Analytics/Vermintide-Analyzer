@@ -42,13 +42,13 @@
                             <StackPanel Margin="5" DockPanel.Dock="Right">
                                 <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameStartDate}" />
                                 <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameStartTime}" />
-                                <Image Source="/Images/Misc/New.png" Width="50" Visibility="{Binding IsNew, Converter={StaticResource BoolToVisible}}" />
+                                <Image Source="/Images/Misc/New.png" Width="50" Visibility="{Binding IsNew, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
                             </StackPanel>
                             <StackPanel Margin="0,5" DockPanel.Dock="Right">
                                 <TextBlock Text="ⓘ" FontSize="25" Cursor="Hand" MouseUp="Make_Note_For_Selected_Game_Click"
                                            ToolTip="{Binding CustomNotes}"
                                            ToolTipService.ShowDuration="60000"
-                                           Visibility="{Binding HasCustomNotes, Converter={StaticResource BoolToVisible}}">
+                                           Visibility="{Binding HasCustomNotes, Converter={StaticResource TrueVisibleFalseCollapsed}}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>

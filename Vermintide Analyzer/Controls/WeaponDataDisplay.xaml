@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Name="control"
              d:DesignHeight="300" d:DesignWidth="600">
     <StackPanel Orientation="Horizontal">
-        <local:WeaponIcon Width="100" Height="100" VerticalAlignment="Top" Weapon="{Binding DataContext.Weapon, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}}" />
+        <local:WeaponIcon Width="100" Height="100" VerticalAlignment="Top" Weapon="{Binding ElementName=control, Path=Weapon}" />
         <Grid ClipToBounds="False">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -60,30 +60,30 @@
                 <TextBlock Text="Damage dealt" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt to anything (including monsters and allies)." />
             </Border>
             <Border Grid.Row="1" Grid.Column="1" >
-                <TextBlock Text="{Binding DamageDealt}" />
+                <TextBlock Text="{Binding ElementName=control, Path=DamageDealt}" />
             </Border>
             <Border Grid.Row="1" Grid.Column="2" >
-                <TextBlock Text="{Binding DamageDealtPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=DamageDealtPerMin}" />
             </Border>
 
             <Border Grid.Row="2" Grid.Column="0" >
                 <TextBlock Text="(Monster)" FontWeight="Bold" ToolTip="Damage dealt to monsters." />
             </Border>
             <Border Grid.Row="2" Grid.Column="1" >
-                <TextBlock Text="{Binding MonsterDamageDealt}" />
+                <TextBlock Text="{Binding ElementName=control, Path=MonsterDamageDealt}" />
             </Border>
             <Border Grid.Row="2" Grid.Column="2" >
-                <TextBlock Text="{Binding MonsterDamageDealtPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=MonsterDamageDealtPerMin}" />
             </Border>
 
             <Border Grid.Row="3" Grid.Column="0" >
                 <TextBlock Text="(Ally)" FontWeight="Bold" ToolTip="Damage dealt to allies (including yourself)." />
             </Border>
             <Border Grid.Row="3" Grid.Column="1" >
-                <TextBlock Text="{Binding AllyDamageDealt}" />
+                <TextBlock Text="{Binding ElementName=control, Path=AllyDamageDealt}" />
             </Border>
             <Border Grid.Row="3" Grid.Column="2" >
-                <TextBlock Text="{Binding AllyDamageDealtPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=AllyDamageDealtPerMin}" />
             </Border>
 
             <!--<Border Grid.Row="4" Grid.Column="0" ToolTip="Measures seconds of stagger applied to enemies." >
@@ -100,57 +100,57 @@
                 <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt beyond enemies remaining health (wasted damage)." />
             </Border>
             <Border Grid.Row="4" Grid.Column="1" >
-                <TextBlock Text="{Binding OverkillDamage}" />
+                <TextBlock Text="{Binding ElementName=control, Path=OverkillDamage}" />
             </Border>
             <Border Grid.Row="4" Grid.Column="2" >
-                <TextBlock Text="{Binding OverkillDamagePerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=OverkillDamagePerMin}" />
             </Border>
 
             <Border Grid.Row="5" Grid.Column="0" >
                 <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" />
             </Border>
             <Border Grid.Row="5" Grid.Column="1" >
-                <TextBlock Text="{Binding EnemiesKilled}" />
+                <TextBlock Text="{Binding ElementName=control, Path=EnemiesKilled}" />
             </Border>
             <Border Grid.Row="5" Grid.Column="2" >
-                <TextBlock Text="{Binding EnemiesKilledPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=EnemiesKilledPerMin}" />
             </Border>
 
             <Border Grid.Row="6" Grid.Column="0" >
                 <TextBlock Text="(Elites)" FontWeight="Bold" />
             </Border>
             <Border Grid.Row="6" Grid.Column="1" >
-                <TextBlock Text="{Binding ElitesKilled}" />
+                <TextBlock Text="{Binding ElementName=control, Path=ElitesKilled}" />
             </Border>
             <Border Grid.Row="6" Grid.Column="2" >
-                <TextBlock Text="{Binding ElitesKilledPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=ElitesKilledPerMin}" />
             </Border>
 
             <Border Grid.Row="7" Grid.Column="0" >
                 <TextBlock Text="(Specials)" FontWeight="Bold" />
             </Border>
             <Border Grid.Row="7" Grid.Column="1" >
-                <TextBlock Text="{Binding SpecialsKilled}" />
+                <TextBlock Text="{Binding ElementName=control, Path=SpecialsKilled}" />
             </Border>
             <Border Grid.Row="7" Grid.Column="2" >
-                <TextBlock Text="{Binding SpecialsKilledPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=SpecialsKilledPerMin}" />
             </Border>
 
             <Border Grid.Row="8" Grid.Column="0" >
                 <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" />
             </Border>
             <Border Grid.Row="8" Grid.Column="1" >
-                <TextBlock Text="{Binding Headshots}" />
+                <TextBlock Text="{Binding ElementName=control, Path=Headshots}" />
             </Border>
             <Border Grid.Row="8" Grid.Column="2" >
-                <TextBlock Text="{Binding HeadshotsPerMin}" />
+                <TextBlock Text="{Binding ElementName=control, Path=HeadshotsPerMin}" />
             </Border>
 
             <Border Grid.Row="9" Grid.Column="0" >
                 <TextBlock Text="Headshot %" FontWeight="Bold" TextAlignment="Left" />
             </Border>
             <Border Grid.Row="9" Grid.Column="1" >
-                <TextBlock Text="{Binding HeadshotPercent}" />
+                <TextBlock Text="{Binding ElementName=control, Path=HeadshotPercent}" />
             </Border>
             <Border Grid.Row="9" Grid.Column="2" >
                 <TextBlock Text="-" />
@@ -160,7 +160,7 @@
                 <TextBlock Text="Avg Crit Multi" FontWeight="Bold" TextAlignment="Left" ToolTip="Average damage from crits divided by average damage from non-crits" />
             </Border>
             <Border Grid.Row="10" Grid.Column="1" >
-                <TextBlock Text="{Binding AverageCritMultiplier}" />
+                <TextBlock Text="{Binding ElementName=control, Path=AverageCritMultiplier}" />
             </Border>
             <Border Grid.Row="10" Grid.Column="2" >
                 <TextBlock Text="-" />
@@ -170,7 +170,7 @@
                 <TextBlock Text="Crit %" FontWeight="Bold" TextAlignment="Left" />
             </Border>
             <Border Grid.Row="11" Grid.Column="1" >
-                <TextBlock Text="{Binding CritPercent}" />
+                <TextBlock Text="{Binding ElementName=control, Path=CritPercent}" />
             </Border>
             <Border Grid.Row="11" Grid.Column="2" >
                 <TextBlock Text="-" />

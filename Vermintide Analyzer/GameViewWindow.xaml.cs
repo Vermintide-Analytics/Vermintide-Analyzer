@@ -24,6 +24,7 @@ using ToastNotifications.Position;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Messages;
 using Vermintide_Analyzer.Misc;
+using Vermintide_Analyzer.Models;
 
 namespace Vermintide_Analyzer
 {
@@ -130,6 +131,15 @@ namespace Vermintide_Analyzer
                 return $"{span.Minutes} minutes, {span.Seconds} seconds";
             }
         }
+
+        public List<TalentTabItem> TalentTabItems { get; set; } = new List<TalentTabItem>();
+
+        public List<WeaponTabItem> Weapon1TabItems { get; set; } = new List<WeaponTabItem>();
+        public List<WeaponTabItem> Weapon2TabItems { get; set; } = new List<WeaponTabItem>();
+
+        public bool ShowTalentTabs => TalentTabItems.Count > 1;
+        public bool ShowWeapon1Tabs => Weapon1TabItems.Count > 1;
+        public bool ShowWeapon2Tabs => Weapon2TabItems.Count > 1;
         #endregion
 
         #region Toast
@@ -143,6 +153,16 @@ namespace Vermintide_Analyzer
             Game = g;
 
             Game.RecalculateStats();
+
+            #region Init tab item lists
+            TalentTabItems.AddRange(Game.TalentTrees.Select(tTree => new TalentTabItem(tTree, Game.Career)));
+            TalentTabItems.First().IsFirst = true;
+
+            Weapon1TabItems.AddRange(Game.Weapon1Datas.Select(weap => new WeaponTabItem(weap)));
+            Weapon1TabItems.First().IsFirst = true;
+            Weapon2TabItems.AddRange(Game.Weapon2Datas.Select(weap => new WeaponTabItem(weap)));
+            Weapon2TabItems.First().IsFirst = true;
+            #endregion
 
             InitializeComponent();
             DataContext = this;

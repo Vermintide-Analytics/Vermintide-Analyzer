@@ -22,7 +22,7 @@
         <local:NavButton x:Name="GameViewButton" Destination="GameView" DockPanel.Dock="Top" Content="Game View" />
         <local:NavButton x:Name="StatCompareButton" Destination="StatComparison" DockPanel.Dock="Top" Content="Stat Comparison" />
         <Rectangle Height="45" DockPanel.Dock="Top" />
-        <local:NavButton x:Name="InvalidGamesButton" Destination="InvalidGames" DockPanel.Dock="Top" Content="Invalid Games" Visibility="{Binding ShowInvalidGamesButton, Converter={StaticResource BoolToVisible}}" />
+        <local:NavButton x:Name="InvalidGamesButton" Destination="InvalidGames" DockPanel.Dock="Top" Content="Invalid Games" Visibility="{Binding ShowInvalidGamesButton, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
         <local:NavButton x:Name="AboutButton" Destination="About" DockPanel.Dock="Bottom" Content="About" />
     </DockPanel>
 </UserControl>

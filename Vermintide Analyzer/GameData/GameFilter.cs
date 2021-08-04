@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VA.LogReader;
 
-namespace VA.LogReader
+namespace Vermintide_Analyzer
 {
     public class GameFilter
     {

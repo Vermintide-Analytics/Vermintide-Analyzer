@@ -9,8 +9,6 @@ namespace VA.LogReader
 {
     public static class Extension
     {
-        public static bool MeleeOnly(this CAREER career) =>
-            career == CAREER.Grail_Knight || career == CAREER.Slayer;
         public static IEnumerable<Enum> GetFlags(this Enum flags)
         {
             ulong flag = 1;

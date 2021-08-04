@@ -93,12 +93,12 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Resources>
-                                    <TextBlock x:Name="CustomNoteTextBlock" Text="{Binding DataContext.Game.CustomNotes}"
+                                    <TextBlock x:Name="CustomNoteTextBlock" Text="{Binding DataContext.GameModel.CustomNotes}"
                                            MaxWidth="300" TextTrimming="CharacterEllipsis" MouseUp="Make_Note_For_Game_Click"
-                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
+                                           Visibility="{Binding DataContext.GameModel.HasCustomNotes, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
                                     <TextBlock x:Name="MakeNoteTextBlock" Text="(none)"
                                            MaxWidth="300" MouseUp="Make_Note_For_Game_Click"
-                                           Visibility="{Binding DataContext.Game.HasCustomNotes, Converter={StaticResource TrueCollapsedFalseVisible}}" />
+                                           Visibility="{Binding DataContext.GameModel.HasCustomNotes, Converter={StaticResource TrueCollapsedFalseVisible}}" />
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">

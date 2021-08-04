@@ -18,7 +18,7 @@
                   Background="{StaticResource ThemeDarker}" BorderThickness="0"
                   SelectionMode="Single">
             <ListView.ItemTemplate>
-                <DataTemplate DataType="log:GameHeader">
+                <DataTemplate DataType="log:GameHeaderItem">
                     <Border Height="70" BorderBrush="{StaticResource ThemeLight}" BorderThickness="1" MouseUp="Game_Clicked">
                         <Border.ContextMenu>
                             <ContextMenu>
@@ -27,21 +27,21 @@
                                 <MenuItem Header="Delete" Click="Delete_Selected_Game_Click" />
                             </ContextMenu>
                         </Border.ContextMenu>
-                        <DockPanel LastChildFill="False" Background="{Binding Result, Converter={StaticResource RoundResultToBrush}}">
-                            <Image Margin="2" DockPanel.Dock="Left" Source="{Binding Career, Converter={StaticResource CareerToPortrait}}" ToolTip="{Binding CareerName}" />
-                            <local:WeaponIcon Weapon="{Binding DataContext.StartingWeapon1, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
-                            <local:WeaponIcon Weapon="{Binding DataContext.StartingWeapon2, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
-                            <Image Margin="5" Source="{Binding Difficulty, Converter={StaticResource DifficultyToIcon}}" ToolTip="{Binding DifficultyName}" />
+                        <DockPanel LastChildFill="False" Background="{Binding GameHeader.Result, Converter={StaticResource RoundResultToBrush}}">
+                            <Image Margin="2" DockPanel.Dock="Left" Source="{Binding GameHeader.Career, Converter={StaticResource CareerToPortrait}}" ToolTip="{Binding GameHeader.CareerName}" />
+                            <local:WeaponIcon Weapon="{Binding DataContext.GameHeader.StartingWeapon1, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
+                            <local:WeaponIcon Weapon="{Binding DataContext.GameHeader.StartingWeapon2, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
+                            <Image Margin="5" Source="{Binding GameHeader.Difficulty, Converter={StaticResource DifficultyToIcon}}" ToolTip="{Binding GameHeader.DifficultyName}" />
                             <DockPanel Margin="5" DockPanel.Dock="Left">
-                                <TextBlock Foreground="{StaticResource ThemeLighter}" DockPanel.Dock="Top" FontWeight="Bold" Text="{Binding CampaignName}" />
-                                <TextBlock Foreground="{StaticResource ThemeLighter}" DockPanel.Dock="Top" Text="{Binding MissionName}" ToolTip="{Binding MissionTooltip}" />
-                                <TextBlock Foreground="Red" DockPanel.Dock="Bottom" VerticalAlignment="Center" Text="{Binding Converter={StaticResource GameToDifficultyModifierString}}" />
+                                <TextBlock Foreground="{StaticResource ThemeLighter}" DockPanel.Dock="Top" FontWeight="Bold" Text="{Binding GameHeader.CampaignName}" />
+                                <TextBlock Foreground="{StaticResource ThemeLighter}" DockPanel.Dock="Top" Text="{Binding GameHeader.MissionName}" ToolTip="{Binding GameHeader.MissionTooltip}" />
+                                <TextBlock Foreground="Red" DockPanel.Dock="Bottom" VerticalAlignment="Center" Text="{Binding Path=GameHeader, Converter={StaticResource GameToDifficultyModifierString}}" />
                             </DockPanel>
                             <StackPanel Margin="5" DockPanel.Dock="Left">
                             </StackPanel>
                             <StackPanel Margin="5" DockPanel.Dock="Right">
-                                <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameStartDate}" />
-                                <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameStartTime}" />
+                                <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameHeader.GameStartDate}" />
+                                <TextBlock Foreground="{StaticResource ThemeLighter}" HorizontalAlignment="Right" Text="{Binding GameHeader.GameStartTime}" />
                                 <Image Source="/Images/Misc/New.png" Width="50" Visibility="{Binding IsNew, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
                             </StackPanel>
                             <StackPanel Margin="0,5" DockPanel.Dock="Right">

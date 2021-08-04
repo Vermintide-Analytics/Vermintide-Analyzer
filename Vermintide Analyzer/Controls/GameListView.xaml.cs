@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using ToastNotifications.Messages;
 using VA.LogReader;
 using Vermintide_Analyzer.Dialogs;
+using Vermintide_Analyzer.Models;
 
 namespace Vermintide_Analyzer.Controls
 {
@@ -23,7 +24,7 @@ namespace Vermintide_Analyzer.Controls
     /// </summary>
     public partial class GameListView : UserControl, IAnalyticsPage
     {        
-        public IEnumerable<GameHeader> Games => FilterDisplay.Filter.Filter(GameRepository.Instance.GameHeaders);
+        public IEnumerable<GameHeaderItem> Games => FilterDisplay.Filter.Filter(GameRepository.Instance.GameHeaders).Select(gh => new GameHeaderItem(gh));
 
         public string GamesCount => $"{Games.Count()} Games";
 
@@ -45,9 +46,9 @@ namespace Vermintide_Analyzer.Controls
         {
             if (e.ChangedButton != MouseButton.Left) return;
 
-            var gh = ((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content as GameHeader;
+            var ghi = ((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content as GameHeaderItem;
 
-            new GameViewWindow(Game.FromFile(gh.FilePath)) {
+            new GameViewWindow(Game.FromFile(ghi.GameHeader.FilePath)) {
                 Owner = Window.GetWindow(this)
             }.Show();
         }
@@ -68,7 +69,7 @@ namespace Vermintide_Analyzer.Controls
             if (!Util.ConfirmWithDialog()) return;
 
             int count = Games.Count();
-            GameRepository.Instance.DeleteGames(Games);
+            GameRepository.Instance.DeleteGames(Games.Select(ghi => ghi.GameHeader));
             RefreshDisplay();
             MainWindow.Instance.ToastNotifier.ShowInformation($"{count} game{(count == 1 ? "" : "s")} deleted");
         }
@@ -87,22 +88,22 @@ namespace Vermintide_Analyzer.Controls
 
         private void Make_Note_For_Selected_Game_Click(object sender, RoutedEventArgs e)
         {
-            if (GamesList.SelectedItem is GameHeader gh)
+            if (GamesList.SelectedItem is GameHeaderItem ghi)
             {
-                var dialog = new StringPromptDialog(Window.GetWindow(this), "Notes:", gh.HasCustomNotes ? gh.CustomNotes : "");
+                var dialog = new StringPromptDialog(Window.GetWindow(this), "Notes:", ghi.HasCustomNotes ? ghi.CustomNotes : "");
                 if (dialog.ShowDialog() == true)
                 {
                     if(string.IsNullOrWhiteSpace(dialog.ResponseText))
                     {
-                        GameRepository.Instance.GameNotes.Remove(gh.FilePath);
+                        GameRepository.Instance.GameNotes.Remove(ghi.GameHeader.FilePath);
                     }
-                    else if(GameRepository.Instance.GameNotes.ContainsKey(gh.FilePath))
+                    else if(GameRepository.Instance.GameNotes.ContainsKey(ghi.GameHeader.FilePath))
                     {
-                        GameRepository.Instance.GameNotes[gh.FilePath] = dialog.ResponseText;
+                        GameRepository.Instance.GameNotes[ghi.GameHeader.FilePath] = dialog.ResponseText;
                     }
                     else
                     {
-                        GameRepository.Instance.GameNotes.Add(gh.FilePath, dialog.ResponseText);
+                        GameRepository.Instance.GameNotes.Add(ghi.GameHeader.FilePath, dialog.ResponseText);
                     }
                     RefreshDisplay();
                     GameRepository.Instance.WriteGameNotesToDisk();

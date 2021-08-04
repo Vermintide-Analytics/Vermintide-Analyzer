@@ -13,9 +13,6 @@ namespace VA.LogReader
         public string FilePath { get; set; }
         public DateTime GameStart { get; set; }
 
-        public bool HasCustomNotes => GameRepository.Instance.GameNotes.ContainsKey(FilePath);
-        public string CustomNotes => HasCustomNotes ? GameRepository.Instance.GameNotes[FilePath] : string.Empty;
-
         public ParseError Error { get; private set; } = ParseError.None;
 
         public byte SchemaVersionMajor { get; private set; }
@@ -42,7 +39,6 @@ namespace VA.LogReader
         public List<TalentTree> TalentTrees { get; private set; }
 
         #region For Display
-        public bool IsNew => GameRepository.Instance.NewGameHeaders.Contains(this);
         public string GameVersion => $"{GameVersionMajor}.{GameVersionMinor}";
 
         public string CampaignName => Campaign.ForDisplay();

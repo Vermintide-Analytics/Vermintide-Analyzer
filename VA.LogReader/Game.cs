@@ -19,9 +19,6 @@ namespace VA.LogReader
         public string FilePath { get; set; }
         public DateTime GameStart { get; set; }
 
-        public bool HasCustomNotes => GameRepository.Instance.GameNotes.ContainsKey(FilePath);
-        public string CustomNotes => HasCustomNotes ? GameRepository.Instance.GameNotes[FilePath] : string.Empty;
-
         #region Compiled Data
         public ParseError Error { get; private set; } = ParseError.None;
 

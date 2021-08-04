@@ -126,6 +126,8 @@
     <Compile Include="GameComparisonWindow.xaml.cs">
       <DependentUpon>GameComparisonWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameData\GameFilter.cs" />
+    <Compile Include="GameData\GameRepository.cs" />
     <Compile Include="IAnalyticsPage.cs" />
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Const.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Misc\CareerGrouper.cs" />
     <Compile Include="Misc\MissionGrouper.cs" />
     <Compile Include="Misc\Toast.cs" />
+    <Compile Include="Models\GameItem.cs" />
     <Compile Include="Models\WeaponTabItem.cs" />
     <Compile Include="Models\TalentTabItem.cs" />
     <Compile Include="Navigation.cs" />

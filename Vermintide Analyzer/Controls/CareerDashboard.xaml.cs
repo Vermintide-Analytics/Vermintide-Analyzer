@@ -89,6 +89,7 @@ namespace Vermintide_Analyzer.Controls
         public void InitDisplay()
         {
             UpdateText(CareerNameText);
+            CareerIcon.GetBindingExpression(Image.VisibilityProperty).UpdateTarget();
             CareerIcon.GetBindingExpression(Image.SourceProperty).UpdateTarget();
             UpdateTooltip(CareerIcon);
         }

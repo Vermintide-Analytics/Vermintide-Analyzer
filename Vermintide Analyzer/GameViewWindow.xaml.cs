@@ -172,6 +172,8 @@ namespace Vermintide_Analyzer
             ConstructSections();
 
             PrettifyCharts();
+
+            HideForScreenshot.Add(ScreenshotInstructions);
         }
 
         private void ConstructSeries()
@@ -311,6 +313,28 @@ namespace Vermintide_Analyzer
 
         private string DispDouble(double f) => f.ToString("F2");
 
+        private List<UIElement> HideForScreenshot = new List<UIElement>();
+
+
+        private void ScreenshotToClipboard()
+        {
+            foreach(var elem in HideForScreenshot)
+            {
+                elem.Visibility = Visibility.Hidden;
+            }
+
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)MainGrid.ActualWidth, (int)MainGrid.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(MainGrid);
+            Clipboard.SetImage(renderTargetBitmap);
+
+            foreach (var elem in HideForScreenshot)
+            {
+                elem.Visibility = Visibility.Visible;
+            }
+
+            ToastNotifier.ShowInformation("Screenshot copied to clipboard");
+        }
+
         #region Event Handlers
         private void Make_Note_For_Game_Click(object sender, RoutedEventArgs e)
         {
@@ -342,18 +366,19 @@ namespace Vermintide_Analyzer
             }
             e.Handled = true;
         }
-        #endregion
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.F12)
+            if (e.Key == Key.F12)
             {
-                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)MainGrid.ActualWidth, (int)MainGrid.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-                renderTargetBitmap.Render(MainGrid);
-                Clipboard.SetImage(renderTargetBitmap);
-
-                ToastNotifier.ShowInformation("Screenshot copied to clipboard");
+                ScreenshotToClipboard();
             }
         }
+
+        private void ScreenshotInstructions_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ScreenshotToClipboard();
+        }
+        #endregion
     }
 }

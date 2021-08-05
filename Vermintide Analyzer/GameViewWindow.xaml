@@ -106,6 +106,21 @@
                                 <TextBlock Text="{Binding DataContext.Game.GameVersion, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
                             </StackPanel>
                         </StackPanel>
+                        <StackPanel DockPanel.Dock="Right" VerticalAlignment="Bottom">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="False">
+                                            <Setter Property="Foreground" Value="Gray" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock x:Name="ScreenshotInstructions" Text="Screenshot (F12)" Cursor="Hand" MouseUp="ScreenshotInstructions_MouseUp" />
+                        </StackPanel>
                     </DockPanel>
                 </Grid>
                 <DockPanel DockPanel.Dock="Top" MaxHeight="100">
@@ -273,7 +288,7 @@
                             </Border>
 
                             <Border Grid.Row="9" Grid.Column="0" >
-                                <TextBlock Text="Damage Taken" FontWeight="Bold" />
+                                <TextBlock Text="Damage Taken" FontWeight="Bold" TextAlignment="Left" />
                             </Border>
                             <Border Grid.Row="9" Grid.Column="1" >
                                 <TextBlock Text="{Binding DamageTaken}" />

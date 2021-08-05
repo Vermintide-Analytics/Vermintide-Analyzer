@@ -756,5 +756,8 @@
   <ItemGroup>
     <Resource Include="Vermintide Analyzer Icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Career Portraits\Unknown.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

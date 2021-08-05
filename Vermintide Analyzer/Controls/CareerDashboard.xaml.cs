@@ -53,8 +53,10 @@ namespace Vermintide_Analyzer.Controls
 
         public bool IncludeIncompleteGames { get; set; } = true;
 
-        public string CareerName => Career.ForDisplay().Contains("UNKNOWN") ? "-" : Career.ForDisplay();
-        public string PortraitImagePath => $"/Images/Career Portraits/{CareerName}.png";
+        public const string UNKNOWN_CAREER = "-";
+        public bool IsUnknownCareer => Career.ForDisplay().Contains("UNKNOWN");
+        public string CareerName => IsUnknownCareer ? UNKNOWN_CAREER : Career.ForDisplay();
+        public string PortraitImagePath => IsUnknownCareer ? "/Images/Career Portraits/Unknown.png" : $"/Images/Career Portraits/{CareerName}.png";
 
         public string IconClickTooltip => $"View {CareerName} games";
 

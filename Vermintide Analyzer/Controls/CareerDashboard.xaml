@@ -30,7 +30,11 @@
         <DockPanel Margin="15,0" LastChildFill="True" Grid.Row="2">
             <TextBlock DockPanel.Dock="Left" x:Name="WonGamesText" Text="{Binding ElementName=control, Path=NumWins}" FontSize="20" VerticalAlignment="Top" Foreground="{StaticResource DataGood}" />
             <TextBlock DockPanel.Dock="Right" x:Name="LostGamesText" Text="{Binding ElementName=control, Path=NumLosses}" FontSize="20" VerticalAlignment="Top" Foreground="{StaticResource DataBad}" />
-            <Image x:Name="CareerIcon" Margin="0,5" Source="{Binding ElementName=control, Path=PortraitImagePath}" MouseUp="CareerIcon_MouseUp" Cursor="Hand" ToolTip="{Binding ElementName=control, Path=IconClickTooltip}" />
+            <Image x:Name="CareerIcon" Margin="0,5"
+                   Visibility="{Binding ElementName=control, Path=IsUnknownCareer, Converter={StaticResource TrueCollapsedFalseVisible}}"
+                   Source="{Binding ElementName=control, Path=PortraitImagePath}"
+                   MouseUp="CareerIcon_MouseUp" Cursor="Hand"
+                   ToolTip="{Binding ElementName=control, Path=IconClickTooltip}" />
         </DockPanel>
         <TextBlock Grid.Row="3" Margin="15,0" x:Name="CountedGamesText" FontSize="25" Text="{Binding ElementName=control, Path=CountedGames}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{StaticResource ThemeLighter}" />
     </Grid>

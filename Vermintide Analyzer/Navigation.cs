@@ -18,6 +18,7 @@ namespace Vermintide_Analyzer
             { NavPage.GameView, new GameListView() },
             { NavPage.StatComparison, new GameCompareView() },
             { NavPage.InvalidGames, new InvalidGamesView() },
+            { NavPage.Settings, new SettingsView() },
             { NavPage.About, new AboutView() },
         };
 
@@ -27,6 +28,7 @@ namespace Vermintide_Analyzer
             { NavPage.GameView, new List<NavButton>() },
             { NavPage.StatComparison, new List<NavButton>() },
             { NavPage.InvalidGames, new List<NavButton>() },
+            { NavPage.Settings, new List<NavButton>() },
             { NavPage.About, new List<NavButton>() },
         };
 
@@ -89,6 +91,7 @@ namespace Vermintide_Analyzer
         GameView,
         StatComparison,
         InvalidGames,
+        Settings,
         About
     }
 }

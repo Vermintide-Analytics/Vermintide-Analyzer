@@ -133,6 +133,8 @@ namespace Vermintide_Analyzer
             }
         }
 
+        public string ScreenshotWatermarkText => Settings.Current.PlayerName ?? "";
+
         public List<TalentTabItem> TalentTabItems { get; set; } = new List<TalentTabItem>();
 
         public List<WeaponTabItem> Weapon1TabItems { get; set; } = new List<WeaponTabItem>();
@@ -318,6 +320,7 @@ namespace Vermintide_Analyzer
 
         private void ScreenshotToClipboard()
         {
+            ScreenshotWatermark.Visibility = Visibility.Visible;
             foreach(var elem in HideForScreenshot)
             {
                 elem.Visibility = Visibility.Hidden;
@@ -327,6 +330,7 @@ namespace Vermintide_Analyzer
             renderTargetBitmap.Render(MainGrid);
             Clipboard.SetImage(renderTargetBitmap);
 
+            ScreenshotWatermark.Visibility = Visibility.Hidden;
             foreach (var elem in HideForScreenshot)
             {
                 elem.Visibility = Visibility.Visible;

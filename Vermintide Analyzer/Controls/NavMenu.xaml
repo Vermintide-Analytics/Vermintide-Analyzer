@@ -24,5 +24,6 @@
         <Rectangle Height="45" DockPanel.Dock="Top" />
         <local:NavButton x:Name="InvalidGamesButton" Destination="InvalidGames" DockPanel.Dock="Top" Content="Invalid Games" Visibility="{Binding ShowInvalidGamesButton, Converter={StaticResource TrueVisibleFalseCollapsed}}" />
         <local:NavButton x:Name="AboutButton" Destination="About" DockPanel.Dock="Bottom" Content="About" />
+        <local:NavButton x:Name="SettingsButton" Destination="Settings" DockPanel.Dock="Bottom" Content="Settings" />
     </DockPanel>
 </UserControl>

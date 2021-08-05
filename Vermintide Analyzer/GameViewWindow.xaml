@@ -30,6 +30,30 @@
             <RowDefinition />
             <RowDefinition Height="420" />
         </Grid.RowDefinitions>
+        <Rectangle x:Name="ScreenshotWatermark" Visibility="Hidden">
+            <Rectangle.Fill>
+                <VisualBrush TileMode="Tile" Viewport="0,0,0.15,0.15" Viewbox="0,0,45,12" ViewboxUnits="Absolute">
+                    <VisualBrush.Visual>
+                        <TextBlock Foreground="Gray" Opacity=".25"
+                                   FontWeight="Bold"
+                                   Text="{Binding DataContext.ScreenshotWatermarkText}">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="0.2" ScaleY="0.35" />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Rectangle.Fill>
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-10" CenterX="-200" CenterY="200" />
+                    <TranslateTransform Y="50" />
+                    <ScaleTransform ScaleX="1.3" ScaleY="1.3" />
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
         <Grid Grid.Row="0">
             <DockPanel Grid.Row="0" Margin="5">
                 <Rectangle DockPanel.Dock="Bottom" Fill="{StaticResource ThemeMidtone}" Height="1" Margin="0,5,0,0" />
@@ -42,7 +66,7 @@
                         <RowDefinition MinHeight="370" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TabControl Grid.Column="0" ItemsSource="{Binding Weapon1TabItems}" Background="{StaticResource ThemeDarker}" SelectedIndex="0">
+                    <TabControl Grid.Column="0" ItemsSource="{Binding Weapon1TabItems}" Background="Transparent" SelectedIndex="0">
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="TabItem">
                                 <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowWeapon1Tabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
@@ -59,7 +83,7 @@
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
-                    <TabControl Grid.Column="1" ItemsSource="{Binding Weapon2TabItems}" Background="{StaticResource ThemeDarker}" SelectedIndex="0">
+                    <TabControl Grid.Column="1" ItemsSource="{Binding Weapon2TabItems}" Background="Transparent" SelectedIndex="0">
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="TabItem">
                                 <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowWeapon2Tabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
@@ -382,7 +406,7 @@
                             </Grid>
                         </StackPanel>
                     </DockPanel>
-                    <TabControl Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TalentTabItems}" Background="{StaticResource ThemeDarker}" SelectedIndex="0">
+                    <TabControl Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TalentTabItems}" Background="Transparent" SelectedIndex="0">
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="TabItem">
                                 <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowTalentTabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
@@ -402,7 +426,7 @@
                 </Grid>
             </DockPanel>
         </Grid>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="{StaticResource ThemeDarker}">
             <StackPanel>
                 <Label Content="Damage (by target)" Foreground="{StaticResource ThemeLighter}" FontSize="20" HorizontalAlignment="Center" />
                 <lvc:CartesianChart Name="DamageDealtByTargetChart" DisableAnimations="True" MinHeight="390">

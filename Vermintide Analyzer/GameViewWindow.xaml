@@ -66,6 +66,8 @@
                         <RowDefinition MinHeight="370" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Visibility="{Binding AnyWeapon1Data, Converter={StaticResource TrueCollapsedFalseVisible}}"
+                               Text="No Weapon Data" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     <TabControl Grid.Column="0" ItemsSource="{Binding Weapon1TabItems}" Background="Transparent" SelectedIndex="0">
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="TabItem">
@@ -83,6 +85,8 @@
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
+                    <TextBlock Grid.Column="1" Visibility="{Binding AnyWeapon2Data, Converter={StaticResource TrueCollapsedFalseVisible}}"
+                               Text="No Weapon Data" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     <TabControl Grid.Column="1" ItemsSource="{Binding Weapon2TabItems}" Background="Transparent" SelectedIndex="0">
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="TabItem">
@@ -406,6 +410,8 @@
                             </Grid>
                         </StackPanel>
                     </DockPanel>
+                    <TextBlock Grid.Column="1" Visibility="{Binding AnyTalentData, Converter={StaticResource TrueCollapsedFalseVisible}}"
+                               Text="No Talent Data" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     <TabControl Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TalentTabItems}" Background="Transparent" SelectedIndex="0">
                         <TabControl.ItemContainerStyle>
                             <Style TargetType="TabItem">

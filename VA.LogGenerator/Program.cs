@@ -79,6 +79,13 @@ namespace LogGenerator
                 resultGenerator = () => result;
             }
 
+            Console.WriteLine("Omit talent data?");
+            var omitTalentsInput = Console.ReadLine();
+            Console.WriteLine("Omit weapon data?");
+            var omitWeaponsInput = Console.ReadLine();
+            var omitTalents = omitTalentsInput.ToLower() == "true" || omitTalentsInput == "yes" || omitTalentsInput == "y" || omitTalentsInput == "t";
+            var omitWeapons = omitWeaponsInput.ToLower() == "true" || omitWeaponsInput == "yes" || omitWeaponsInput == "y" || omitWeaponsInput == "t";
+
             for (int fileNum = 0; fileNum < numFiles; fileNum++)
             {
                 var fakeTime = DateTime.Now - TimeSpan.FromDays(fileNum);
@@ -101,8 +108,14 @@ namespace LogGenerator
 
                     // Write initial expected events
                     var (diff, car, camp) = WriteRoundStart(s);
-                    WriteWeaponSet(s);
-                    WriteTalentTree(s);
+                    if(!omitWeapons)
+                    {
+                        WriteWeaponSet(s);
+                    }
+                    if(!omitTalents)
+                    {
+                        WriteTalentTree(s);
+                    }
 
                     // Write requested number of random events
                     for(int count = 0; count < numEvents; count++)

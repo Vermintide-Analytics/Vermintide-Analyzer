@@ -23,10 +23,7 @@ namespace VA.LogReader
 		None = 0,
 		SchemaMismatch,
 		BadHeader,
-		NoStartEvent,
-		NoWeapon1Data,
-		NoWeapon2Data,
-		NoTalentData,
+		NoStartEvent
 	}
 
 

@@ -140,6 +140,10 @@ namespace Vermintide_Analyzer
         public List<WeaponTabItem> Weapon1TabItems { get; set; } = new List<WeaponTabItem>();
         public List<WeaponTabItem> Weapon2TabItems { get; set; } = new List<WeaponTabItem>();
 
+        public bool AnyTalentData => TalentTabItems.Any();
+        public bool AnyWeapon1Data => Weapon1TabItems.Any();
+        public bool AnyWeapon2Data => Weapon2TabItems.Any();
+
         public bool ShowTalentTabs => TalentTabItems.Count > 1;
         public bool ShowWeapon1Tabs => Weapon1TabItems.Count > 1;
         public bool ShowWeapon2Tabs => Weapon2TabItems.Count > 1;
@@ -159,12 +163,21 @@ namespace Vermintide_Analyzer
 
             #region Init tab item lists
             TalentTabItems.AddRange(Game.TalentTrees.Select(tTree => new TalentTabItem(tTree, Game.Career)));
-            TalentTabItems.First().IsFirst = true;
+            if(TalentTabItems.Any())
+            {
+                TalentTabItems.First().IsFirst = true;
+            }
 
             Weapon1TabItems.AddRange(Game.Weapon1Datas.Select(weap => new WeaponTabItem(weap)));
-            Weapon1TabItems.First().IsFirst = true;
+            if (Weapon1TabItems.Any())
+            {
+                Weapon1TabItems.First().IsFirst = true;
+            }
             Weapon2TabItems.AddRange(Game.Weapon2Datas.Select(weap => new WeaponTabItem(weap)));
-            Weapon2TabItems.First().IsFirst = true;
+            if (Weapon2TabItems.Any())
+            {
+                Weapon2TabItems.First().IsFirst = true;
+            }
             #endregion
 
             InitializeComponent();

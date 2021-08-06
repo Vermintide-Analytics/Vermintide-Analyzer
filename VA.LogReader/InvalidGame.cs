@@ -51,9 +51,6 @@ namespace VA.LogReader
                         return $"Please use {val} version of the Analyzer to see this game. (Required schema version: {SchemaVersion})";
                     case ParseError.BadHeader:
                     case ParseError.NoStartEvent:
-                    case ParseError.NoWeapon1Data:
-                    case ParseError.NoWeapon2Data:
-                    case ParseError.NoTalentData:
                     default:
                         return "Contact developer";
                 }

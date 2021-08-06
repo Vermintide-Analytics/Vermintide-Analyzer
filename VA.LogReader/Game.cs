@@ -360,23 +360,7 @@ namespace VA.LogReader
             g.ParseRoundStart(g.RoundStart);
 
             g.FillWeaponData();
-            if(!g.Weapon1Datas.Any())
-            {
-                g.Error = ParseError.NoWeapon1Data;
-                return g;
-            }
-            if (!g.Weapon2Datas.Any())
-            {
-                g.Error = ParseError.NoWeapon2Data;
-                return g;
-            }
-
             g.FillTalentTrees();
-            if(!g.TalentTrees.Any())
-            {
-                g.Error = ParseError.NoTalentData;
-                return g;
-            }
 
             g.CalculateTotals();
 

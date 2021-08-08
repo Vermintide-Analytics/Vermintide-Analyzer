@@ -66,7 +66,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void Delete_These_Games_Click(object sender, RoutedEventArgs e)
         {
-            if (!Util.ConfirmWithDialog()) return;
+            if (Settings.Current.ConfirmDeleteGames && !Util.ConfirmWithDialog()) return;
 
             int count = Games.Count();
             GameRepository.Instance.DeleteGames(Games.Select(ghi => ghi.GameHeader));
@@ -76,7 +76,7 @@ namespace Vermintide_Analyzer.Controls
 
         private void Delete_Selected_Game_Click(object sender, RoutedEventArgs e)
         {
-            if (!Util.ConfirmWithDialog()) return;
+            if (Settings.Current.ConfirmDeleteGames && !Util.ConfirmWithDialog()) return;
 
             if (GamesList.SelectedItem is GameHeaderItem ghi)
             {

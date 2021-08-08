@@ -22,6 +22,8 @@ namespace Vermintide_Analyzer.Controls
     {
         #region Binding
         public string PlayerName { get; set; } = Settings.Current.PlayerName;
+        public bool WatermarkScreenshots { get; set; } = Settings.Current.WatermarkScreenshots;
+        public bool ConfirmDeleteGames { get; set; } = Settings.Current.ConfirmDeleteGames;
         #endregion
 
         public SettingsView()
@@ -33,6 +35,8 @@ namespace Vermintide_Analyzer.Controls
         public void SaveSettings()
         {
             Settings.Current.PlayerName = PlayerName;
+            Settings.Current.WatermarkScreenshots = WatermarkScreenshots;
+            Settings.Current.ConfirmDeleteGames = ConfirmDeleteGames;
 
             Settings.Save();
         }

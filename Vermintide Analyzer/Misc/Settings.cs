@@ -21,12 +21,16 @@ namespace Vermintide_Analyzer
 
         #region Properties
         public string PlayerName { get; set; }
+        public bool WatermarkScreenshots { get; set; }
+        public bool ConfirmDeleteGames { get; set; }
         #endregion
 
         #region Constructor (set default values here)
         public Settings()
         {
             PlayerName = null;
+            WatermarkScreenshots = true;
+            ConfirmDeleteGames = true;
         }
         #endregion
 

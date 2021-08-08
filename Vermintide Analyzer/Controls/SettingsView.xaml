@@ -13,6 +13,14 @@
             <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Player Name: " />
             <TextBox MinWidth="100" Text="{Binding PlayerName}" />
         </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Watermark Screenshots: " ToolTip="Apply a watermark with your Player Name to screenshots of your game details" />
+            <CheckBox IsChecked="{Binding WatermarkScreenshots}" />
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Confirm Game Deletion: " ToolTip="Show a yes/no prompt when you attempt to delete a game or multiple games" />
+            <CheckBox IsChecked="{Binding ConfirmDeleteGames}" />
+        </StackPanel>
         <Button Margin="5" HorizontalAlignment="Left" Content="Save" Click="Save_Button_Click" />
     </StackPanel>
 </UserControl>

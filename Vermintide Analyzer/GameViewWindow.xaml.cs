@@ -333,7 +333,10 @@ namespace Vermintide_Analyzer
 
         private void ScreenshotToClipboard()
         {
-            ScreenshotWatermark.Visibility = Visibility.Visible;
+            if(Settings.Current.WatermarkScreenshots)
+            {
+                ScreenshotWatermark.Visibility = Visibility.Visible;
+            }
             foreach(var elem in HideForScreenshot)
             {
                 elem.Visibility = Visibility.Hidden;

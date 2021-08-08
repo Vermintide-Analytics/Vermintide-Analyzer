@@ -78,9 +78,9 @@ namespace Vermintide_Analyzer.Controls
         {
             if (!Util.ConfirmWithDialog()) return;
 
-            if (GamesList.SelectedItem is GameHeader gh)
+            if (GamesList.SelectedItem is GameHeaderItem ghi)
             {
-                GameRepository.Instance.DeleteGame(gh);
+                GameRepository.Instance.DeleteGame(ghi.GameHeader);
                 RefreshDisplay();
                 MainWindow.Instance.ToastNotifier.ShowInformation($"Game deleted");
             }

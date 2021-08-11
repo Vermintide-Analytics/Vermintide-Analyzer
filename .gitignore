@@ -132,3 +132,11 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+
+# Utilities for compiling releases
+Vermintide Analyzer/ReleaseZipFiles.txt
+Vermintide Analyzer/CREATE_RELEASE_ZIP.bat
+
+# Output of above utilities (copies of releases)
+Vermintide Analyzer/Vermintide Analyzer/*
+Vermintide Analyzer/Vermintide Analyzer.zip

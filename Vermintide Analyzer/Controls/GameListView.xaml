@@ -23,6 +23,7 @@
                         <Border.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Make Note" Click="Make_Note_For_Selected_Game_Click" />
+                                <MenuItem Header="Export" Click="Export_Selected_Game_Click" />
                                 <Separator />
                                 <MenuItem Header="Delete" Click="Delete_Selected_Game_Click" />
                             </ContextMenu>

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VA.LogReader;
+using Microsoft.Win32;
+using System.IO.Compression;
 
 namespace Vermintide_Analyzer
 {
@@ -31,6 +33,7 @@ namespace Vermintide_Analyzer
         private static readonly string LocalGamesRootDir = Path.Combine(AllGamesRootDir, Schema.SCHEMA_VERSION);
         private static readonly string InvalidGamesDir = Path.Combine(AllGamesRootDir, "Invalid");
         private static readonly string DataDir = Path.Combine(AppDataDir, Const.DATA_DIR);
+        private static readonly string TempDir = Path.Combine(AppDataDir, Const.TEMP_DIR);
         private static readonly string GameNotesFilePath = Path.Combine(DataDir, "Custom-Game-Notes.txt");
         private static readonly string GameFiltersFilePath = Path.Combine(DataDir, "Game-Filters.txt");
 
@@ -68,6 +71,10 @@ namespace Vermintide_Analyzer
             {
                 return false;
             }
+            if (!Directory.Exists(TempDir))
+            {
+                return false;
+            }
             return true;
         }
 
@@ -83,6 +90,7 @@ namespace Vermintide_Analyzer
             }
             Directory.CreateDirectory(InvalidGamesDir);
             Directory.CreateDirectory(DataDir);
+            Directory.CreateDirectory(TempDir);
         }
 
 
@@ -187,6 +195,76 @@ namespace Vermintide_Analyzer
                     GameFilters.Add(lineSegments[0], lineSegments[1]);
                 }
             }
+        }
+
+        public bool ExportGame(GameHeader game, out string failReason)
+        {
+            failReason = null;
+
+            string scrubbedPlayerName = "";
+            if(Settings.Current.PlayerName != null)
+            {
+                scrubbedPlayerName = string.Join("_", Settings.Current.PlayerName.Split(Path.GetInvalidFileNameChars()));
+            }
+
+            var dirName = scrubbedPlayerName + "_" + game.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT);
+            var newTempDirPath = Path.Combine(TempDir, dirName);
+
+            try
+            {
+                Directory.CreateDirectory(newTempDirPath);
+            }
+            catch
+            {
+                failReason = "Could not create temporary directory";
+                return false;
+            }
+
+            FileInfo gameFile = new FileInfo(game.FilePath);
+            File.Copy(gameFile.FullName, Path.Combine(newTempDirPath, gameFile.Name));
+
+            if(!string.IsNullOrWhiteSpace(Settings.Current.PlayerName))
+            {
+                File.WriteAllText(Path.Combine(newTempDirPath, "PlayerName.txt"), Settings.Current.PlayerName);
+            }
+            if(GameNotes.ContainsKey(game.FilePath))
+            {
+                File.WriteAllText(Path.Combine(newTempDirPath, "CustomNote.txt"), GameNotes[game.FilePath]);
+            }
+
+            var dlg = new SaveFileDialog()
+            {
+                DefaultExt = "zip",
+                AddExtension = true,
+                FileName = $"{scrubbedPlayerName}{(string.IsNullOrWhiteSpace(scrubbedPlayerName) ? "" : "_")}{gameFile.NameWithoutExtension()}.zip"
+            };
+
+            bool exported = false;
+            if(dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    ZipFile.CreateFromDirectory(newTempDirPath, dlg.FileName);
+                    exported = true;
+                }
+                catch
+                {
+                    failReason = "Failed to zip contents to specified destination";
+                }
+            }
+
+            // Clean up
+            try
+            {
+                Directory.Delete(newTempDirPath, true);
+            }
+            catch
+            {
+                if(failReason == null) failReason = "Could not delete temporary directory";
+                return true;
+            }
+
+            return exported;
         }
 
         public void DeleteGame(GameHeader game, bool doMiscIO = true)

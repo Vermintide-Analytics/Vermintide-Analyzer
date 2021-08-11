@@ -111,5 +111,31 @@ namespace Vermintide_Analyzer.Controls
                 e.Handled = true;
             }
         }
+
+        private void Export_Selected_Game_Click(object sender, RoutedEventArgs e)
+        {
+            if (GamesList.SelectedItem is GameHeaderItem ghi)
+            {
+                bool success = GameRepository.Instance.ExportGame(ghi.GameHeader, out string failReason);
+
+                if(success)
+                {
+                    if(failReason is null)
+                    {
+                        MainWindow.Instance.ToastNotifier.ShowSuccess("Successfully exported game data");
+                    }
+                    else
+                    {
+                        MainWindow.Instance.ToastNotifier.ShowWarning($"Game data exported with warning: \"{failReason}\"");
+                    }
+                }
+                else if(failReason != null)
+                {
+                    MainWindow.Instance.ToastNotifier.ShowError($"Could not export game data: \"{failReason}\"");
+                }
+
+                e.Handled = true;
+            }
+        }
     }
 }

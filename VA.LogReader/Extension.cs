@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -151,6 +152,10 @@ namespace VA.LogReader
 
         #region ParseError
         public static bool HasError(this ParseError error) => error != ParseError.None;
+        #endregion
+
+        #region FileInfo
+        public static string NameWithoutExtension(this FileInfo fi) => fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
         #endregion
     }
 }

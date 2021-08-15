@@ -23,6 +23,7 @@ namespace Vermintide_Analyzer
         public string PlayerName { get; set; }
         public bool WatermarkScreenshots { get; set; }
         public bool ConfirmDeleteGames { get; set; }
+        public bool IncludeCustomNoteInExport { get; set; }
         #endregion
 
         #region Constructor (set default values here)
@@ -31,6 +32,7 @@ namespace Vermintide_Analyzer
             PlayerName = null;
             WatermarkScreenshots = true;
             ConfirmDeleteGames = true;
+            IncludeCustomNoteInExport = true;
         }
         #endregion
 

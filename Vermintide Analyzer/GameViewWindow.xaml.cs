@@ -133,7 +133,8 @@ namespace Vermintide_Analyzer
             }
         }
 
-        public string ScreenshotWatermarkText => Settings.Current.PlayerName ?? "";
+        public string ScreenshotWatermarkText => PlayerNameOverride ?? Settings.Current.PlayerName ?? "";
+        public string PlayerNameOverride { get; set; }
 
         public List<TalentTabItem> TalentTabItems { get; set; } = new List<TalentTabItem>();
 
@@ -153,8 +154,10 @@ namespace Vermintide_Analyzer
         public Notifier ToastNotifier { get; set; }
         #endregion
 
-        public GameViewWindow(Game g)
+        public GameViewWindow(Game g, string playerNameOverride = null)
         {
+            PlayerNameOverride = playerNameOverride;
+
             ToastNotifier = Toast.MakeNotifier(this);
 
             GameModel = new GameItem(g);

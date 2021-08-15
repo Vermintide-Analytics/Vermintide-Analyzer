@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VA.LogReader;
 using Microsoft.Win32;
 using System.IO.Compression;
+using Vermintide_Analyzer.Models;
 
 namespace Vermintide_Analyzer
 {
@@ -33,7 +34,7 @@ namespace Vermintide_Analyzer
         private static readonly string LocalGamesRootDir = Path.Combine(AllGamesRootDir, Schema.SCHEMA_VERSION);
         private static readonly string InvalidGamesDir = Path.Combine(AllGamesRootDir, "Invalid");
         private static readonly string DataDir = Path.Combine(AppDataDir, Const.DATA_DIR);
-        private static readonly string TempDir = Path.Combine(AppDataDir, Const.TEMP_DIR);
+        public static readonly string TempDir = Path.Combine(AppDataDir, Const.TEMP_DIR);
         private static readonly string GameNotesFilePath = Path.Combine(DataDir, "Custom-Game-Notes.txt");
         private static readonly string GameFiltersFilePath = Path.Combine(DataDir, "Game-Filters.txt");
 
@@ -176,6 +177,25 @@ namespace Vermintide_Analyzer
             }
         }
 
+        public void RemoveTemporaryGameNotes(string specificFolder = null)
+        {
+            var path = specificFolder ?? TempDir;
+            List<string> notePathsToRemove = new List<string>();
+            foreach (var kvp in GameNotes)
+            {
+                if (kvp.Key.Contains(path))
+                {
+                    notePathsToRemove.Add(kvp.Key);
+                }
+            }
+            foreach (var toRemove in notePathsToRemove)
+            {
+                GameNotes.Remove(toRemove);
+            }
+
+            WriteGameNotesToDisk();
+        }
+
         public void WriteGameFiltersToDisk() => File.WriteAllLines(GameFiltersFilePath, GameFilters.Select(kvp => $"{kvp.Key},{kvp.Value}"));
 
         public void ReadGameFiltersFromDisk()
@@ -225,18 +245,20 @@ namespace Vermintide_Analyzer
 
             if(!string.IsNullOrWhiteSpace(Settings.Current.PlayerName))
             {
-                File.WriteAllText(Path.Combine(newTempDirPath, "PlayerName.txt"), Settings.Current.PlayerName);
+                File.WriteAllText(Path.Combine(newTempDirPath, ImportedGameItem.PlayerNameFileName), Settings.Current.PlayerName);
             }
-            if(GameNotes.ContainsKey(game.FilePath))
+            if(Settings.Current.IncludeCustomNoteInExport && GameNotes.ContainsKey(game.FilePath))
             {
-                File.WriteAllText(Path.Combine(newTempDirPath, "CustomNote.txt"), GameNotes[game.FilePath]);
+                File.WriteAllText(Path.Combine(newTempDirPath, ImportedGameItem.CustomNoteFileName), GameNotes[game.FilePath]);
             }
+            File.WriteAllText(Path.Combine(newTempDirPath, ImportedGameItem.CareerFileName), game.CareerName);
+            File.WriteAllText(Path.Combine(newTempDirPath, ImportedGameItem.MissionFileName), game.MissionName);
 
             var dlg = new SaveFileDialog()
             {
-                DefaultExt = "zip",
+                DefaultExt = $"{ImportedGameItem.EXPORT_EXTENSION}",
                 AddExtension = true,
-                FileName = $"{scrubbedPlayerName}{(string.IsNullOrWhiteSpace(scrubbedPlayerName) ? "" : "_")}{gameFile.NameWithoutExtension()}.zip"
+                FileName = $"{scrubbedPlayerName}{(string.IsNullOrWhiteSpace(scrubbedPlayerName) ? "" : "_")}{gameFile.NameWithoutExtension()}.{ImportedGameItem.EXPORT_EXTENSION}"
             };
 
             bool exported = false;
@@ -249,7 +271,7 @@ namespace Vermintide_Analyzer
                 }
                 catch
                 {
-                    failReason = "Failed to zip contents to specified destination";
+                    failReason = "Failed to export contents to specified destination";
                 }
             }
 
@@ -332,7 +354,7 @@ namespace Vermintide_Analyzer
                 // Move valid items to their correct location
                 foreach (var gameHeader in valids)
                 {
-                    string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + ".VA";
+                    string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + $".{ImportedGameItem.EXPORT_EXTENSION}";
 
                     string newLocation =
                         Path.Combine(

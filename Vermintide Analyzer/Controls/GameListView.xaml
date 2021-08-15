@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:log="clr-namespace:VA.LogReader;assembly=VA.LogReader"
              xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             xmlns:models="clr-namespace:Vermintide_Analyzer.Models"
              xmlns:va="clr-namespace:Vermintide_Analyzer"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -18,7 +19,7 @@
                   Background="{StaticResource ThemeDarker}" BorderThickness="0"
                   SelectionMode="Single">
             <ListView.ItemTemplate>
-                <DataTemplate DataType="log:GameHeaderItem">
+                <DataTemplate DataType="models:GameHeaderItem">
                     <Border Height="70" BorderBrush="{StaticResource ThemeLight}" BorderThickness="1" MouseUp="Game_Clicked">
                         <Border.ContextMenu>
                             <ContextMenu>

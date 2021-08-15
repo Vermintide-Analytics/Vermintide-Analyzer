@@ -21,6 +21,10 @@
             <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Confirm Game Deletion: " ToolTip="Show a yes/no prompt when you attempt to delete a game or multiple games" />
             <CheckBox IsChecked="{Binding ConfirmDeleteGames}" />
         </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Include Custom Note in Export: " ToolTip="Include your custom notes when you export a game." />
+            <CheckBox IsChecked="{Binding IncludeCustomNoteInExport}" />
+        </StackPanel>
         <Button Margin="5" HorizontalAlignment="Left" Content="Save" Click="Save_Button_Click" />
     </StackPanel>
 </UserControl>

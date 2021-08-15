@@ -1,0 +1,50 @@
+﻿<Window x:Class="Vermintide_Analyzer.ImportedGamesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Vermintide_Analyzer"
+        mc:Ignorable="d"
+        Title="ImportedGamesWindow"
+        Height="300" Width="600"
+        MinHeight="300" MinWidth="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource ThemeDarker}"
+        BorderBrush="{StaticResource ThemeMidtone}" BorderThickness="2">
+    <Grid>
+        <DataGrid x:Name="AllDataGrid" ItemsSource="{Binding Games}" AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <Style x:Key="DataGridBase" TargetType="Control">
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <TransformGroup>
+                                <RotateTransform Angle="-90" />
+                                <ScaleTransform ScaleX="1" ScaleY="-1" />
+                            </TransformGroup>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+                </Style >
+                <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridBase}"/>
+                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridBase}"/>
+                <Style TargetType="DataGridRowHeader" BasedOn="{StaticResource DataGridBase}"/>
+            </DataGrid.Resources>
+            <DataGrid.LayoutTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90"/>
+                    <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                </TransformGroup>
+            </DataGrid.LayoutTransform>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Player" Binding="{Binding PlayerName}" />
+                <DataGridTextColumn Header="Career" Binding="{Binding CareerName}" />
+                <DataGridTextColumn Header="Enemies Killed" Binding="{Binding LoadedGame.EnemiesKilled}" />
+                <DataGridTextColumn Header="Elites Killed" Binding="{Binding LoadedGame.ElitesKilled}" />
+                <DataGridTextColumn Header="Specials Killed" Binding="{Binding LoadedGame.SpecialsKilled}" />
+                <DataGridTextColumn Header="Damage Dealt" Binding="{Binding LoadedGame.DamageDealt}" />
+                <DataGridTextColumn Header="Friendly Fire Dealt" Binding="{Binding LoadedGame.FriendlyFireDealt}" />
+                <DataGridTextColumn Header="Damage Taken" Binding="{Binding LoadedGame.DamageTaken}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

@@ -117,6 +117,9 @@
     <Compile Include="Controls\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GameImportView.xaml.cs">
+      <DependentUpon>GameImportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameCompareView.xaml.cs">
       <DependentUpon>GameCompareView.xaml</DependentUpon>
     </Compile>
@@ -181,11 +184,15 @@
     <Compile Include="Converters\WeaponToIcon.cs" />
     <Compile Include="Converters\RoundResultToBrush.cs" />
     <Compile Include="Converters\CareerToPortrait.cs" />
+    <Compile Include="ImportedGamesWindow.xaml.cs">
+      <DependentUpon>ImportedGamesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Misc\CareerGrouper.cs" />
     <Compile Include="Misc\MissionGrouper.cs" />
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\Toast.cs" />
     <Compile Include="Models\GameItem.cs" />
+    <Compile Include="Models\ImportedGameItem.cs" />
     <Compile Include="Models\WeaponTabItem.cs" />
     <Compile Include="Models\TalentTabItem.cs" />
     <Compile Include="Navigation.cs" />
@@ -216,6 +223,10 @@
     <Page Include="Controls\FilterDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GameImportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\GameCompareView.xaml">
       <SubType>Designer</SubType>
@@ -266,6 +277,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameComparisonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImportedGamesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

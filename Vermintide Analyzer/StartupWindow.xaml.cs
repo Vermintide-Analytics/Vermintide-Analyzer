@@ -91,6 +91,15 @@ namespace Vermintide_Analyzer
 
             Settings.Load();
 
+            // Delete and recreate the temp dir to clear it out
+            try
+            {
+                Directory.Delete(GameRepository.TempDir, true);
+            }
+            catch { }
+            Directory.CreateDirectory(GameRepository.TempDir);
+            GameRepository.Instance.RemoveTemporaryGameNotes();
+
             Thread.Sleep(STARTUP_DELAY);
 
             Util.SafeInvoke(() =>

@@ -24,6 +24,7 @@ namespace Vermintide_Analyzer.Controls
         public string PlayerName { get; set; } = Settings.Current.PlayerName;
         public bool WatermarkScreenshots { get; set; } = Settings.Current.WatermarkScreenshots;
         public bool ConfirmDeleteGames { get; set; } = Settings.Current.ConfirmDeleteGames;
+        public bool IncludeCustomNoteInExport { get; set; } = Settings.Current.IncludeCustomNoteInExport;
         #endregion
 
         public SettingsView()
@@ -37,6 +38,7 @@ namespace Vermintide_Analyzer.Controls
             Settings.Current.PlayerName = PlayerName;
             Settings.Current.WatermarkScreenshots = WatermarkScreenshots;
             Settings.Current.ConfirmDeleteGames = ConfirmDeleteGames;
+            Settings.Current.IncludeCustomNoteInExport = IncludeCustomNoteInExport;
 
             Settings.Save();
         }

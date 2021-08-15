@@ -9,6 +9,7 @@
         xmlns:lvcbase="clr-namespace:LiveCharts;assembly=LiveCharts"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
+        xmlns:misc="clr-namespace:Vermintide_Analyzer.Misc"
         mc:Ignorable="d"
         Title="" Height="950" Width="1400"
         MinHeight="900" MinWidth="1400"
@@ -443,7 +444,8 @@
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
             <ScrollViewer x:Name="ChartScrollViewer" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Background="{StaticResource ThemeDarker}"
-                          PreviewMouseWheel="ChartScrollViewer_PreviewMouseWheel">
+                          PreviewMouseWheel="ChartScrollViewer_PreviewMouseWheel"
+                          misc:ScrollAnimationBehavior.IsEnabled="True">
                 <StackPanel>
                     <StackPanel.Resources>
                         <Style TargetType="Label">
@@ -468,7 +470,7 @@
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Health" MinValue="0">
+                            <lvc:Axis MinValue="0">
                                 <lvc:Axis.Separator>
                                     <lvc:Separator Step="10" />
                                 </lvc:Axis.Separator>
@@ -496,7 +498,7 @@
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Damage" MinValue="0">
+                            <lvc:Axis MinValue="0">
                                 <lvc:Axis.Separator>
                                     <lvc:Separator Step="10" />
                                 </lvc:Axis.Separator>
@@ -525,7 +527,7 @@
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Damage" MinValue="0">
+                            <lvc:Axis MinValue="0">
                                 <lvc:Axis.Separator>
                                     <lvc:Separator Step="10" />
                                 </lvc:Axis.Separator>
@@ -554,7 +556,7 @@
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Damage" MinValue="0">
+                            <lvc:Axis MinValue="0">
                                 <lvc:Axis.Separator>
                                     <lvc:Separator Step="10" />
                                 </lvc:Axis.Separator>

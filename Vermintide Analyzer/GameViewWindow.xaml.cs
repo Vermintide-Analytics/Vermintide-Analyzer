@@ -25,6 +25,7 @@ using ToastNotifications.Messages.Core;
 using ToastNotifications.Messages;
 using Vermintide_Analyzer.Misc;
 using Vermintide_Analyzer.Models;
+using System.Windows.Media.Animation;
 
 namespace Vermintide_Analyzer
 {
@@ -370,7 +371,21 @@ namespace Vermintide_Analyzer
         private void SetVisibleChart(int index)
         {
             var destinationY = ChartScrollViewer.TranslatePoint(new Point(0, TotalChartHeight * index), ChartScrollViewer).Y;
-            ChartScrollViewer.ScrollToVerticalOffset(destinationY);
+
+            DoubleAnimation verticalAnimation = new DoubleAnimation();
+
+            verticalAnimation.From = ChartScrollViewer.VerticalOffset;
+            verticalAnimation.To = destinationY;
+            verticalAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.35f));
+            verticalAnimation.EasingFunction = new SineEase();
+
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Children.Add(verticalAnimation);
+            Storyboard.SetTarget(verticalAnimation, ChartScrollViewer);
+            Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(ScrollAnimationBehavior.VerticalOffsetProperty)); // Attached dependency property
+            storyboard.Begin();
+
             VisibleChartIndex = index;
 
             foreach (var button in ChartSelectionControls.FindLogicalChildren<Border>().Where(b => b.Tag != null))

@@ -189,6 +189,7 @@
     </Compile>
     <Compile Include="Misc\CareerGrouper.cs" />
     <Compile Include="Misc\MissionGrouper.cs" />
+    <Compile Include="Misc\ScrollAnimationBehavior.cs" />
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\Toast.cs" />
     <Compile Include="Models\GameItem.cs" />

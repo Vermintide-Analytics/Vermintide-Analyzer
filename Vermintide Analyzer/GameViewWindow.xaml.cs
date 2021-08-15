@@ -106,6 +106,13 @@ namespace Vermintide_Analyzer
         #endregion
 
         #region Misc Display Props
+        public int ChartTitleHeight => 40;
+        public int ChartHeight => 390;
+        public int ChartSeparatorHeight => 1;
+        public int TotalChartHeight => ChartTitleHeight + ChartHeight + ChartSeparatorHeight;
+        public int VisibleChartIndex { get; set; } = 0;
+        public int NumCharts => 4;
+
         public string ResultDisp
         {
             get
@@ -135,6 +142,8 @@ namespace Vermintide_Analyzer
 
         public string ScreenshotWatermarkText => PlayerNameOverride ?? Settings.Current.PlayerName ?? "";
         public string PlayerNameOverride { get; set; }
+        public string PlayerNameOverrideDisplay => PlayerNameOverride ?? "";
+        public bool HasPlayerNameOverride => !string.IsNullOrEmpty(PlayerNameOverride);
 
         public List<TalentTabItem> TalentTabItems { get; set; } = new List<TalentTabItem>();
 
@@ -358,6 +367,23 @@ namespace Vermintide_Analyzer
             ToastNotifier.ShowInformation("Screenshot copied to clipboard");
         }
 
+        private void SetVisibleChart(int index)
+        {
+            var destinationY = ChartScrollViewer.TranslatePoint(new Point(0, TotalChartHeight * index), ChartScrollViewer).Y;
+            ChartScrollViewer.ScrollToVerticalOffset(destinationY);
+            VisibleChartIndex = index;
+
+            foreach (var button in ChartSelectionControls.FindLogicalChildren<Border>().Where(b => b.Tag != null))
+            {
+                button.Background = (Brush)Util.StaticResource("ThemeDarker");
+            }
+            ChartSelectionControls.FindLogicalChildren<Border>().FirstOrDefault(b =>
+                (string)b.Tag != "Next" &&
+                (string)b.Tag != "Previous" &&
+                int.Parse((string)b.Tag) == VisibleChartIndex)
+                    .Background = (Brush)Util.StaticResource("ThemeLight");
+        }
+
         #region Event Handlers
         private void Make_Note_For_Game_Click(object sender, RoutedEventArgs e)
         {
@@ -396,11 +422,45 @@ namespace Vermintide_Analyzer
             {
                 ScreenshotToClipboard();
             }
+            else if(e.Key == Key.Down)
+            {
+                SetVisibleChart((VisibleChartIndex + 1) % NumCharts);
+            }
+            else if(e.Key == Key.Up)
+            {
+                SetVisibleChart((VisibleChartIndex - 1 + NumCharts) % NumCharts);
+            }
         }
 
         private void ScreenshotInstructions_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ScreenshotToClipboard();
+        }
+
+        private void ChartScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void ChartSelect_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var elem = sender as FrameworkElement;
+
+            var destination = VisibleChartIndex;
+            if ((string)elem.Tag == "Next")
+            {
+                destination = (destination + 1) % NumCharts;
+            }
+            else if ((string)elem.Tag == "Previous")
+            {
+                destination = (destination - 1 + NumCharts) % NumCharts;
+            }
+            else
+            {
+                destination = int.Parse((string)elem.Tag);
+            }
+
+            SetVisibleChart(destination);
         }
         #endregion
     }

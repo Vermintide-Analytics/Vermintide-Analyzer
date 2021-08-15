@@ -106,6 +106,11 @@
                     </TabControl>
                     <DockPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" LastChildFill="False">
                         <StackPanel DockPanel.Dock="Right">
+                            <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right"
+                                        Visibility="{Binding HasPlayerNameOverride, Converter={StaticResource TrueVisibleFalseCollapsed}}" >
+                                <TextBlock Text="By: " FontWeight="Bold" TextDecorations="Underline" />
+                                <TextBlock Text="{Binding PlayerNameOverrideDisplay}" />
+                            </StackPanel>
                             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <TextBlock Text="Custom Notes: " FontWeight="Bold" TextDecorations="Underline" />
                                 <StackPanel HorizontalAlignment="Right" Cursor="Hand">
@@ -432,123 +437,141 @@
                 </Grid>
             </DockPanel>
         </Grid>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="{StaticResource ThemeDarker}">
-            <StackPanel>
-                <Label Content="Health" Foreground="{StaticResource ThemeLighter}" FontSize="20" HorizontalAlignment="Center" />
-                <lvc:CartesianChart Name="CurrentHealthChart" DisableAnimations="True" MinHeight="390">
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="60">
-                                </lvc:Separator>
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Health" MinValue="0">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="10" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
-                    <lvc:CartesianChart.Series>
-                        <lvcbase:SeriesCollection>
-                            <lvc:StackedAreaSeries LineSmoothness="0" StackMode="Values" Title="Permanent" StrokeThickness="0" Fill="{StaticResource ColorPermanentHP}" Values="{Binding PermanentHealthPoints}" DataLabels="False" />
-                            <lvc:StackedAreaSeries LineSmoothness="0" StackMode="Values" Title="Temporary" StrokeThickness="0" Fill="{StaticResource ColorTemporaryHP}" Values="{Binding TemporaryHealthPoints}" DataLabels="False" />
-                        </lvcbase:SeriesCollection>
-                    </lvc:CartesianChart.Series>
-                </lvc:CartesianChart>
-                <Rectangle Height="1" Fill="{StaticResource ThemeMidtone}" />
-                <Label Content="Damage Taken" Foreground="{StaticResource ThemeLighter}" FontSize="20" HorizontalAlignment="Center" />
-                <lvc:CartesianChart Name="DamageTakenChart" DisableAnimations="True" MinHeight="390">
-                    <lvc:CartesianChart.DataTooltip>
-                        <controls:DamageTooltip />
-                    </lvc:CartesianChart.DataTooltip>
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="60">
-                                </lvc:Separator>
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Damage" MinValue="0">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="10" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
-                    <lvc:CartesianChart.Series>
-                        <lvcbase:SeriesCollection>
-                            <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding DamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Specials" Fill="{StaticResource DataSpecial}" Values="{Binding SpecialDamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Monsters" Fill="{StaticResource DataMonster}" Values="{Binding MonsterDamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding FriendlyFireTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                        </lvcbase:SeriesCollection>
-                    </lvc:CartesianChart.Series>
-                </lvc:CartesianChart>
-                <Rectangle Height="1" Fill="{StaticResource ThemeMidtone}" />
-                <Label Content="Damage (by target)" Foreground="{StaticResource ThemeLighter}" FontSize="20" HorizontalAlignment="Center" />
-                <lvc:CartesianChart Name="DamageDealtByTargetChart" DisableAnimations="True" MinHeight="390">
-                    <lvc:CartesianChart.DataTooltip>
-                        <controls:DamageTooltip />
-                    </lvc:CartesianChart.DataTooltip>
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="60" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Damage" MinValue="0">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="10" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
-                    <lvc:CartesianChart.Series>
-                        <lvcbase:SeriesCollection>
-                            <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding PlainDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Monsters" Fill="{StaticResource DataMonster}" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                        </lvcbase:SeriesCollection>
-                    </lvc:CartesianChart.Series>
-                </lvc:CartesianChart>
-                <Rectangle Height="1" Fill="{StaticResource ThemeMidtone}" />
-                <Label Content="Damage (by source)" Foreground="{StaticResource ThemeLighter}" FontSize="20" HorizontalAlignment="Center" />
-                <lvc:CartesianChart Name="DamageDealtBySourceChart" DisableAnimations="True" MinHeight="390">
-                    <lvc:CartesianChart.DataTooltip>
-                        <controls:DamageTooltip />
-                    </lvc:CartesianChart.DataTooltip>
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="60">
-                                </lvc:Separator>
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Damage" MinValue="0">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator Step="10" />
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
-                    <lvc:CartesianChart.Series>
-                        <lvcbase:SeriesCollection>
-                            <geared:GScatterSeries Title="Weapon 1" Fill="{StaticResource DataWeapon1}" Values="{Binding Weapon1DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Weapon 2" Fill="{StaticResource DataWeapon2}" Values="{Binding Weapon2DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Career" Fill="{StaticResource DataCareer}" Values="{Binding CareerDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                            <geared:GScatterSeries Title="Other" Fill="{StaticResource DataOther}" Values="{Binding OtherDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
-                        </lvcbase:SeriesCollection>
-                    </lvc:CartesianChart.Series>
-                </lvc:CartesianChart>
-                <!--<Rectangle Height="1" Fill="{StaticResource ThemeMidtone}" />-->
-                <!--<Label Content="Stagger" Foreground="{StaticResource ThemeLighter}" FontSize="20" HorizontalAlignment="Center" />
-                <lvc:CartesianChart Name="StaggerDealtChart" DisableAnimations="True" MinHeight="390">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="25" />
+            </Grid.ColumnDefinitions>
+            <ScrollViewer x:Name="ChartScrollViewer" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Background="{StaticResource ThemeDarker}"
+                          PreviewMouseWheel="ChartScrollViewer_PreviewMouseWheel">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="Height" Value="{Binding ChartTitleHeight}" />
+                            <Setter Property="FontSize" Value="20" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                        </Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Height" Value="{Binding ChartSeparatorHeight}" />
+                            <Setter Property="Fill" Value="{StaticResource ThemeMidtone}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Label Content="Health" />
+                    <lvc:CartesianChart Name="CurrentHealthChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="60">
+                                    </lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Health" MinValue="0">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="10" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.Series>
+                            <lvcbase:SeriesCollection>
+                                <lvc:StackedAreaSeries LineSmoothness="0" StackMode="Values" Title="Permanent" StrokeThickness="0" Fill="{StaticResource ColorPermanentHP}" Values="{Binding PermanentHealthPoints}" DataLabels="False" />
+                                <lvc:StackedAreaSeries LineSmoothness="0" StackMode="Values" Title="Temporary" StrokeThickness="0" Fill="{StaticResource ColorTemporaryHP}" Values="{Binding TemporaryHealthPoints}" DataLabels="False" />
+                            </lvcbase:SeriesCollection>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                    <Rectangle />
+                    <Label Content="Damage Taken" />
+                    <lvc:CartesianChart Name="DamageTakenChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                        <lvc:CartesianChart.DataTooltip>
+                            <controls:DamageTooltip />
+                        </lvc:CartesianChart.DataTooltip>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="60">
+                                    </lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Damage" MinValue="0">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="10" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.Series>
+                            <lvcbase:SeriesCollection>
+                                <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding DamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Specials" Fill="{StaticResource DataSpecial}" Values="{Binding SpecialDamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Monsters" Fill="{StaticResource DataMonster}" Values="{Binding MonsterDamageTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding FriendlyFireTakenPoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            </lvcbase:SeriesCollection>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                    <Rectangle />
+                    <Label Content="Damage (by target)" />
+                    <lvc:CartesianChart Name="DamageDealtByTargetChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                        <lvc:CartesianChart.DataTooltip>
+                            <controls:DamageTooltip />
+                        </lvc:CartesianChart.DataTooltip>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="60" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Damage" MinValue="0">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="10" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.Series>
+                            <lvcbase:SeriesCollection>
+                                <geared:GScatterSeries Title="Enemies" Fill="{StaticResource DataEnemy}" Values="{Binding PlainDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Monsters" Fill="{StaticResource DataMonster}" Values="{Binding MonsterDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Friendly Fire" Fill="{StaticResource DataBad}" Values="{Binding AllyDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            </lvcbase:SeriesCollection>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                    <Rectangle />
+                    <Label Content="Damage (by source)" />
+                    <lvc:CartesianChart Name="DamageDealtBySourceChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                        <lvc:CartesianChart.DataTooltip>
+                            <controls:DamageTooltip />
+                        </lvc:CartesianChart.DataTooltip>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="60">
+                                    </lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Damage" MinValue="0">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="10" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.Series>
+                            <lvcbase:SeriesCollection>
+                                <geared:GScatterSeries Title="Weapon 1" Fill="{StaticResource DataWeapon1}" Values="{Binding Weapon1DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Weapon 2" Fill="{StaticResource DataWeapon2}" Values="{Binding Weapon2DamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Career" Fill="{StaticResource DataCareer}" Values="{Binding CareerDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Other" Fill="{StaticResource DataOther}" Values="{Binding OtherDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            </lvcbase:SeriesCollection>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                    <!--<Rectangle />-->
+                    <!--<Label Content="Stagger" />
+                <lvc:CartesianChart Name="StaggerDealtChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
                     <lvc:CartesianChart.DataTooltip>
                         <controls:DamageTooltip />
                     </lvc:CartesianChart.DataTooltip>
@@ -574,8 +597,33 @@
                         </lvcbase:SeriesCollection>
                     </lvc:CartesianChart.Series>
                 </lvc:CartesianChart>-->
-            </StackPanel>
-        </ScrollViewer>
+                </StackPanel>
+            </ScrollViewer>
+            <DockPanel x:Name="ChartSelectionControls" Grid.Column="1" LastChildFill="False" VerticalAlignment="Center" Margin="0,0,5,0">
+                <DockPanel.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="Width" Value="20" />
+                        <Setter Property="Height" Value="20" />
+                        <Setter Property="CornerRadius" Value="20" />
+                        <Setter Property="BorderThickness" Value="3" />
+                        <Setter Property="BorderBrush" Value="{StaticResource ThemeMidtone}" />
+                        <Setter Property="Background" Value="{StaticResource ThemeDarker}" />
+                        <Setter Property="Margin" Value="0,2" />
+                        <Setter Property="Cursor" Value="Hand" />
+                    </Style>
+                </DockPanel.Resources>
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="Previous" BorderThickness="0">
+                    <TextBlock Text="5" FontFamily="Marlett" FontSize="24" Margin="0,0,-3,0"  HorizontalAlignment="Right" />
+                </Border>
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="0" Background="{StaticResource ThemeLight}" />
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="1" />
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="2" />
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="3" />
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="Next" BorderThickness="0">
+                    <TextBlock Text="6" FontFamily="Marlett" FontSize="24" Margin="0,0,-3,0"  HorizontalAlignment="Right" />
+                </Border>
+            </DockPanel>
+        </Grid>
     </Grid>
 
 </Window>

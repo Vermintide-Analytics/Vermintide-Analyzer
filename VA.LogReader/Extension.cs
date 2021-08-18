@@ -150,6 +150,19 @@ namespace VA.LogReader
         public static bool IsWin(this ROUND_RESULT r) => r == ROUND_RESULT.Win;
         #endregion
 
+        #region PROPERTY
+        public static bool IsPercent(this PROPERTY property)
+        {
+            switch(property)
+            {
+                case PROPERTY.Stamina:
+                    return false;
+                default:
+                    return true;
+            }
+        }
+        #endregion
+
         #region ParseError
         public static bool HasError(this ParseError error) => error != ParseError.None;
         #endregion

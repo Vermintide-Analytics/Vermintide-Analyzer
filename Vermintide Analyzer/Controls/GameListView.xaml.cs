@@ -48,7 +48,8 @@ namespace Vermintide_Analyzer.Controls
 
             var ghi = ((ContentPresenter)((FrameworkElement)sender).TemplatedParent).Content as GameHeaderItem;
 
-            new GameViewWindow(Game.FromFile(ghi.GameHeader.FilePath)) {
+            var game = Game.FromFile(ghi.GameHeader.FilePath);
+            new GameViewWindow(game) {
                 Owner = Window.GetWindow(this)
             }.Show();
         }

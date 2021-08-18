@@ -416,25 +416,43 @@
                             </Grid>
                         </StackPanel>
                     </DockPanel>
-                    <TextBlock Grid.Column="1" Visibility="{Binding AnyTalentData, Converter={StaticResource TrueCollapsedFalseVisible}}"
+                    <DockPanel Grid.Column="1">
+                        <Grid DockPanel.Dock="Left">
+                            <TextBlock Grid.Column="1" Visibility="{Binding AnyTalentData, Converter={StaticResource TrueCollapsedFalseVisible}}"
                                Text="No Talent Data" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <TabControl Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TalentTabItems}" Background="Transparent" SelectedIndex="0">
-                        <TabControl.ItemContainerStyle>
-                            <Style TargetType="TabItem">
-                                <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowTalentTabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
-                            </Style>
-                        </TabControl.ItemContainerStyle>
-                        <TabControl.ItemTemplate>
-                            <DataTemplate DataType="models:TalentTabItem">
-                                <TextBlock Text="{Binding Header}" ToolTip="{Binding Tooltip}" />
-                            </DataTemplate>
-                        </TabControl.ItemTemplate>
-                        <TabControl.ContentTemplate>
-                            <DataTemplate DataType="models:TalentTabItem">
-                                <controls:TalentTreeDisplay Career="{Binding Career}" Talents="{Binding Talents}" />
-                            </DataTemplate>
-                        </TabControl.ContentTemplate>
-                    </TabControl>
+                            <TabControl Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TalentTabItems}" Background="Transparent" SelectedIndex="0">
+                                <TabControl.ItemContainerStyle>
+                                    <Style TargetType="TabItem">
+                                        <Setter Property="Visibility" Value="{Binding Path=DataContext.ShowTalentTabs, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Converter={StaticResource TrueVisibleFalseHidden}}" />
+                                    </Style>
+                                </TabControl.ItemContainerStyle>
+                                <TabControl.ItemTemplate>
+                                    <DataTemplate DataType="models:TalentTabItem">
+                                        <TextBlock Text="{Binding Header}" ToolTip="{Binding Tooltip}" />
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate DataType="models:TalentTabItem">
+                                        <controls:TalentTreeDisplay Career="{Binding Career}" Talents="{Binding Talents}" />
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                            </TabControl>
+                        </Grid>
+                        <StackPanel VerticalAlignment="Bottom">
+                            <StackPanel.Resources>
+                                <Style TargetType="controls:ItemDetailsView">
+                                    <Setter Property="Margin" Value="0,5" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel Visibility="{Binding IsChaosWastes, Converter={StaticResource TrueCollapsedFalseVisible}}">
+                                <controls:ItemDetailsView Item="{Binding Game.Necklace}" />
+                                <controls:ItemDetailsView Item="{Binding Game.Charm}" />
+                                <controls:ItemDetailsView Item="{Binding Game.Trinket}" />
+                            </StackPanel>
+                            <controls:ItemDetailsView Visibility="{Binding IsChaosWastes, Converter={StaticResource TrueVisibleFalseCollapsed}}" Item="{Binding Game.ChaosWastesProperties}" />
+                        </StackPanel>
+                    </DockPanel>
+                    
                 </Grid>
             </DockPanel>
         </Grid>

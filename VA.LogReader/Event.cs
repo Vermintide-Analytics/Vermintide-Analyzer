@@ -53,6 +53,12 @@ namespace VA.LogReader
                 case EventType.Player_State:
                     result = Player_State.Create(payload);
                     break;
+                case EventType.Trait_Gained:
+                    result = Trait_Gained.Create(payload);
+                    break;
+                case EventType.Property_Gained:
+                    result = Property_Gained.Create(payload);
+                    break;
                 case EventType.Talent_Tree:
                     result = Talent_Tree.Create(payload);
                     break;
@@ -90,7 +96,9 @@ namespace VA.LogReader
         Enemy_Killed = 8,
         Damage_Taken = 9,
         Temp_HP_Gained = 10,
-        
-        // 11 through 63 UNUSED
+        Trait_Gained = 11,
+        Property_Gained = 12,
+
+        // 13 through 63 UNUSED
     }
 }

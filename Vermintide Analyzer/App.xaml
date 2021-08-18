@@ -54,9 +54,13 @@
             <converters:NullableBoolToYesNoEither  x:Key="NullableBoolToYesNoEither" />
             <converters:GameToDifficultyModifierString x:Key="GameToDifficultyModifierString" />
 
+            <converters:TraitToDescription x:Key="TraitToDescription" />
+
             <converters:ParseErrorToDisplayString x:Key="ParseErrorToDisplayString" />
             <converters:CareerToDisplayString x:Key="CareerToDisplayString" />
             <converters:CampaignToDisplayString x:Key="CampaignToDisplayString" />
+            <converters:TraitToDisplayString x:Key="TraitToDisplayString" />
+            <converters:PropertyToDisplayString x:Key="PropertyToDisplayString" />
 
             <converters:TrueVisibleFalseCollapsed x:Key="TrueVisibleFalseCollapsed" />
             <converters:TrueVisibleFalseHidden x:Key="TrueVisibleFalseHidden" />
@@ -65,6 +69,7 @@
             <converters:WeaponToIcon x:Key="WeaponToIcon" />
             <converters:RoundResultToBrush x:Key="RoundResultToBrush" />
             <converters:CareerToPortrait x:Key="CareerToPortrait"/>
+            <converters:RarityToIcon x:Key="RarityToIcon"/>
 
             <system:Double x:Key="Size">20</system:Double>
             <system:Double x:Key="SeparatorStrokeThickness">1.8</system:Double>

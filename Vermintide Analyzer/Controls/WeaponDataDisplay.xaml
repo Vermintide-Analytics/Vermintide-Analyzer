@@ -4,30 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
+             xmlns:log="clr-namespace:VA.LogReader;assembly=VA.LogReader"
              mc:Ignorable="d" Name="control"
              d:DesignHeight="300" d:DesignWidth="600">
     <StackPanel Orientation="Horizontal">
-        <local:WeaponIcon Width="100" Height="100" VerticalAlignment="Top" Weapon="{Binding ElementName=control, Path=Weapon}" />
+        <StackPanel CanHorizontallyScroll="False" MaxWidth="110">
+            <local:WeaponIcon Width="100" Height="100" VerticalAlignment="Top" Weapon="{Binding ElementName=control, Path=Weapon}" />
+            <local:ItemDetailsView x:Name="ItemDetailsDisplay" />
+        </StackPanel>
         <Grid ClipToBounds="False">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
             <Grid.Resources>
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="{StaticResource ThemeMidtone}" />
@@ -48,6 +33,25 @@
                     <Setter Property="BorderThickness" Value="3" />
                 </Style>
             </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             
             <Border Grid.Row="0" Grid.Column="1" >
                 <TextBlock Text="Total" FontWeight="Bold" TextAlignment="Center" />

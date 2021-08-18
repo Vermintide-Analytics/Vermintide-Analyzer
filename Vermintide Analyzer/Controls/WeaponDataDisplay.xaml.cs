@@ -30,11 +30,13 @@ namespace Vermintide_Analyzer.Controls
         public static readonly DependencyProperty WeaponProperty =
             DependencyProperty.Register("Weapon", typeof(WeaponData), typeof(WeaponDataDisplay),
                 new PropertyMetadata(
-                    new WeaponData(HERO.Bardin, WEAPON_SLOT.Weapon1, 0, 0),
+                    new WeaponData(HERO.Bardin, WEAPON_SLOT.Weapon1, 0, RARITY.Gray, 0),
                     new PropertyChangedCallback((obj, args) =>
                     { 
                         if(obj is WeaponDataDisplay disp)
                         {
+                            disp.ItemDetailsDisplay.Item = disp.Weapon.ItemDetails;
+
                             disp.UpdateDisplay();
                         }
                     })));

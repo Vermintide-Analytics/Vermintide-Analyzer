@@ -253,6 +253,144 @@ namespace VA.LogReader
 		Special = 2
 	}
 
+	public enum TRAIT_SOURCE : byte
+	{
+		Unknown = 0,
+	
+		Weapon1 = 1,
+		Weapon2 = 2,
+		Necklace = 3,
+		Charm = 4,
+		Trinket = 5
+	}
+
+	public enum TRAIT : byte
+	{
+		Unknown = 0,
+
+		[Description("Assisting an ally under attack restores 15 Temporary Health to both players")]
+		Heroic_Intervention = 1,
+		[Description("Blocking an attack increases the damage the attacker takes by 20% for 5 seconds")]
+		Off_Balance = 2,
+		[Description("Increases Push strength by 50% when used against an attacking enemy")]
+		Opportunist = 3,
+		[Description("Timed blocks reduce stamina cost by 100%")]
+		Parry = 4,
+		[Description("Melee critical strikes reduce the cooldown of your Career Skill by 5%. Effect can only trigger once every 4 seconds")]
+		Resourceful_Combatant = 5,
+		[Description("Critical Hits increase attack speed by 20% for 5 seconds")]
+		Swift_Slaying = 6,
+		[Description("Consecutive attacks against the same targets boosts attack power by 5.0% for 5 seconds")]
+		Barrage = 7,
+		[Description("Headshots replenish 1 ammo")]
+		Conservative_Shooter = 8,
+		[Description("Critical hits refund the overcharge cost of the attack")]
+		Heat_Sink = 9,
+		[Description("Critical hits increase attack power by 25% against targets with the same armor class for a short time")]
+		Hunter = 10,
+		[Description("Headshots restore stamina to nearby allies")]
+		Inspirational_Shot = 11,
+		[Description("Ranged critical hits reduce the cooldown of your Career Skill by 5%. Effect can only trigger once every 4 seconds")]
+		Resourceful_Sharpshooter = 12,
+		[Description("Critical hits restore 5% of maximum ammunition. Can trigger once per attack")]
+		Scrounger = 13,
+		[Description("Weapon generates 20.0% less overheat")]
+		Thermal_Equalizer = 14,
+		[Description("Taking damage reduces the damage you take from subsequent sources by 40% for 2 seconds. This effect can only trigger every 2 seconds")]
+		Barkskin = 15,
+		[Description("Increases effectiveness of healing on you by 30%")]
+		Boon_of_Shallya = 16,
+		[Description("Healing an ally with Medical Supplies also heals you for 50.0% of your missing health")]
+		Hand_of_Shallya = 17,
+		[Description("25.0% chance to not consume healing item on use")]
+		Healers_Touch = 18,
+		[Description("Passively regenerates 1 health every 5 seconds. Healing from First Aid Kits and Healing Draughts are converted to temporary health and cure any wound")]
+		Natural_Bond = 19,
+		[Description("Drinking a potion grants the effect of all other potions. Duration reduced by 50%")]
+		Concoction = 20,
+		[Description("Increased duration of potions by 50%")]
+		Decanter = 21,
+		[Description("25.0% chance to not consume potion on use")]
+		Home_Brewer = 22,
+		[Description("Consuming a potion spreads the effect to the nearest ally")]
+		Proxy = 23,
+		[Description("Increases grenade explosion radius by 50.0%")]
+		Explosive_Ordinance = 24,
+		[Description("25.0% chance to not consume grenade on use")]
+		Grenadier = 25,
+		[Description("Grenades cause hit enemies to take 20.0% increased damage for 10.0 seconds")]
+		Shrapnel = 26,
+		[Description("Critical hits heal 5 health (grants temporary health)")]
+		Regrowth = 27,
+		[Description("Killing an armoured enemy sends metal shards to damage other nearby enemies")]
+		Shard_Strike = 28,
+		[Description("Increase Attack Speed by 2% for every 5 kills (Up to 5 times). Resets if you do not kill anything for 30 sec")]
+		Bloodthirst = 29,
+		[Description("Damage taken is reduced to 20 damage or half of its original value, which ever is highest")]
+		Divine_Shield = 30,
+		[Description("Critical hits stagger nearby enemeis")]
+		Shockwave = 31,
+		[Description("Each headshot increases the damage of the next attack by 10%. (up to 20 times). If you hit an enemy anywhere other than the head, 1 stack gets removed")]
+		Deadeye = 32,
+		[Description("Taking damage grants movement speed for a short time")]
+		Adrenaline_Rush = 33,
+		[Description("Chance to not consume potion on use, at the cost of health")]
+		Concentrated_Brew = 34
+	}
+
+	public enum PROPERTY_SOURCE : byte
+	{
+		Unknown = 0,
+
+		Weapon1 = 1,
+		Weapon2 = 2,
+		Necklace = 3,
+		Charm = 4,
+		Trinket = 5,
+		Chaos_Wastes
+	}
+
+	public enum PROPERTY : byte
+	{
+		Unknown = 0,
+
+		Attack_Speed = 1,
+		Crit_Chance = 2,
+		Crit_Power = 3,
+		Stamina = 4,
+		Block_Cost_Reduction = 5,
+		Push_Block_Angle = 6,
+		Damage_Reduction_vs_Skaven = 7,
+		Damage_Reduction_vs_Chaos = 8,
+		Damage_Reduction_vs_Area = 9,
+		Health = 10,
+		Power_vs_Skaven = 11,
+		Power_vs_Chaos = 12,
+		Power_vs_Infantry = 13,
+		Power_vs_Armored = 14,
+		Power_vs_Berserkers = 15,
+		Power_vs_Monsters = 16,
+		Curse_Resistance = 17,
+		Movement_Speed = 18,
+		Cooldown_Reduction = 19,
+		Respawn_Speed = 20,
+		Revive_Speed = 21,
+		Stamina_Recovery = 22,
+		Pilgrims_Coins = 23,
+		Ammo_Capacity = 24
+	}
+
+	public enum RARITY : byte
+	{
+		Gray = 0,
+		White = 1,
+		Green = 2,
+		Blue = 3,
+		Orange = 4,
+		Red = 5,
+		Magic = 6
+	}
+
 	public enum ROUND_RESULT : byte
 	{
 		Quit = 0,

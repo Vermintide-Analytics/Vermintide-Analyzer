@@ -11,7 +11,6 @@ namespace VA.LogReader
 {
     public class Game
     {
-
         public const string LOG_DATE_TIME_FORMAT = "yyyy-M-d_H-m-s";
 
         public const int HEADER_BYTES = 7;
@@ -51,6 +50,13 @@ namespace VA.LogReader
         public float Duration { get; private set; }
         public double DurationMinutes { get; set; }
         public float HighestDamage { get; private set; }
+
+        #region Equipment (traits and properties)
+        public ItemDetails Necklace { get; set; } = new ItemDetails();
+        public ItemDetails Charm { get; set; } = new ItemDetails();
+        public ItemDetails Trinket { get; set; } = new ItemDetails();
+        public ItemDetails ChaosWastesProperties { get; set; } = new ItemDetails();
+        #endregion
 
         public List<WeaponData> Weapon1Datas { get; private set; } = new List<WeaponData>();
         public List<WeaponData> Weapon2Datas { get; private set; } = new List<WeaponData>();
@@ -359,6 +365,8 @@ namespace VA.LogReader
             }
             g.ParseRoundStart(g.RoundStart);
 
+
+            g.FillEquipmentData();
             g.FillWeaponData();
             g.FillTalentTrees();
 
@@ -417,24 +425,51 @@ namespace VA.LogReader
             Result = evt.Result;
         }
 
+        private void FillEquipmentData()
+        {
+            FillDataForItem(Necklace, TRAIT_SOURCE.Necklace, PROPERTY_SOURCE.Necklace);
+            FillDataForItem(Charm, TRAIT_SOURCE.Charm, PROPERTY_SOURCE.Charm);
+            FillDataForItem(Trinket, TRAIT_SOURCE.Trinket, PROPERTY_SOURCE.Trinket);
+            FillDataForItem(ChaosWastesProperties, null, PROPERTY_SOURCE.Chaos_Wastes);
+
+            void FillDataForItem(ItemDetails item, TRAIT_SOURCE? traitSource, PROPERTY_SOURCE? propertySource)
+            {
+                if(traitSource.HasValue)
+                {
+                    var traitEvents = Events.Where(evt => evt is Trait_Gained).Cast<Trait_Gained>().Where(tg => tg.Source == traitSource.Value);
+                    foreach(var evt in traitEvents)
+                    {
+                        item.Traits.Add(evt.Trait);
+                    }
+                }
+                if (propertySource.HasValue)
+                {
+                    var propertyEvents = Events.Where(evt => evt is Property_Gained).Cast<Property_Gained>().Where(pg => pg.Source == propertySource.Value);
+                    foreach (var evt in propertyEvents)
+                    {
+                        item.Properties.Add(new Property(evt.Property, evt.PropertyValue));
+                    }
+                }
+            }
+        }
+
         private void FillWeaponData()
         {
             WeaponData currentWeapon1 = null;
             WeaponData currentWeapon2 = null;
+
             foreach(var evt in Events)
             {
                 if(evt is Weapon_Set weapons)
                 {
-                    if(currentWeapon1 is null || currentWeapon1.WeaponId != weapons.Weapon1)
-                    {
-                        currentWeapon1 = new WeaponData(Career.Hero(), WEAPON_SLOT.Weapon1, weapons.Weapon1, weapons.Time);
-                        Weapon1Datas.Add(currentWeapon1);
-                    }
-                    if (currentWeapon2 is null || currentWeapon2.WeaponId != weapons.Weapon2)
-                    {
-                        currentWeapon2 = new WeaponData(Career.Hero(), WEAPON_SLOT.Weapon2, weapons.Weapon2, weapons.Time);
-                        Weapon2Datas.Add(currentWeapon2);
-                    }
+                    var newWeapon1 = new WeaponData(weapons.Weapon1Owner, WEAPON_SLOT.Weapon1, weapons.Weapon1, weapons.Weapon1Rarity, weapons.Time);
+                    var newWeapon2 = new WeaponData(weapons.Weapon2Owner, WEAPON_SLOT.Weapon2, weapons.Weapon2, weapons.Weapon2Rarity, weapons.Time);
+
+                    currentWeapon1 = newWeapon1;
+                    Weapon1Datas.Add(newWeapon1);
+
+                    currentWeapon2 = newWeapon2;
+                    Weapon2Datas.Add(newWeapon2);
                 }
                 else
                 {
@@ -450,6 +485,42 @@ namespace VA.LogReader
             }
 
             foreach(var weapon in Weapon1Datas)
+            {
+                weapon.CalculateItemDetails();
+            }
+            foreach (var weapon in Weapon2Datas)
+            {
+                weapon.CalculateItemDetails();
+            }
+
+            int count = 1;
+            while(count < Weapon1Datas.Count)
+            {
+                if(Weapon1Datas[count-1].Equals(Weapon1Datas[count]))
+                {
+                    Weapon1Datas[count - 1].Events.AddRange(Weapon1Datas[count].Events);
+                    Weapon1Datas.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+            count = 1;
+            while (count < Weapon2Datas.Count)
+            {
+                if (Weapon2Datas[count - 1].Equals(Weapon2Datas[count]))
+                {
+                    Weapon2Datas[count - 1].Events.AddRange(Weapon2Datas[count].Events);
+                    Weapon2Datas.RemoveAt(count);
+                }
+                else
+                {
+                    count++;
+                }
+            }
+
+            foreach (var weapon in Weapon1Datas)
             {
                 weapon.RecalculateStats();
             }

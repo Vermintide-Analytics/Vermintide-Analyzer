@@ -126,6 +126,9 @@
     <Compile Include="Controls\InvalidGamesView.xaml.cs">
       <DependentUpon>InvalidGamesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ItemDetailsView.xaml.cs">
+      <DependentUpon>ItemDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MultiSelectComboBox.xaml.cs">
       <DependentUpon>MultiSelectComboBox.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,8 @@
       <DependentUpon>WeaponIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BindingDebugger.cs" />
+    <Compile Include="Converters\EnumToDescription.cs" />
+    <Compile Include="Converters\RarityToIcon.cs" />
     <Compile Include="Converters\FormatDouble.cs" />
     <Compile Include="Converters\NullableBoolToYesNoEither.cs" />
     <Compile Include="Converters\GameToDifficultyModifierString.cs" />
@@ -242,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\GameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ItemDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -804,6 +813,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Rarities\Blue.png" />
+    <Resource Include="Images\Rarities\Gray.png" />
+    <Resource Include="Images\Rarities\Green.png" />
+    <Resource Include="Images\Rarities\Magic.png" />
+    <Resource Include="Images\Rarities\Orange.png" />
+    <Resource Include="Images\Rarities\Red.png" />
+    <Resource Include="Images\Rarities\White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Misc\ItemFrame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

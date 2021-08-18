@@ -20,6 +20,15 @@ namespace Vermintide_Analyzer.Converters
 
     public class CareerToDisplayString : EnumToDisplayString<CAREER> { }
     public class CampaignToDisplayString : EnumToDisplayString<CAMPAIGN> { }
+    public class TraitToDisplayString : EnumToDisplayString<TRAIT> { }
+    public class PropertyToDisplayString : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => ((Property)value).ToString();
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
 
     public class ParseErrorToDisplayString : IValueConverter
     {

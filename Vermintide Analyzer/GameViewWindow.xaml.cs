@@ -107,6 +107,7 @@ namespace Vermintide_Analyzer
         #endregion
 
         #region Misc Display Props
+        public bool IsChaosWastes => Game.Campaign == CAMPAIGN.Chaos_Wastes;
         public int ChartTitleHeight => 40;
         public int ChartHeight => 390;
         public int ChartSeparatorHeight => 1;
@@ -454,6 +455,14 @@ namespace Vermintide_Analyzer
 
         private void ChartScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            if(e.Delta > 0)
+            {
+                ChartNavigate(PREVIOUS);
+            }
+            else if(e.Delta < 0)
+            {
+                ChartNavigate(NEXT);
+            }
             e.Handled = true;
         }
 
@@ -461,20 +470,26 @@ namespace Vermintide_Analyzer
         {
             var elem = sender as FrameworkElement;
 
+            ChartNavigate((string)elem.Tag);
+        }
+
+        private const string NEXT = "Next";
+        private const string PREVIOUS = "Previous";
+        private void ChartNavigate(string tag)
+        {
             var destination = VisibleChartIndex;
-            if ((string)elem.Tag == "Next")
+            if (tag == NEXT)
             {
                 destination = (destination + 1) % NumCharts;
             }
-            else if ((string)elem.Tag == "Previous")
+            else if (tag == PREVIOUS)
             {
                 destination = (destination - 1 + NumCharts) % NumCharts;
             }
             else
             {
-                destination = int.Parse((string)elem.Tag);
+                destination = int.Parse(tag);
             }
-
             SetVisibleChart(destination);
         }
         #endregion

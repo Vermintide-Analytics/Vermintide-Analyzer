@@ -195,16 +195,58 @@ namespace VA.LogReader
 
     public class Weapon_Set : Event
     {
+        public HERO Weapon1Owner { get; private set; }
+        public HERO Weapon2Owner { get; private set; }
+        
+        public RARITY Weapon1Rarity { get; private set; }
+        public RARITY Weapon2Rarity { get; private set; }
+
         public byte Weapon1 { get; private set; }
         public byte Weapon2 { get; private set; }
 
         private Weapon_Set(uint payload)
         {
-            Weapon2 = (byte)((payload & Bitmask.WEAPON2) >> Bitshift.WEAPON2);
+            Weapon1Owner = (HERO)((payload & Bitmask.WEAPON1_OWNER) >> Bitshift.WEAPON1_OWNER);
+            Weapon2Owner = (HERO)((payload & Bitmask.WEAPON2_OWNER) >> Bitshift.WEAPON2_OWNER);
+
+            Weapon1Rarity = (RARITY)((payload & Bitmask.WEAPON1_RARITY) >> Bitshift.WEAPON1_RARITY);
+            Weapon2Rarity = (RARITY)((payload & Bitmask.WEAPON2_RARITY) >> Bitshift.WEAPON2_RARITY);
+
             Weapon1 = (byte)((payload & Bitmask.WEAPON1) >> Bitshift.WEAPON1);
+            Weapon2 = (byte)((payload & Bitmask.WEAPON2) >> Bitshift.WEAPON2);
         }
 
         public static Event Create(uint payload) => new Weapon_Set(payload);
+    }
+
+    public class Trait_Gained : Event
+    {
+        public TRAIT_SOURCE Source { get; private set; }
+        public TRAIT Trait { get; private set; }
+
+        private Trait_Gained(uint payload)
+        {
+            Source = (TRAIT_SOURCE)((payload & Bitmask.TRAIT_SOURCE) >> Bitshift.TRAIT_SOURCE);
+            Trait = (TRAIT)((payload & Bitmask.TRAIT) >> Bitshift.TRAIT);
+        }
+
+        public static Event Create(uint payload) => new Trait_Gained(payload);
+    }
+
+    public class Property_Gained : Event
+    {
+        public PROPERTY_SOURCE Source { get; private set; }
+        public PROPERTY Property { get; private set; }
+        public float PropertyValue { get; private set; }
+
+        private Property_Gained(uint payload)
+        {
+            Source = (PROPERTY_SOURCE)((payload & Bitmask.PROPERTY_SOURCE) >> Bitshift.PROPERTY_SOURCE);
+            Property = (PROPERTY)((payload & Bitmask.PROPERTY) >> Bitshift.PROPERTY);
+            PropertyValue = ((payload & Bitmask.PROPERTY_VALUE) >> Bitshift.PROPERTY_VALUE) / 10f;
+        }
+
+        public static Event Create(uint payload) => new Property_Gained(payload);
     }
 
     public class Round_End : Event

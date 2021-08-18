@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:Vermintide_Analyzer.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border Margin="8" Background="Gray" BorderBrush="Black" BorderThickness="2">
-        <Image Source="{Binding Weapon, Converter={StaticResource WeaponToIcon}}" ToolTip="{Binding Weapon.WeaponName}" />
+    <Border Margin="8">
+        <Grid>
+            <Image Source="{Binding Weapon.Rarity, Converter={StaticResource RarityToIcon}}" ToolTip="{Binding Weapon.WeaponName}" />
+            <Image Source="{Binding Weapon, Converter={StaticResource WeaponToIcon}}" ToolTip="{Binding Weapon.WeaponName}" />
+            <Image Source="/Images/Misc/ItemFrame.png" ToolTip="{Binding Weapon.WeaponName}" />
+        </Grid>
     </Border>
 </UserControl>

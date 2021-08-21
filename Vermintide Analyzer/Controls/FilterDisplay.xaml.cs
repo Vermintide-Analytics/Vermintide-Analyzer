@@ -62,6 +62,7 @@ namespace Vermintide_Analyzer.Controls
         public List<string> DifficultyStrings { get; set; } = new List<string>();
         public List<string> MissionStrings { get; set; } = new List<string>();
         public List<string> OnslaughtStrings { get; set; } = new List<string>();
+        public string DaysString { get; set; } = "";
 
         public List<string> GameVersionValues => GameRepository.Instance.GameVersions.ToList();
         public List<string> CareerFilterValues => GameFilter.FilterOptions(typeof(CAREER)).ToList();
@@ -74,6 +75,12 @@ namespace Vermintide_Analyzer.Controls
             "Yes",
             "No",
             "Either"
+        };
+
+        public string[] OlderYounger { get; } = new string[2]
+        {
+            "Older",
+            "Younger"
         };
 
         public FilterDisplay()
@@ -98,6 +105,7 @@ namespace Vermintide_Analyzer.Controls
             EmpoweredDropdown.SelectedItem = "Either";
 
             GameVersionDropdown.ResetSelection();
+            DaysTextBox.Text = "";
             CareerDropdown.ResetSelection();
             DifficultyDropdown.ResetSelection();
             MissionDropdown.ResetSelection();
@@ -118,6 +126,9 @@ namespace Vermintide_Analyzer.Controls
             RefreshBindingLists();
 
             GameVersionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            OlderYoungerComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+            DaysString = Filter.Days.HasValue ? Filter.Days.ToString() : "";
+            DaysTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             CareerDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
             DifficultyDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
             MissionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
@@ -156,6 +167,14 @@ namespace Vermintide_Analyzer.Controls
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            RaiseFilterChanged();
+        }
+
+        private void WithinDaysTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var parseSuccess = uint.TryParse(DaysTextBox.Text, out uint withinDays);
+            Filter.Days = parseSuccess ? (uint?)withinDays : null;
+
             RaiseFilterChanged();
         }
 

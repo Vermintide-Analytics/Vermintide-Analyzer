@@ -51,6 +51,7 @@
             <converters:FormatDouble  x:Key="FormatDouble" />
             <converters:FormatPercent  x:Key="FormatPercent" />
 
+            <converters:BoolToOlderYounger  x:Key="BoolToOlderYounger" />
             <converters:NullableBoolToYesNoEither  x:Key="NullableBoolToYesNoEither" />
             <converters:GameToDifficultyModifierString x:Key="GameToDifficultyModifierString" />
 

@@ -45,7 +45,7 @@
                         Selected="{Binding Filter.GameVersion}"
                         InitiallySelected="{Binding GameVersionValues}"
                         AllValues="{Binding GameVersionValues}"
-                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged" />
             </StackPanel>
         </Grid>
         <Rectangle Margin="0,5" Height="2" Fill="{StaticResource ThemeMidtone}" />
@@ -117,6 +117,21 @@
                         InitiallySelected="{Binding MissionFilterValues}"
                         AllValues="{Binding MissionFilterValues}"
                         SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <ComboBox x:Name="OlderYoungerComboBox"
+                          ItemsSource="{Binding OlderYounger}"
+                          SelectedItem="{Binding Filter.Older, Mode=TwoWay, Converter={StaticResource BoolToOlderYounger}}"
+                          SelectionChanged="ComboBox_SelectionChanged"/>
+                <TextBlock Foreground="{StaticResource ThemeLighter}" Text=" than " />
+                <TextBox x:Name="DaysTextBox"
+                         MinWidth="50"
+                         MaxWidth="50"
+                         Text="{Binding DaysString}"
+                         TextChanged="WithinDaysTextBox_TextChanged"/>
+                <TextBlock Foreground="{StaticResource ThemeLighter}" Text=" Days" />
             </StackPanel>
         </Grid>
         

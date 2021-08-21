@@ -88,6 +88,28 @@ namespace Vermintide_Analyzer
             }
         }
 
+        private bool mBefore = true;
+        public bool Older
+        {
+            get => mBefore;
+            set
+            {
+                mBefore = value;
+                OnFilterChange?.Invoke(nameof(Older));
+            }
+        }
+
+        private uint? mDays = null;
+        public uint? Days
+        {
+            get => mDays;
+            set
+            {
+                mDays = value;
+                OnFilterChange?.Invoke(nameof(Days));
+            }
+        }
+
         public delegate void FilterChanged(string propName);
         public event FilterChanged OnFilterChange;
 
@@ -95,6 +117,7 @@ namespace Vermintide_Analyzer
 
         public bool IsMatch(GameHeader gh) =>
             MatchGameVersion(gh) &&
+            MatchWithinDays(gh) &&
             MatchDifficulty(gh) &&
             MatchDeathwish(gh) &&
             MatchOnslaught(gh) &&
@@ -103,6 +126,16 @@ namespace Vermintide_Analyzer
             MatchMission(gh);
 
         private bool MatchGameVersion(GameHeader gh) => GameVersion.Contains(gh.GameVersion);
+        private bool MatchWithinDays(GameHeader gh)
+        {
+            if (!Days.HasValue || Days.Value == 0) return true;
+            var gameAge = DateTime.Now - gh.GameStart;
+            var ageThreshold = TimeSpan.FromDays(Days.Value);
+
+            return Older && gameAge > ageThreshold ||
+                    !Older && gameAge <= ageThreshold;
+        }
+
         private bool MatchDifficulty(GameHeader gh) => Difficulty.Contains(gh.Difficulty);
         private bool MatchCareer(GameHeader gh) => Career.Contains(gh.Career);
         private bool MatchMission(GameHeader gh) => Mission.Contains(gh.Mission);
@@ -156,6 +189,11 @@ namespace Vermintide_Analyzer
             {
                 output.Add(emp);
             }
+            var days = WithinDaysToString();
+            if(days != null)
+            {
+                output.Add(days);
+            }
 
             if(!output.Any())
             {
@@ -165,26 +203,15 @@ namespace Vermintide_Analyzer
             return string.Join(" AND ", output);
         }
 
-        public static Regex FilterRegex { get; } = new Regex(@"^((?:(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+]) AND )+(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+])|ALL GAMES)$");
-
-        public static GameFilter FromString(string input)
-        {
-            return new GameFilter()
-            {
-                GameVersion = ReadGameVersion(input),
-                Difficulty = ReadDifficulty(input),
-                Career = ReadCareer(input),
-                Mission = ReadMission(input),
-                Deathwish = ReadDeathwish(input),
-                Onslaught = ReadOnslaught(input),
-                Empowered = ReadEmpowered(input)
-            };
-        }
+        public static Regex FilterRegex { get; } = new Regex(
+            @"^((?:(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+|(?:Older|Younger) than \d+ Days) AND )*(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+|(?:Older|Younger) than \d+ Days)|ALL GAMES)$");
 
         public void UpdateFromString(string input)
         {
             GameVersion.Clear();
             GameVersion.AddRange(ReadGameVersion(input));
+
+            (Older, Days) = ReadWithinDays(input) ?? (true, null);
 
             Difficulty.Clear();
             Difficulty.AddRange(ReadDifficulty(input));
@@ -209,6 +236,12 @@ namespace Vermintide_Analyzer
             if (!GameVersion.Any()) return "NO GAME VERSION";
 
             return $"Game Version in ({GetFilterSetString(GameVersion)})";
+        }
+
+        private string WithinDaysToString()
+        {
+            if (!Days.HasValue) return null;
+            return $"{(Older ? "Older" : "Younger")} than {Days.Value} Days";
         }
 
         private string DifficultyToString() => EnumListToString(nameof(Difficulty), Difficulty);
@@ -260,6 +293,29 @@ namespace Vermintide_Analyzer
             }
             return result;
         }
+
+        private static (bool before, uint? days)? ReadWithinDays(string filterString)
+        {
+            var match = Regex.Match(filterString, $@"((?:Older)|(?:Younger)) than (\d+) Days");
+            if (match == null || match.Groups.Count < 3 || string.IsNullOrEmpty(match.Groups[1].Value))
+            {
+                return null;
+            }
+
+            var beforeAfterMatchString = match.Groups[1].Value;
+            bool? before = null;
+            if (beforeAfterMatchString == "Older") before = true;
+            else if (beforeAfterMatchString == "Younger") before = false;
+            if (before is null) return null;
+
+            var matchString = match.Groups[2].Value;
+            var parseSuccess = uint.TryParse(matchString, out uint matchInt);
+
+            if (!parseSuccess) return null;
+
+            return (before.Value, matchInt);
+        }
+
         private static List<DIFFICULTY> ReadDifficulty(string filterString) => ReadEnumList<DIFFICULTY>(filterString, nameof(Difficulty));
         private static List<CAREER> ReadCareer(string filterString) => ReadEnumList<CAREER>(filterString, nameof(Career));
         private static List<MISSION> ReadMission(string filterString) => ReadEnumList<MISSION>(filterString, nameof(Mission));

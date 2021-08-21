@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="Converters\BindingDebugger.cs" />
     <Compile Include="Converters\EnumToDescription.cs" />
+    <Compile Include="Converters\BoolToOlderYounger.cs" />
     <Compile Include="Converters\RarityToIcon.cs" />
     <Compile Include="Converters\FormatDouble.cs" />
     <Compile Include="Converters\NullableBoolToYesNoEither.cs" />

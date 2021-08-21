@@ -461,7 +461,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
-            <ScrollViewer x:Name="ChartScrollViewer" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Background="{StaticResource ThemeDarker}"
+            <ScrollViewer x:Name="ChartScrollViewer" Grid.Column="0" VerticalScrollBarVisibility="Hidden"
                           PreviewMouseWheel="ChartScrollViewer_PreviewMouseWheel"
                           misc:ScrollAnimationBehavior.IsEnabled="True">
                 <StackPanel>
@@ -589,6 +589,36 @@
                             </lvcbase:SeriesCollection>
                         </lvc:CartesianChart.Series>
                     </lvc:CartesianChart>
+                    <Rectangle />
+                    <Label Content="Overkill Damage" />
+                    <lvc:CartesianChart Name="OverkillDamageChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                        <lvc:CartesianChart.DataTooltip>
+                            <controls:DamageTooltip />
+                        </lvc:CartesianChart.DataTooltip>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="60">
+                                    </lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis MinValue="0">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="10" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.Series>
+                            <lvcbase:SeriesCollection>
+                                <geared:GScatterSeries Title="Weapon 1" Fill="{StaticResource DataWeapon1}" Values="{Binding Weapon1OverkillDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Weapon 2" Fill="{StaticResource DataWeapon2}" Values="{Binding Weapon2OverkillDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Career" Fill="{StaticResource DataCareer}" Values="{Binding CareerOverkillDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                                <geared:GScatterSeries Title="Other" Fill="{StaticResource DataOther}" Values="{Binding OtherOverkillDamagePoints}" DataLabels="False" MinPointShapeDiameter="5" MaxPointShapeDiameter="5" />
+                            </lvcbase:SeriesCollection>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
                     <!--<Rectangle />-->
                     <!--<Label Content="Stagger" />
                 <lvc:CartesianChart Name="StaggerDealtChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
@@ -639,6 +669,7 @@
                 <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="1" />
                 <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="2" />
                 <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="3" />
+                <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="4" />
                 <Border DockPanel.Dock="Top" MouseUp="ChartSelect_MouseUp" Tag="Next" BorderThickness="0">
                     <TextBlock Text="6" FontFamily="Marlett" FontSize="24" Margin="0,0,-3,0"  HorizontalAlignment="Right" />
                 </Border>

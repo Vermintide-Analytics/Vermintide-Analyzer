@@ -54,6 +54,11 @@ namespace Vermintide_Analyzer
         public GearedValues<ScatterPoint> CareerDamagePoints { get; set; } = new GearedValues<ScatterPoint>();
         public GearedValues<ScatterPoint> OtherDamagePoints { get; set; } = new GearedValues<ScatterPoint>();
 
+        public GearedValues<ScatterPoint> Weapon1OverkillDamagePoints { get; set; } = new GearedValues<ScatterPoint>();
+        public GearedValues<ScatterPoint> Weapon2OverkillDamagePoints { get; set; } = new GearedValues<ScatterPoint>();
+        public GearedValues<ScatterPoint> CareerOverkillDamagePoints { get; set; } = new GearedValues<ScatterPoint>();
+        public GearedValues<ScatterPoint> OtherOverkillDamagePoints { get; set; } = new GearedValues<ScatterPoint>();
+
         public GearedValues<ScatterPoint> PushStaggerPoints { get; set; } = new GearedValues<ScatterPoint>();
         public GearedValues<ScatterPoint> OtherStaggerPoints { get; set; } = new GearedValues<ScatterPoint>();
 
@@ -113,7 +118,7 @@ namespace Vermintide_Analyzer
         public int ChartSeparatorHeight => 1;
         public int TotalChartHeight => ChartTitleHeight + ChartHeight + ChartSeparatorHeight;
         public int VisibleChartIndex { get; set; } = 0;
-        public int NumCharts => 4;
+        public int NumCharts => 5;
 
         public string ResultDisp
         {
@@ -222,6 +227,13 @@ namespace Vermintide_Analyzer
             Weapon2DamagePoints.AddRange(AllDamagePoints.Where(p => p.Item1.Source == DAMAGE_SOURCE.Weapon2).Select(p => p.Item2));
             CareerDamagePoints.AddRange(AllDamagePoints.Where(p => p.Item1.Source == DAMAGE_SOURCE.Career).Select(p => p.Item2));
             OtherDamagePoints.AddRange(AllDamagePoints.Where(p => p.Item1.Source == DAMAGE_SOURCE.Other).Select(p => p.Item2));
+
+            var allKillEvents = Game.Events.Where(e => e is Enemy_Killed).Cast<Enemy_Killed>();
+            var overkillEvents = allKillEvents.Where(e => e.OverkillDamage > 0);
+            Weapon1OverkillDamagePoints.AddRange(overkillEvents.Where(e => e.Source == DAMAGE_SOURCE.Weapon1).Select(e => new ScatterPoint(e.Time, e.OverkillDamage)));
+            Weapon2OverkillDamagePoints.AddRange(overkillEvents.Where(e => e.Source == DAMAGE_SOURCE.Weapon2).Select(e => new ScatterPoint(e.Time, e.OverkillDamage)));
+            CareerOverkillDamagePoints.AddRange(overkillEvents.Where(e => e.Source == DAMAGE_SOURCE.Career).Select(e => new ScatterPoint(e.Time, e.OverkillDamage)));
+            OtherOverkillDamagePoints.AddRange(overkillEvents.Where(e => e.Source == DAMAGE_SOURCE.Other).Select(e => new ScatterPoint(e.Time, e.OverkillDamage)));
 
             PushStaggerPoints.AddRange(AllStaggerPoints.Where(p => p.Item1.Source == STAGGER_SOURCE.Push).Select(p => p.Item2));
             OtherStaggerPoints.AddRange(AllStaggerPoints.Where(p => p.Item1.Source == STAGGER_SOURCE.Other).Select(p => p.Item2));

@@ -236,7 +236,7 @@
                             </Border>
 
                             <Border Grid.Row="1" Grid.Column="0" >
-                                <TextBlock Text="Damage dealt" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt to anything (including monsters and allies)." />
+                                <TextBlock Text="Damage dealt" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt to anything (INCLUDING monsters and allies, but does NOT include overkill damage)." />
                             </Border>
                             <Border Grid.Row="1" Grid.Column="1" >
                                 <TextBlock Text="{Binding DamageDealt}" />
@@ -256,7 +256,7 @@
                             </Border>
 
                             <Border Grid.Row="3" Grid.Column="0" >
-                                <TextBlock Text="(Ally)" FontWeight="Bold" ToolTip="Damage dealt to allies (including yourself)." />
+                                <TextBlock Text="(Ally)" FontWeight="Bold" ToolTip="Damage dealt to allies (INCLUDING yourself)." />
                             </Border>
                             <Border Grid.Row="3" Grid.Column="1" >
                                 <TextBlock Text="{Binding AllyDamageDealt}" />
@@ -276,7 +276,7 @@
                             </Border>-->
 
                             <Border Grid.Row="4" Grid.Column="0" >
-                                <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt beyond enemies remaining health (wasted damage)." />
+                                <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt beyond enemies' remaining health (wasted damage)." />
                             </Border>
                             <Border Grid.Row="4" Grid.Column="1" >
                                 <TextBlock Text="{Binding OverkillDamage}" />
@@ -286,7 +286,7 @@
                             </Border>
 
                             <Border Grid.Row="5" Grid.Column="0" >
-                                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" />
+                                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" ToolTip="Total number of enemies killed (INCLUDING elites and specials)" />
                             </Border>
                             <Border Grid.Row="5" Grid.Column="1" >
                                 <TextBlock Text="{Binding EnemiesKilled}" />
@@ -296,7 +296,7 @@
                             </Border>
 
                             <Border Grid.Row="6" Grid.Column="0" >
-                                <TextBlock Text="(Elites)" FontWeight="Bold" />
+                                <TextBlock Text="(Elites)" FontWeight="Bold" ToolTip="Total number of elite enemies killed (Stormvermin, Chaos Warriors, etc.)" />
                             </Border>
                             <Border Grid.Row="6" Grid.Column="1" >
                                 <TextBlock Text="{Binding ElitesKilled}" />
@@ -306,7 +306,7 @@
                             </Border>
 
                             <Border Grid.Row="7" Grid.Column="0" >
-                                <TextBlock Text="(Specials)" FontWeight="Bold" />
+                                <TextBlock Text="(Specials)" FontWeight="Bold" ToolTip="Total number of special enemies killed (Assassins, Blightstormers, etc.)" />
                             </Border>
                             <Border Grid.Row="7" Grid.Column="1" >
                                 <TextBlock Text="{Binding SpecialsKilled}" />
@@ -316,7 +316,7 @@
                             </Border>
 
                             <Border Grid.Row="8" Grid.Column="0" >
-                                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" />
+                                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" ToolTip="Includes all hits against the 'head' hitzone (and 'neck' in a couple cases, to match game logic). Does not include hits to non-head 'weakspots' like the backside of a Stormfiend" />
                             </Border>
                             <Border Grid.Row="8" Grid.Column="1" >
                                 <TextBlock Text="{Binding Headshots}" />
@@ -326,7 +326,7 @@
                             </Border>
 
                             <Border Grid.Row="9" Grid.Column="0" >
-                                <TextBlock Text="Damage Taken" FontWeight="Bold" TextAlignment="Left" />
+                                <TextBlock Text="Damage Taken" FontWeight="Bold" TextAlignment="Left" ToolTip="Total damage taken from all sources (INCLUDING friendly fire)" />
                             </Border>
                             <Border Grid.Row="9" Grid.Column="1" >
                                 <TextBlock Text="{Binding DamageTaken}" />
@@ -336,7 +336,7 @@
                             </Border>
 
                             <Border Grid.Row="10" Grid.Column="0" >
-                                <TextBlock Text="(Friendly Fire)" FontWeight="Bold" TextAlignment="Right" />
+                                <TextBlock Text="(Friendly Fire)" FontWeight="Bold" TextAlignment="Right" ToolTip="Damage taken from allies (INCLUDING yourself)" />
                             </Border>
                             <Border Grid.Row="10" Grid.Column="1" >
                                 <TextBlock Text="{Binding FriendlyFireTaken}" />
@@ -380,10 +380,10 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0">
-                                    <TextBlock Grid.Row="0" Text="Alive" FontWeight="Bold" HorizontalAlignment="Center" />
+                                    <TextBlock Grid.Row="0" Text="Alive" FontWeight="Bold" HorizontalAlignment="Center" ToolTip="Percent of time spent alive (not downed, dead, or waiting to be rescued after respawning)" />
                                 </Border>
                                 <Border Grid.Row="1">
-                                    <TextBlock Grid.Row="0" Text="{Binding TimeAlivePercent}" />
+                                    <TextBlock Grid.Row="0" Text="{Binding TimeAlivePercent}" ToolTip="Percent of time spent alive (not downed, dead, or waiting to be rescued after respawning)" />
                                 </Border>
                             </Grid>
                             <Grid Margin="5" Background="#504000">
@@ -393,13 +393,13 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0">
-                                    <TextBlock Grid.Row="0" Text="Downed" FontWeight="Bold" HorizontalAlignment="Center" />
+                                    <TextBlock Grid.Row="0" Text="Downed" FontWeight="Bold" HorizontalAlignment="Center" ToolTip="Percent of time spent downed (not alive, dead, or waiting to be rescued after respawning), and number of times downed" />
                                 </Border>
                                 <Border Grid.Row="1">
-                                    <TextBlock Grid.Row="0" Text="{Binding TimeDownedPercent}" />
+                                    <TextBlock Grid.Row="0" Text="{Binding TimeDownedPercent}" ToolTip="Percent of time spent downed (not alive, dead, or waiting to be rescued after respawning)" />
                                 </Border>
                                 <Border Grid.Row="2">
-                                    <TextBlock Grid.Row="0" Text="{Binding TimesDowned}" />
+                                    <TextBlock Grid.Row="0" Text="{Binding TimesDowned}" ToolTip="Number of times downed" />
                                 </Border>
                             </Grid>
                             <Grid Margin="5" Background="#450000">
@@ -409,13 +409,13 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0">
-                                    <TextBlock Grid.Row="0" Text="Dead" FontWeight="Bold" HorizontalAlignment="Center" />
+                                    <TextBlock Grid.Row="0" Text="Dead" FontWeight="Bold" HorizontalAlignment="Center" ToolTip="Percent of time spent dead or waiting to be rescued (not alive and not downed), and number of deaths" />
                                 </Border>
                                 <Border Grid.Row="1">
-                                    <TextBlock Grid.Row="0" Text="{Binding TimeDeadPercent}" />
+                                    <TextBlock Grid.Row="0" Text="{Binding TimeDeadPercent}" ToolTip="Percent of time spent dead or waiting to be rescued (not alive and not downed)" />
                                 </Border>
                                 <Border Grid.Row="2">
-                                    <TextBlock Grid.Row="0" Text="{Binding TimesDied}" />
+                                    <TextBlock Grid.Row="0" Text="{Binding TimesDied}" ToolTip="Number of deaths" />
                                 </Border>
                             </Grid>
                         </StackPanel>

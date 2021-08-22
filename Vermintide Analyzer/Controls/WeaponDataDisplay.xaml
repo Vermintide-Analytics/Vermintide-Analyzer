@@ -61,7 +61,8 @@
             </Border>
             
             <Border Grid.Row="1" Grid.Column="0" >
-                <TextBlock Text="Damage dealt" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt to anything (including monsters and allies)." />
+                <TextBlock Text="Damage dealt" FontWeight="Bold" TextAlignment="Left"
+                           ToolTip="Damage dealt to anything (INCLUDING monsters and allies, but does NOT include overkill damage)." />
             </Border>
             <Border Grid.Row="1" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=DamageDealt}" />
@@ -71,7 +72,8 @@
             </Border>
 
             <Border Grid.Row="2" Grid.Column="0" >
-                <TextBlock Text="(Monster)" FontWeight="Bold" ToolTip="Damage dealt to monsters." />
+                <TextBlock Text="(Monster)" FontWeight="Bold"
+                           ToolTip="Damage dealt to monsters." />
             </Border>
             <Border Grid.Row="2" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=MonsterDamageDealt}" />
@@ -81,7 +83,8 @@
             </Border>
 
             <Border Grid.Row="3" Grid.Column="0" >
-                <TextBlock Text="(Ally)" FontWeight="Bold" ToolTip="Damage dealt to allies (including yourself)." />
+                <TextBlock Text="(Ally)" FontWeight="Bold"
+                           ToolTip="Damage dealt to allies (INCLUDING yourself)." />
             </Border>
             <Border Grid.Row="3" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=AllyDamageDealt}" />
@@ -101,7 +104,8 @@
             </Border>-->
 
             <Border Grid.Row="4" Grid.Column="0" >
-                <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt beyond enemies remaining health (wasted damage)." />
+                <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left"
+                           ToolTip="Damage dealt beyond enemies remaining health (wasted damage)." />
             </Border>
             <Border Grid.Row="4" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=OverkillDamage}" />
@@ -111,7 +115,8 @@
             </Border>
 
             <Border Grid.Row="5" Grid.Column="0" >
-                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" />
+                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left"
+                           ToolTip="Total number of enemies killed (INCLUDING elites and specials)" />
             </Border>
             <Border Grid.Row="5" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=EnemiesKilled}" />
@@ -121,7 +126,8 @@
             </Border>
 
             <Border Grid.Row="6" Grid.Column="0" >
-                <TextBlock Text="(Elites)" FontWeight="Bold" />
+                <TextBlock Text="(Elites)" FontWeight="Bold"
+                           ToolTip="Total number of elite enemies killed (Stormvermin, Chaos Warriors, etc.)" />
             </Border>
             <Border Grid.Row="6" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=ElitesKilled}" />
@@ -131,7 +137,8 @@
             </Border>
 
             <Border Grid.Row="7" Grid.Column="0" >
-                <TextBlock Text="(Specials)" FontWeight="Bold" />
+                <TextBlock Text="(Specials)" FontWeight="Bold"
+                           ToolTip="Total number of special enemies killed (Assassins, Blightstormers, etc.)" />
             </Border>
             <Border Grid.Row="7" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=SpecialsKilled}" />
@@ -140,8 +147,9 @@
                 <TextBlock Text="{Binding ElementName=control, Path=SpecialsKilledPerMin}" />
             </Border>
 
-            <Border Grid.Row="8" Grid.Column="0" >
-                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" />
+            <Border Grid.Row="8" Grid.Column="0">
+                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left"
+                           ToolTip="Includes all hits against the 'head' hitzone (and 'neck' in a couple cases, to match game logic). Does not include hits to non-head 'weakspots' like the backside of a Stormfiend" />
             </Border>
             <Border Grid.Row="8" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=Headshots}" />
@@ -150,8 +158,9 @@
                 <TextBlock Text="{Binding ElementName=control, Path=HeadshotsPerMin}" />
             </Border>
 
-            <Border Grid.Row="9" Grid.Column="0" >
-                <TextBlock Text="Headshot %" FontWeight="Bold" TextAlignment="Left" />
+            <Border Grid.Row="9" Grid.Column="0">
+                <TextBlock Text="Headshot %" FontWeight="Bold" TextAlignment="Left" 
+                           ToolTip="Percentage of all hits that were headshots. This includes all hits against the 'head' hitzone (and 'neck' in a couple cases, to match game logic). Does not include hits to non-head 'weakspots' like the backside of a Stormfiend"/>
             </Border>
             <Border Grid.Row="9" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=HeadshotPercent}" />
@@ -160,8 +169,9 @@
                 <TextBlock Text="-" />
             </Border>
 
-            <Border Grid.Row="10" Grid.Column="0" >
-                <TextBlock Text="Avg Crit Multi" FontWeight="Bold" TextAlignment="Left" ToolTip="Average damage from crits divided by average damage from non-crits" />
+            <Border Grid.Row="10" Grid.Column="0">
+                <TextBlock Text="Avg Crit Multi" FontWeight="Bold" TextAlignment="Left"
+                           ToolTip="Average damage from crits divided by average damage from non-crits" />
             </Border>
             <Border Grid.Row="10" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=AverageCritMultiplier}" />
@@ -171,7 +181,8 @@
             </Border>
 
             <Border Grid.Row="11" Grid.Column="0" >
-                <TextBlock Text="Crit %" FontWeight="Bold" TextAlignment="Left" />
+                <TextBlock Text="Crit %" FontWeight="Bold" TextAlignment="Left"
+                           ToolTip="Percentage of all hits that were crits"/>
             </Border>
             <Border Grid.Row="11" Grid.Column="1" >
                 <TextBlock Text="{Binding ElementName=control, Path=CritPercent}" />

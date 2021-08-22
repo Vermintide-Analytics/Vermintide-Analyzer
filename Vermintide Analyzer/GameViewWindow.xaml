@@ -55,7 +55,7 @@
                 </TransformGroup>
             </Rectangle.RenderTransform>
         </Rectangle>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" x:Name="TopGrid">
             <DockPanel Grid.Row="0" Margin="5">
                 <Rectangle DockPanel.Dock="Bottom" Fill="{StaticResource ThemeMidtone}" Height="1" Margin="0,5,0,0" />
                 <Grid DockPanel.Dock="Right" VerticalAlignment="Stretch" Width="720">
@@ -140,20 +140,24 @@
                                 <TextBlock Text="{Binding DataContext.Game.GameVersion, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel DockPanel.Dock="Right" VerticalAlignment="Bottom">
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="False">
-                                            <Setter Property="Foreground" Value="Gray" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Resources>
-                            <TextBlock x:Name="ScreenshotInstructions" Text="Screenshot (F12)" Cursor="Hand" MouseUp="ScreenshotInstructions_MouseUp" />
+                        <StackPanel x:Name="ScreenshotInstructionsContainer" DockPanel.Dock="Right" VerticalAlignment="Bottom">
+                            <TextBlock Text="Screenshot" Foreground="Gray" TextDecorations="Underline" />
+                            <StackPanel>
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter Property="Foreground" Value="Gray" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="Detailed (F12)" Cursor="Hand" MouseUp="ScreenshotInstructions_MouseUp" />
+                                <TextBlock Text="Quick (Shift+F12)" Cursor="Hand" MouseUp="BannerScreenshotInstructions_MouseUp" />
+                            </StackPanel>
                         </StackPanel>
                     </DockPanel>
                 </Grid>
@@ -456,7 +460,7 @@
                 </Grid>
             </DockPanel>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="ChartGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="25" />
@@ -675,6 +679,144 @@
                 </Border>
             </DockPanel>
         </Grid>
+        <DockPanel Grid.Row="0" x:Name="BannerView"
+                   Visibility="Hidden" LastChildFill="False"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Height="160">
+            <DockPanel.Resources>
+                <local:BindingProxy x:Key="mProxy" Data="{Binding}" />
+            </DockPanel.Resources>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Stretch">
+                <StackPanel VerticalAlignment="Center">
+                    <controls:WeaponIcon Width="70" Height="70" VerticalAlignment="Top" Weapon="{Binding Data.Game.StartingWeapon1, Source={StaticResource mProxy}}" />
+                    <controls:WeaponIcon Width="70" Height="70" VerticalAlignment="Top" Weapon="{Binding Data.Game.StartingWeapon2, Source={StaticResource mProxy}}" />
+                </StackPanel>
+                <StackPanel Margin="0,0,-80.5,0">
+                    <controls:TalentTreeDisplay Career="{Binding Game.Career}" Talents="{Binding Game.StartingTalents}">
+                        <controls:TalentTreeDisplay.RenderTransform>
+                            <ScaleTransform ScaleX=".503" ScaleY=".503" />
+                        </controls:TalentTreeDisplay.RenderTransform>
+                    </controls:TalentTreeDisplay>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Grid">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Bottom" />
+                        <Setter Property="Margin" Value="3,1" />
+                    </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="{StaticResource ThemeMidtone}" />
+                        <Setter Property="BorderThickness" Value="1" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+                        <Setter Property="Margin" Value="4,0" />
+                        <Setter Property="TextAlignment" Value="Right" />
+                    </Style>
+                </StackPanel.Resources>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Dmg Dealt" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1">
+                        <TextBlock Text="{Binding DamageDealt}" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0">
+                        <TextBlock Text="FF Dealt" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="{Binding AllyDamageDealt}" />
+                    </Border>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Kills" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1">
+                        <TextBlock Text="{Binding EnemiesKilled}" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0">
+                        <TextBlock Text="(Elites)" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="{Binding ElitesKilled}" />
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0">
+                        <TextBlock Text="(Specials)" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="1">
+                        <TextBlock Text="{Binding SpecialsKilled}" />
+                    </Border>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Dmg Taken" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1">
+                        <TextBlock Text="{Binding DamageTaken}" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0">
+                        <TextBlock Text="FF Taken" TextAlignment="Left" FontWeight="Bold" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="{Binding FriendlyFireTaken}" />
+                    </Border>
+                </Grid>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <Image DockPanel.Dock="Left" Height="100" Source="{Binding Game.Career, Converter={StaticResource CareerToPortrait}}" ToolTip="{Binding Game.CareerName}" />
+                <Image DockPanel.Dock="Left" Height="100" Source="{Binding Game.Difficulty, Converter={StaticResource DifficultyToIcon}}" ToolTip="{Binding Game.DifficultyName}" />
+                <StackPanel Margin="5">
+                    <TextBlock Foreground="{StaticResource ThemeLighter}" FontWeight="Bold" Text="{Binding Game.CampaignName}" />
+                    <TextBlock Foreground="{StaticResource ThemeLighter}" Text="{Binding Game.MissionName}" ToolTip="{Binding Game.MissionTooltip}" />
+                    <Rectangle Margin="0,2,0,0" Fill="{StaticResource ThemeMidtone}" Height="2" />
+                    <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Start Time:" />
+                    <TextBlock Foreground="{StaticResource ThemeLighter}" Text="{Binding Game.GameStartDate}" />
+                    <TextBlock Foreground="{StaticResource ThemeLighter}" Text="{Binding Game.GameStartTime}" />
+                </StackPanel>
+            </StackPanel>
+            <DockPanel VerticalAlignment="Top" MinWidth="240">
+                <TextBlock DockPanel.Dock="Top" Background="{Binding Game.Result, Converter={StaticResource RoundResultToBrush}}"
+                               Foreground="{StaticResource ThemeLighter}"
+                               Text="{Binding ResultDisp}"
+                               TextAlignment="Center" VerticalAlignment="Center"
+                               FontSize="40"/>
+                <DockPanel LastChildFill="False" DockPanel.Dock="Bottom">
+                    <StackPanel DockPanel.Dock="Right">
+                        <TextBlock Text="Duration:" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding DurationDisp}" />
+                    </StackPanel>
+                    <TextBlock Foreground="Red" DockPanel.Dock="Left" TextWrapping="Wrap" MaxWidth="120" Text="{Binding Game, Converter={StaticResource GameToDifficultyModifierString}}" />
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
     </Grid>
 
 </Window>

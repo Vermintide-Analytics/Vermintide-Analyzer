@@ -207,7 +207,7 @@ namespace Vermintide_Analyzer
 
             PrettifyCharts();
 
-            HideForScreenshot.Add(ScreenshotInstructions);
+            HideForScreenshot.Add(ScreenshotInstructionsContainer);
         }
 
         private void ConstructSeries()
@@ -378,7 +378,29 @@ namespace Vermintide_Analyzer
                 elem.Visibility = Visibility.Visible;
             }
 
-            ToastNotifier.ShowInformation("Screenshot copied to clipboard");
+            ToastNotifier.ShowInformation("Detailed view copied to clipboard");
+        }
+
+        private void BannerScreenshotToClipboard()
+        {
+            TopGrid.Visibility = Visibility.Hidden;
+            BannerView.Visibility = Visibility.Visible;
+            if (Settings.Current.WatermarkScreenshots)
+            {
+                ScreenshotWatermark.Visibility = Visibility.Visible;
+            }
+
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)BannerView.ActualWidth, (int)BannerView.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+
+            // Render the MainGrid still so we still can get the ScreenshotWatermark included
+            renderTargetBitmap.Render(MainGrid);
+            Clipboard.SetImage(renderTargetBitmap);
+
+            ScreenshotWatermark.Visibility = Visibility.Hidden;
+            BannerView.Visibility = Visibility.Hidden;
+            TopGrid.Visibility = Visibility.Visible;
+
+            ToastNotifier.ShowInformation("Quick view copied to clipboard");
         }
 
         private void SetVisibleChart(int index)
@@ -448,7 +470,14 @@ namespace Vermintide_Analyzer
         {
             if (e.Key == Key.F12)
             {
-                ScreenshotToClipboard();
+                if(Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+                {
+                    BannerScreenshotToClipboard();
+                }
+                else
+                {
+                    ScreenshotToClipboard();
+                }
             }
             else if(e.Key == Key.Down)
             {
@@ -463,6 +492,10 @@ namespace Vermintide_Analyzer
         private void ScreenshotInstructions_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ScreenshotToClipboard();
+        }
+        private void BannerScreenshotInstructions_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            BannerScreenshotToClipboard();
         }
 
         private void ChartScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

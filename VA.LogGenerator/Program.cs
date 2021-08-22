@@ -88,7 +88,7 @@ namespace LogGenerator
 
             for (int fileNum = 0; fileNum < numFiles; fileNum++)
             {
-                var fakeTime = DateTime.Now - TimeSpan.FromDays(fileNum);
+                var fakeTime = DateTime.Now - TimeSpan.FromMinutes(fileNum);
                 
                 lastTime = 0;
 
@@ -110,7 +110,7 @@ namespace LogGenerator
                     var (diff, car, camp) = WriteRoundStart(s);
                     if(!omitWeapons)
                     {
-                        WriteWeaponSet(s);
+                        WriteWeaponSet(s, car.Hero());
                     }
                     if(!omitTalents)
                     {
@@ -149,12 +149,18 @@ namespace LogGenerator
             return (diff, car, camp);
         }
 
-        static void WriteWeaponSet(FS s)
+        static void WriteWeaponSet(FS s, HERO hero)
         {
             long data = Event(EventType.Weapon_Set);
 
-            data += RandomMeleeWeapon() << Bitshift.WEAPON1;
-            data += RandomRangedWeapon() << Bitshift.WEAPON2;
+            data += (long)hero << Bitshift.WEAPON1_OWNER;
+            data += (long)hero << Bitshift.WEAPON2_OWNER;
+
+            data += (long)RandomRarity() << Bitshift.WEAPON1_RARITY;
+            data += (long)RandomRarity() << Bitshift.WEAPON2_RARITY;
+
+            data += RandomMeleeWeapon(hero) << Bitshift.WEAPON1;
+            data += RandomRangedWeapon(hero) << Bitshift.WEAPON2;
 
             WriteLog(s, data);
         }
@@ -327,14 +333,42 @@ namespace LogGenerator
             return (PLAYER_STATE)PlayerStateVals.GetValue(rand.Next(PlayerStateVals.Length));
         }
 
-        static long RandomMeleeWeapon()
+        static Array RarityVals = Enum.GetValues(typeof(RARITY));
+        static RARITY RandomRarity()
         {
-            return rand.Next(0, 6);
+            return (RARITY)RarityVals.GetValue(rand.Next(RarityVals.Length));
         }
 
-        static long RandomRangedWeapon()
+        static long RandomMeleeWeapon(HERO hero)
         {
-            return rand.Next(32, 35);
+            var r = rand.NextDouble();
+            if(r < 0.1d)
+            {
+                return 0;
+            }
+            else if(r < 0.3d)
+            {
+                return rand.Next(0, 32);
+            }
+
+            var arr = WeaponData.Weapons[hero].Where(kvp => kvp.Key <= 32).Select(kvp => kvp.Key).ToArray();
+            return arr[rand.Next(0, arr.Length)];
+        }
+
+        static long RandomRangedWeapon(HERO hero)
+        {
+            var r = rand.NextDouble();
+            if (r < 0.1d)
+            {
+                return 0;
+            }
+            else if (r < 0.3d)
+            {
+                return rand.Next(33, 63);
+            }
+
+            var arr = WeaponData.Weapons[hero].Where(kvp => kvp.Key > 32).Select(kvp => kvp.Key).ToArray();
+            return arr[rand.Next(0, arr.Length)];
         }
 
         static byte RandomByte(byte max = 255) => (byte)rand.Next(0, max + 1);

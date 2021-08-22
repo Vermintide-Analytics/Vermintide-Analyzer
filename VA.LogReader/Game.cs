@@ -342,6 +342,7 @@ namespace VA.LogReader
                     if (!eventType.HasValue)
                     {
                         Console.WriteLine($"Bad event type \"{buffer[2] >> Bitshift.EVENT_TYPE}\", skipping...");
+                        lastReadCount = reader.Read(buffer, 0, Event.BYTES);
                         continue;
                     }
                     var newEvent = Event.CreateEvent(eventType.Value, buffer);

@@ -48,9 +48,17 @@ namespace Vermintide_Analyzer.Controls
         #endregion
 
         #region Icon Paths
+        public string FallbackIconPath => "/Images/Talents/Unknown.png";
         public string IconRoot => $"/Images/Talents/{Career.ForDisplay()}";
         public string TalentIcon(int row, int column)
         {
+            // Cover cases where the career is a yet-unknown career, so we definitely
+            // will not be able to display any talents
+            if(IconRoot.Contains("UNKNOWN"))
+            {
+                return FallbackIconPath;
+            }
+
             int talentNum = (row-1) * 3 + column;
             var path = $"{IconRoot}/talent-{talentNum:D2}.png";
 

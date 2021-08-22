@@ -9,6 +9,7 @@ namespace VA.LogReader
     public class WeaponData
     {
         public const byte UNKNOWN_WEAPON = 0;
+        public const string UNKNOWN_WEAPON_NAME = "Unknown Weapon";
         #region Static Weapon Dictionaries
         public static Dictionary<byte, string> WeaponsMarkus = new Dictionary<byte, string>()
         {
@@ -110,7 +111,7 @@ namespace VA.LogReader
             {38, "Coruscation Staff" },
         };
 
-        public Dictionary<HERO, Dictionary<byte, string>> Weapons = new Dictionary<HERO, Dictionary<byte, string>>()
+        public static Dictionary<HERO, Dictionary<byte, string>> Weapons = new Dictionary<HERO, Dictionary<byte, string>>()
         {
             { HERO.Markus, WeaponsMarkus },
             { HERO.Bardin, WeaponsBardin },
@@ -140,7 +141,11 @@ namespace VA.LogReader
         public double Duration { get; set; }
         public double DurationMinutes { get; set; }
 
-        public string WeaponName => WeaponId == UNKNOWN_WEAPON ? "Unknown Weapon" : Weapons[Hero][WeaponId];
+        public string WeaponName => WeaponId == UNKNOWN_WEAPON ?
+            UNKNOWN_WEAPON_NAME :
+            Weapons[Hero].ContainsKey(WeaponId) ?
+                Weapons[Hero][WeaponId] :
+                UNKNOWN_WEAPON_NAME;
         public bool Ranged => WeaponId > 32;
 
         public List<Event> Events { get; private set; } = new List<Event>();

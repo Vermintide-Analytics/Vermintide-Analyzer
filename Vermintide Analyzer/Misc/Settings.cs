@@ -22,6 +22,7 @@ namespace Vermintide_Analyzer
         #region Properties
         public string PlayerName { get; set; }
         public bool WatermarkScreenshots { get; set; }
+        public bool ShowHealthWhenDowned { get; set; }
         public bool ConfirmDeleteGames { get; set; }
         public bool IncludeCustomNoteInExport { get; set; }
         #endregion
@@ -31,6 +32,7 @@ namespace Vermintide_Analyzer
         {
             PlayerName = null;
             WatermarkScreenshots = true;
+            ShowHealthWhenDowned = false;
             ConfirmDeleteGames = true;
             IncludeCustomNoteInExport = true;
         }

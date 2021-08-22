@@ -18,6 +18,10 @@
             <CheckBox IsChecked="{Binding WatermarkScreenshots}" />
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Show Health when Downed: " ToolTip="In the chart that shows health over time, include health values while downed (may shrink the rest of the chart since these values can be much higher)." />
+            <CheckBox IsChecked="{Binding ShowHealthWhenDowned}" />
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
             <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Confirm Game Deletion: " ToolTip="Show a yes/no prompt when you attempt to delete a game or multiple games" />
             <CheckBox IsChecked="{Binding ConfirmDeleteGames}" />
         </StackPanel>

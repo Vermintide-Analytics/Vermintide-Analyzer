@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToastNotifications.Messages;
 
 namespace Vermintide_Analyzer.Controls
 {
@@ -23,6 +24,7 @@ namespace Vermintide_Analyzer.Controls
         #region Binding
         public string PlayerName { get; set; } = Settings.Current.PlayerName;
         public bool WatermarkScreenshots { get; set; } = Settings.Current.WatermarkScreenshots;
+        public bool ShowHealthWhenDowned { get; set; } = Settings.Current.ShowHealthWhenDowned;
         public bool ConfirmDeleteGames { get; set; } = Settings.Current.ConfirmDeleteGames;
         public bool IncludeCustomNoteInExport { get; set; } = Settings.Current.IncludeCustomNoteInExport;
         #endregion
@@ -37,10 +39,19 @@ namespace Vermintide_Analyzer.Controls
         {
             Settings.Current.PlayerName = PlayerName;
             Settings.Current.WatermarkScreenshots = WatermarkScreenshots;
+            Settings.Current.ShowHealthWhenDowned = ShowHealthWhenDowned;
             Settings.Current.ConfirmDeleteGames = ConfirmDeleteGames;
             Settings.Current.IncludeCustomNoteInExport = IncludeCustomNoteInExport;
 
-            Settings.Save();
+            bool success = Settings.Save();
+            if (success)
+            {
+                MainWindow.Instance.ToastNotifier.ShowSuccess("Settings saved");
+            }
+            else
+            {
+                MainWindow.Instance.ToastNotifier.ShowError("Error saving settings");
+            }
         }
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)

@@ -69,6 +69,11 @@ namespace VA.LogReader
         public Round_Start RoundStart { get; private set; }
         public Round_End RoundEnd { get; private set; }
 
+        #region Public Functions
+        public PLAYER_STATE? GetPlayerStateAtTime(float time) =>
+            PlayerStateTimes.Any() ? (PLAYER_STATE?)PlayerStateTimes.Last(st => st.time <= time).state : null;
+        #endregion
+
         #region For Display
         public string GameVersion => $"{GameVersionMajor}.{GameVersionMinor}";
 
@@ -144,6 +149,7 @@ namespace VA.LogReader
         #endregion
 
         #region Player State
+        public List<(float time, PLAYER_STATE state)> PlayerStateTimes { get; private set; } = new List<(float time, PLAYER_STATE state)>();
         public int TimesDowned { get; private set; } = 0;
         public int TimesDied { get; private set; } = 0;
         public double TimeDownedPercent { get; private set; } = double.NaN;
@@ -232,6 +238,7 @@ namespace VA.LogReader
                 TimeDeadPercent = 0;
                 TimeDownedPercent = 0;
                 TimeAlivePercent = 100;
+                PlayerStateTimes.Add((0, PLAYER_STATE.Alive));
                 return;
             }
 
@@ -247,6 +254,11 @@ namespace VA.LogReader
             {
                 // First event is player being rescued, consider the initial state to be dead
                 currentState = PLAYER_STATE.Dead;
+                PlayerStateTimes.Add((0, PLAYER_STATE.Dead));
+            }
+            else
+            {
+                PlayerStateTimes.Add((0, PLAYER_STATE.Alive));
             }
 
             // Accumulate times and states up until the last state event
@@ -258,6 +270,7 @@ namespace VA.LogReader
                 AddTime(stateEvent.Time);
                 currentTime = stateEvent.Time;
                 currentState = stateEvent.State;
+                PlayerStateTimes.Add((currentTime, currentState));
             }
 
             // Add time between last state event and end of the game

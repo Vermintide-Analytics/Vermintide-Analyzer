@@ -210,6 +210,7 @@ namespace Vermintide_Analyzer
             HideForScreenshot.Add(ScreenshotInstructionsContainer);
         }
 
+        #region Private
         private void ConstructSeries()
         {
             var allDamageEvents = Game.Events.Where(e => e.Type == EventType.Damage_Dealt).Cast<Damage_Dealt>();
@@ -257,8 +258,18 @@ namespace Vermintide_Analyzer
                 allHealthEvents.Remove(evt);
             }
 
-            PermanentHealthPoints.AddRange(allHealthEvents.Select(e => new ScatterPoint(e.Time, e.PermanentHealth)));
-            TemporaryHealthPoints.AddRange(allHealthEvents.Select(e => new ScatterPoint(e.Time, e.TemporaryHealth)));
+            PermanentHealthPoints.AddRange(allHealthEvents.Select(e =>
+            {
+                return Settings.Current.ShowHealthWhenDowned || Game.GetPlayerStateAtTime(e.Time) == PLAYER_STATE.Alive ?
+                    new ScatterPoint(e.Time, e.PermanentHealth) :
+                    new ScatterPoint(e.Time, 0);
+            }));
+            TemporaryHealthPoints.AddRange(allHealthEvents.Select(e =>
+            {
+                return Settings.Current.ShowHealthWhenDowned || Game.GetPlayerStateAtTime(e.Time) == PLAYER_STATE.Alive ?
+                    new ScatterPoint(e.Time, e.TemporaryHealth) :
+                    new ScatterPoint(e.Time, 0);
+            }));
         }
 
         private void ConstructSections()
@@ -537,6 +548,8 @@ namespace Vermintide_Analyzer
             }
             SetVisibleChart(destination);
         }
+        #endregion
+
         #endregion
     }
 }

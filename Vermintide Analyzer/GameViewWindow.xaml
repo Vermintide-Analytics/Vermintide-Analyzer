@@ -31,16 +31,16 @@
             <RowDefinition />
             <RowDefinition Height="420" />
         </Grid.RowDefinitions>
-        <Rectangle x:Name="ScreenshotWatermark" Visibility="Hidden">
+        <Rectangle x:Name="ScreenshotWatermark" Grid.RowSpan="2" Visibility="Visible">
             <Rectangle.Fill>
-                <VisualBrush TileMode="Tile" Viewport="0,0,0.15,0.15" Viewbox="0,0,45,12" ViewboxUnits="Absolute">
+                <VisualBrush TileMode="Tile" Viewport="0,0,0.15,0.15" Viewbox="0,0,30,8" ViewboxUnits="Absolute">
                     <VisualBrush.Visual>
                         <TextBlock Foreground="Gray" Opacity=".25"
                                    FontWeight="Bold"
                                    Text="{Binding DataContext.ScreenshotWatermarkText}">
                             <TextBlock.RenderTransform>
                                 <TransformGroup>
-                                    <ScaleTransform ScaleX="0.2" ScaleY="0.35" />
+                                    <ScaleTransform ScaleX="0.175" ScaleY="0.15" />
                                 </TransformGroup>
                             </TextBlock.RenderTransform>
                         </TextBlock>
@@ -49,8 +49,8 @@
             </Rectangle.Fill>
             <Rectangle.RenderTransform>
                 <TransformGroup>
-                    <RotateTransform Angle="-10" CenterX="-200" CenterY="200" />
-                    <TranslateTransform Y="50" />
+                    <RotateTransform Angle="-8" CenterX="-200" CenterY="200" />
+                    <TranslateTransform Y="110" />
                     <ScaleTransform ScaleX="1.3" ScaleY="1.3" />
                 </TransformGroup>
             </Rectangle.RenderTransform>

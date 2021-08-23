@@ -354,7 +354,7 @@ namespace Vermintide_Analyzer
                 // Move valid items to their correct location
                 foreach (var gameHeader in valids)
                 {
-                    string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + $".{ImportedGameItem.EXPORT_EXTENSION}";
+                    string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + $".VA";
 
                     string newLocation =
                         Path.Combine(

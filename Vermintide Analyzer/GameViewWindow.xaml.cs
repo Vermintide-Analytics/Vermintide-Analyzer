@@ -38,6 +38,17 @@ namespace Vermintide_Analyzer
         public Game Game => GameModel?.Game;
 
         #region Chart Properties
+        public bool ShowHealthChart =>
+            PermanentHealthPoints.Any() ||
+            TemporaryHealthPoints.Any();
+        public bool ShowDamageDealtCharts => AllDamagePoints.Any();
+        public bool ShowDamageTakenChart => AllDamageTakenPoints.Any();
+        public bool ShowOverkillDamageChart =>
+            Weapon1OverkillDamagePoints.Any() ||
+            Weapon2OverkillDamagePoints.Any() ||
+            CareerOverkillDamagePoints.Any() ||
+            OtherOverkillDamagePoints.Any();
+
         public ChartValues<ScatterPoint> PermanentHealthPoints { get; set; } = new ChartValues<ScatterPoint>();
         public ChartValues<ScatterPoint> TemporaryHealthPoints { get; set; } = new ChartValues<ScatterPoint>();
 
@@ -285,23 +296,28 @@ namespace Vermintide_Analyzer
 
         private void PrettifyCharts()
         {
-            float highestHealth = Game.Events.Where(e => e.Type == EventType.Current_Health).Cast<Current_Health>().Max(e => e.PermanentHealth + e.TemporaryHealth);
+            var healthEvents = Game.Events.Where(e => e.Type == EventType.Current_Health).Cast<Current_Health>();
 
-            if(highestHealth > 455)
+            if(healthEvents.Any())
             {
-                CurrentHealthChart.AxisY[0].Separator.Step = 50;
-            }
-            else if(highestHealth > 355)
-            {
-                CurrentHealthChart.AxisY[0].Separator.Step = 40;
-            }
-            else if(highestHealth > 255)
-            {
-                CurrentHealthChart.AxisY[0].Separator.Step = 30;
-            }
-            else if(highestHealth > 155)
-            {
-                CurrentHealthChart.AxisY[0].Separator.Step = 20;
+                float highestHealth = healthEvents.Max(e => e.PermanentHealth + e.TemporaryHealth);
+
+                if (highestHealth > 455)
+                {
+                    CurrentHealthChart.AxisY[0].Separator.Step = 50;
+                }
+                else if (highestHealth > 355)
+                {
+                    CurrentHealthChart.AxisY[0].Separator.Step = 40;
+                }
+                else if (highestHealth > 255)
+                {
+                    CurrentHealthChart.AxisY[0].Separator.Step = 30;
+                }
+                else if (highestHealth > 155)
+                {
+                    CurrentHealthChart.AxisY[0].Separator.Step = 20;
+                }
             }
         }
 

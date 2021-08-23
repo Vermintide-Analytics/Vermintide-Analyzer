@@ -476,13 +476,21 @@
                             <Setter Property="HorizontalAlignment" Value="Center" />
                             <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
                         </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Foreground" Value="Red" />
+                            <Setter Property="MinHeight" Value="{Binding ChartHeight}" />
+                        </Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="Height" Value="{Binding ChartSeparatorHeight}" />
                             <Setter Property="Fill" Value="{StaticResource ThemeMidtone}" />
                         </Style>
                     </StackPanel.Resources>
                     <Label Content="Health" />
-                    <lvc:CartesianChart Name="CurrentHealthChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                    <TextBlock MinHeight="{Binding ChartHeight}" Text="No Health Data" Foreground="Red" Visibility="{Binding ShowHealthChart, Converter={StaticResource TrueCollapsedFalseVisible}}" />
+                    <lvc:CartesianChart Name="CurrentHealthChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}" Visibility="{Binding ShowHealthChart, Converter={StaticResource TrueVisibleFalseCollapsed}}">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Title="Minutes" MinValue="0" MaxValue="{Binding Game.Duration}" LabelFormatter="{Binding TimeFormatter}">
                                 <lvc:Axis.Separator>
@@ -507,7 +515,8 @@
                     </lvc:CartesianChart>
                     <Rectangle />
                     <Label Content="Damage Taken" />
-                    <lvc:CartesianChart Name="DamageTakenChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                    <TextBlock MinHeight="{Binding ChartHeight}" Text="No Damage Taken Data" Foreground="Red" Visibility="{Binding ShowDamageTakenChart, Converter={StaticResource TrueCollapsedFalseVisible}}" />
+                    <lvc:CartesianChart Name="DamageTakenChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}" Visibility="{Binding ShowDamageTakenChart, Converter={StaticResource TrueVisibleFalseCollapsed}}">
                         <lvc:CartesianChart.DataTooltip>
                             <controls:DamageTooltip />
                         </lvc:CartesianChart.DataTooltip>
@@ -537,7 +546,8 @@
                     </lvc:CartesianChart>
                     <Rectangle />
                     <Label Content="Damage (by target)" />
-                    <lvc:CartesianChart Name="DamageDealtByTargetChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                    <TextBlock MinHeight="{Binding ChartHeight}" Text="No Damage Dealt Data" Foreground="Red" Visibility="{Binding ShowDamageDealtCharts, Converter={StaticResource TrueCollapsedFalseVisible}}" />
+                    <lvc:CartesianChart Name="DamageDealtByTargetChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}" Visibility="{Binding ShowDamageDealtCharts, Converter={StaticResource TrueVisibleFalseCollapsed}}">
                         <lvc:CartesianChart.DataTooltip>
                             <controls:DamageTooltip />
                         </lvc:CartesianChart.DataTooltip>
@@ -565,7 +575,8 @@
                     </lvc:CartesianChart>
                     <Rectangle />
                     <Label Content="Damage (by source)" />
-                    <lvc:CartesianChart Name="DamageDealtBySourceChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                    <TextBlock MinHeight="{Binding ChartHeight}" Text="No Damage Dealt Data" Foreground="Red" Visibility="{Binding ShowDamageDealtCharts, Converter={StaticResource TrueCollapsedFalseVisible}}" />
+                    <lvc:CartesianChart Name="DamageDealtBySourceChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}" Visibility="{Binding ShowDamageDealtCharts, Converter={StaticResource TrueVisibleFalseCollapsed}}">
                         <lvc:CartesianChart.DataTooltip>
                             <controls:DamageTooltip />
                         </lvc:CartesianChart.DataTooltip>
@@ -595,7 +606,8 @@
                     </lvc:CartesianChart>
                     <Rectangle />
                     <Label Content="Overkill Damage" />
-                    <lvc:CartesianChart Name="OverkillDamageChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}">
+                    <TextBlock MinHeight="{Binding ChartHeight}" Text="No Overkill Damage Data" Foreground="Red" Visibility="{Binding ShowOverkillDamageChart, Converter={StaticResource TrueCollapsedFalseVisible}}" />
+                    <lvc:CartesianChart Name="OverkillDamageChart" DisableAnimations="True" MinHeight="{Binding ChartHeight}" Visibility="{Binding ShowOverkillDamageChart, Converter={StaticResource TrueVisibleFalseCollapsed}}">
                         <lvc:CartesianChart.DataTooltip>
                             <controls:DamageTooltip />
                         </lvc:CartesianChart.DataTooltip>

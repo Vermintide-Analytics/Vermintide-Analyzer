@@ -21,6 +21,8 @@ namespace VA.LogReader
         public byte GameVersionMajor { get; private set; }
         public byte GameVersionMinor { get; private set; }
 
+        public bool IsEmpty { get; private set; }
+
         public bool Deathwish { get; private set; }
         public ONSLAUGHT_TYPE Onslaught { get; private set; }
         public bool Empowered { get; private set; }
@@ -68,6 +70,7 @@ namespace VA.LogReader
                 SchemaVersionMinor = g.SchemaVersionMinor,
                 GameVersionMajor = g.GameVersionMajor,
                 GameVersionMinor = g.GameVersionMinor,
+                IsEmpty = !g.Events.Any(e => (e is Damage_Dealt) || (e is Damage_Taken)),
                 Deathwish = g.Deathwish,
                 Onslaught = g.Onslaught,
                 Empowered = g.Empowered,

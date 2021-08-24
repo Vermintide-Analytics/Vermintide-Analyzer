@@ -27,6 +27,7 @@ namespace Vermintide_Analyzer.Controls
         public bool ShowHealthWhenDowned { get; set; } = Settings.Current.ShowHealthWhenDowned;
         public bool ConfirmDeleteGames { get; set; } = Settings.Current.ConfirmDeleteGames;
         public bool IncludeCustomNoteInExport { get; set; } = Settings.Current.IncludeCustomNoteInExport;
+        public bool AutoDeleteEmptyGames { get; set; } = Settings.Current.AutoDeleteEmptyGames;
         #endregion
 
         public SettingsView()
@@ -42,6 +43,7 @@ namespace Vermintide_Analyzer.Controls
             Settings.Current.ShowHealthWhenDowned = ShowHealthWhenDowned;
             Settings.Current.ConfirmDeleteGames = ConfirmDeleteGames;
             Settings.Current.IncludeCustomNoteInExport = IncludeCustomNoteInExport;
+            Settings.Current.AutoDeleteEmptyGames = AutoDeleteEmptyGames;
 
             bool success = Settings.Save();
             if (success)

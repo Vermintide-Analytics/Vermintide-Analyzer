@@ -25,6 +25,7 @@ namespace Vermintide_Analyzer
         public bool ShowHealthWhenDowned { get; set; }
         public bool ConfirmDeleteGames { get; set; }
         public bool IncludeCustomNoteInExport { get; set; }
+        public bool AutoDeleteEmptyGames { get; set; }
         #endregion
 
         #region Constructor (set default values here)
@@ -35,6 +36,7 @@ namespace Vermintide_Analyzer
             ShowHealthWhenDowned = false;
             ConfirmDeleteGames = true;
             IncludeCustomNoteInExport = true;
+            AutoDeleteEmptyGames = true;
         }
         #endregion
 

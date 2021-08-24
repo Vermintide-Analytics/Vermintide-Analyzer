@@ -66,6 +66,8 @@ namespace Vermintide_Analyzer
 
         private void Startup()
         {
+            Settings.Load();
+
             BeginStep("Checking directories...");
             if(!GameRepository.Instance.CheckDirectories())
             {
@@ -88,8 +90,6 @@ namespace Vermintide_Analyzer
             GameRepository.Instance.GameHeaders.Sort((gh1, gh2) => gh2.GameStart.CompareTo(gh1.GameStart));
             GameRepository.Instance.ReadGameNotesFromDisk();
             GameRepository.Instance.ReadGameFiltersFromDisk();
-
-            Settings.Load();
 
             // Delete and recreate the temp dir to clear it out
             try
@@ -126,7 +126,6 @@ namespace Vermintide_Analyzer
             if (!HasSetup)
             {
                 new Task(Startup).Start();
-                //Startup();
                 HasSetup = true;
             }
         }

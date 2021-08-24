@@ -7,27 +7,43 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
+        <StackPanel.Style>
+            <Style></Style>
+        </StackPanel.Style>
+        <StackPanel.Resources>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
+            </Style>
+        </StackPanel.Resources>
         <TextBlock Margin="5" FontSize="25" Foreground="{StaticResource ThemeLighter}" Text="Settings" />
         <Rectangle Height="1" Fill="{StaticResource ThemeMidtone}" />
         <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Player Name: " />
+            <TextBlock Text="Player Name: " />
             <TextBox MinWidth="100" Text="{Binding PlayerName}" />
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Watermark Screenshots: " ToolTip="Apply a watermark with your Player Name to screenshots of your game details" />
+            <TextBlock Text="Watermark Screenshots: " ToolTip="Apply a watermark with your Player Name to screenshots of your game details" />
             <CheckBox IsChecked="{Binding WatermarkScreenshots}" />
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Show Health when Downed: " ToolTip="In the chart that shows health over time, include health values while downed (may shrink the rest of the chart since these values can be much higher)." />
+            <TextBlock Text="Show Health when Downed: " ToolTip="In the chart that shows health over time, include health values while downed (may shrink the rest of the chart since these values can be much higher)." />
             <CheckBox IsChecked="{Binding ShowHealthWhenDowned}" />
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Confirm Game Deletion: " ToolTip="Show a yes/no prompt when you attempt to delete a game or multiple games" />
+            <TextBlock Text="Confirm Game Deletion: " ToolTip="Show a yes/no prompt when you attempt to delete a game or multiple games" />
             <CheckBox IsChecked="{Binding ConfirmDeleteGames}" />
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Foreground="{StaticResource ThemeLighter}" Text="Include Custom Note in Export: " ToolTip="Include your custom notes when you export a game." />
+            <TextBlock Text="Include Custom Note in Export: " ToolTip="Include your custom notes when you export a game" />
             <CheckBox IsChecked="{Binding IncludeCustomNoteInExport}" />
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Text="Auto Delete Empty Games: " ToolTip="On startup, delete games which do not include ANY damage data (damage dealt OR damage taken)." />
+            <CheckBox IsChecked="{Binding AutoDeleteEmptyGames}" />
         </StackPanel>
         <Button Margin="5" HorizontalAlignment="Left" Content="Save" Click="Save_Button_Click" />
     </StackPanel>

@@ -133,6 +133,16 @@ namespace Vermintide_Analyzer
 
             newGameHeaders = FilterInvalidGames(newGameHeaders, true).ToList();
 
+            // Remove empty games if user settings say to do so
+            if(Settings.Current.AutoDeleteEmptyGames)
+            {
+                foreach (var gameHeader in newGameHeaders.Where(gh => gh.IsEmpty))
+                {
+                    File.Delete(gameHeader.FilePath);
+                }
+                newGameHeaders.RemoveAll(gh => gh.IsEmpty);
+            }
+
             foreach (var gameHeader in newGameHeaders)
             {
                 string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + ".VA";

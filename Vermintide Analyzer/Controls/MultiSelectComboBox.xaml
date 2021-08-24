@@ -7,6 +7,9 @@
              mc:Ignorable="d" Name="control"
              d:DesignHeight="50" d:DesignWidth="300">
     <Grid Margin="0,4,0,0">
+        <Grid.Resources>
+            <Style TargetType="Button"></Style>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="18"/>

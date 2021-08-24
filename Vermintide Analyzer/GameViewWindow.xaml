@@ -31,7 +31,7 @@
             <RowDefinition />
             <RowDefinition Height="420" />
         </Grid.RowDefinitions>
-        <Rectangle x:Name="ScreenshotWatermark" Grid.RowSpan="2" Visibility="Visible">
+        <Rectangle x:Name="ScreenshotWatermark" Grid.RowSpan="2" Visibility="Hidden">
             <Rectangle.Fill>
                 <VisualBrush TileMode="Tile" Viewport="0,0,0.15,0.15" Viewbox="0,0,30,8" ViewboxUnits="Absolute">
                     <VisualBrush.Visual>

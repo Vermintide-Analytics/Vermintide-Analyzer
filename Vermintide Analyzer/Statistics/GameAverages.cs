@@ -15,60 +15,66 @@ namespace Vermintide_Analyzer.Statistics
         [AverageFromGame(nameof(Game.DurationMinutes))]
         public double DurationMinutes { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.TimeAlivePercent))]
+        [AverageFromGameStats(nameof(GameStats.TimeAlivePercent))]
         public double TimeAlivePercent { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.TimeDownedPercent))]
+        [AverageFromGameStats(nameof(GameStats.TimeDownedPercent))]
         public double TimeDownedPercent { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.TimeDeadPercent))]
+        [AverageFromGameStats(nameof(GameStats.TimeDeadPercent))]
         public double TimeDeadPercent { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.DamagePerMin))]
+        [AverageFromGameStats(nameof(GameStats.DamagePerMin))]
         public double DamageDealtPerMin { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.MonsterDamagePerMin))]
+        [AverageFromGameStats(nameof(GameStats.MonsterDamagePerMin))]
         public double MonsterDamageDealtPerMin { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.AllyDamagePerMin))]
+        [AverageFromGameStats(nameof(GameStats.AllyDamagePerMin))]
         public double AllyDamageDealtPerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.OverkillDamagePerMin))]
+        [AverageFromGameStats(nameof(GameStats.OverkillDamagePerMin))]
         public double OverKillDamagePerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.EnemiesKilledPerMin))]
+        [AverageFromGameStats(nameof(GameStats.EnemiesKilledPerMin))]
         public double EnemiesKilledPerMin { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.ElitesKilledPerMin))]
+        [AverageFromGameStats(nameof(GameStats.ElitesKilledPerMin))]
         public double ElitesKilledPerMin { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.SpecialsKilledPerMin))]
+        [AverageFromGameStats(nameof(GameStats.SpecialsKilledPerMin))]
         public double SpecialsKilledPerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.StaggerPerMin))]
+        [AverageFromGameStats(nameof(GameStats.StaggerPerMin))]
         public double StaggerDealtPerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.DamageTakenPerMin))]
+        [AverageFromGameStats(nameof(GameStats.DamageTakenPerMin))]
         public double DamageTakenPerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.UncappedTempHPGainedPerMin))]
+        [AverageFromGameStats(nameof(GameStats.UncappedTempHPGainedPerMin))]
         public double UncappedTempHPGainedPerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.CappedTempHPGainedPerMin))]
+        [AverageFromGameStats(nameof(GameStats.CappedTempHPGainedPerMin))]
         public double CappedTempHPGainedPerMin { get; private set; } = 0;
 
-        [AverageFromGame(nameof(Game.TimesDowned))]
+        [AverageFromGameStats(nameof(GameStats.TimesDowned))]
         public double TimesDowned { get; private set; } = 0;
-        [AverageFromGame(nameof(Game.TimesDied))]
+        [AverageFromGameStats(nameof(GameStats.TimesDied))]
         public double TimesDied { get; private set; } = 0;
 
-        public GameAverages(List<Game> games)
+        public GameAverages(List<(Game game, GameStats stats)> games)
         {
-            foreach(var game in games)
+            foreach(var tuple in games)
             {
                 // Make sure each game's stats have been calculated
-                game.RecalculateStats();
+                tuple.stats.RecalculateStats();
             }
 
-            IEnumerable<PropertyInfo> properties = typeof(GameAverages).GetProperties();
-            properties = properties.Where(prop => prop.GetCustomAttribute(typeof(AverageFromGameAttribute)) != null);
+            IEnumerable<PropertyInfo> gameProperties = typeof(GameAverages).GetProperties();
+            gameProperties = gameProperties.Where(prop => prop.GetCustomAttribute(typeof(AverageFromGameAttribute)) != null);
 
-            IEnumerable<(PropertyInfo propInfo, AverageFromGameAttribute attr)> propAttributes =
-                properties.Select(prop => (prop, (AverageFromGameAttribute)prop.GetCustomAttribute(typeof(AverageFromGameAttribute))));
+            IEnumerable<(PropertyInfo propInfo, AverageFromGameAttribute attr)> gamePropAttributes =
+                gameProperties.Select(prop => (prop, (AverageFromGameAttribute)prop.GetCustomAttribute(typeof(AverageFromGameAttribute))));
+
+            IEnumerable<PropertyInfo> statsProperties = typeof(GameAverages).GetProperties();
+            statsProperties = statsProperties.Where(prop => prop.GetCustomAttribute(typeof(AverageFromGameStatsAttribute)) != null);
+
+            IEnumerable<(PropertyInfo propInfo, AverageFromGameStatsAttribute attr)> statsPropAttributes =
+                statsProperties.Select(prop => (prop, (AverageFromGameStatsAttribute)prop.GetCustomAttribute(typeof(AverageFromGameStatsAttribute))));
 
             int wins = 0;
             int losses = 0;
@@ -76,22 +82,31 @@ namespace Vermintide_Analyzer.Statistics
             int numGames = games.Count();
             foreach(var game in games)
             {
-                if (game.Result.IsLoss()) losses++;
-                else if (game.Result.IsWin()) wins++;
+                if (game.game.Result.IsLoss()) losses++;
+                else if (game.game.Result.IsWin()) wins++;
 
-                foreach(var tuple in propAttributes)
+                foreach (var tuple in gamePropAttributes)
+                {
+                    var currentValObj = tuple.propInfo.GetValue(this);
+                    if (currentValObj is double currentVal)
+                    {
+                        tuple.propInfo.SetValue(this, currentVal + GetGameValue(game.game, tuple.attr.AccumulateFrom));
+                    }
+                }
+
+                foreach (var tuple in statsPropAttributes)
                 {
                     var currentValObj = tuple.propInfo.GetValue(this);
                     if(currentValObj is double currentVal)
                     {
-                        tuple.propInfo.SetValue(this, currentVal + GetGameValue(game, tuple.attr.AccumulateFrom));
+                        tuple.propInfo.SetValue(this, currentVal + GetStatsValue(game.stats, tuple.attr.AccumulateFrom));
                     }
                 }
             }
 
             WinLossRatio = (double)wins / losses;
 
-            foreach(var prop in properties)
+            foreach(var prop in statsProperties)
             {
                 var currentValObj = prop.GetValue(this);
                 if(currentValObj is double currentVal)
@@ -105,6 +120,16 @@ namespace Vermintide_Analyzer.Statistics
             {
                 var prop = typeof(Game).GetProperty(propName);
                 var val = prop.GetValue(g);
+                if (prop.PropertyType == typeof(int))
+                {
+                    return (int)val;
+                }
+                return (double)val;
+            }
+            double GetStatsValue(GameStats stats, string propName)
+            {
+                var prop = typeof(Game).GetProperty(propName);
+                var val = prop.GetValue(stats);
                 if(prop.PropertyType == typeof(int))
                 {
                     return (int)val;
@@ -127,6 +152,15 @@ namespace Vermintide_Analyzer.Statistics
     {
         public string AccumulateFrom { get; }
         public AverageFromGameAttribute(string accumulate)
+        {
+            AccumulateFrom = accumulate;
+        }
+    }
+
+    class AverageFromGameStatsAttribute : Attribute
+    {
+        public string AccumulateFrom { get; }
+        public AverageFromGameStatsAttribute(string accumulate)
         {
             AccumulateFrom = accumulate;
         }

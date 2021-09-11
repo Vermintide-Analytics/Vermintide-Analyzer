@@ -38,12 +38,12 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Player" Binding="{Binding PlayerName}" />
                 <DataGridTextColumn Header="Career" Binding="{Binding CareerName}" />
-                <DataGridTextColumn Header="Enemies Killed" Binding="{Binding LoadedGame.EnemiesKilled}" />
-                <DataGridTextColumn Header="Elites Killed" Binding="{Binding LoadedGame.ElitesKilled}" />
-                <DataGridTextColumn Header="Specials Killed" Binding="{Binding LoadedGame.SpecialsKilled}" />
-                <DataGridTextColumn Header="Damage Dealt" Binding="{Binding LoadedGame.DamageDealt}" />
-                <DataGridTextColumn Header="Friendly Fire Dealt" Binding="{Binding LoadedGame.FriendlyFireDealt}" />
-                <DataGridTextColumn Header="Damage Taken" Binding="{Binding LoadedGame.DamageTaken}" />
+                <DataGridTextColumn Header="Enemies Killed" Binding="{Binding Stats.EnemiesKilled}" />
+                <DataGridTextColumn Header="Elites Killed" Binding="{Binding Stats.ElitesKilled}" />
+                <DataGridTextColumn Header="Specials Killed" Binding="{Binding Stats.SpecialsKilled}" />
+                <DataGridTextColumn Header="Damage Dealt" Binding="{Binding Stats.DamageDealt}" />
+                <DataGridTextColumn Header="Friendly Fire Dealt" Binding="{Binding Stats.FriendlyFireDealt}" />
+                <DataGridTextColumn Header="Damage Taken" Binding="{Binding Stats.DamageTaken}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

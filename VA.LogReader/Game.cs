@@ -69,11 +69,6 @@ namespace VA.LogReader
         public Round_Start RoundStart { get; private set; }
         public Round_End RoundEnd { get; private set; }
 
-        #region Public Functions
-        public PLAYER_STATE? GetPlayerStateAtTime(float time) =>
-            PlayerStateTimes.Any() ? (PLAYER_STATE?)PlayerStateTimes.Last(st => st.time <= time).state : null;
-        #endregion
-
         #region For Display
         public string GameVersion => $"{GameVersionMajor}.{GameVersionMinor}";
 
@@ -93,212 +88,6 @@ namespace VA.LogReader
         public TalentTree StartingTalents => TalentTrees.FirstOrDefault();
         #endregion
 
-        #region Calculated
-        #region Damage Dealt
-        public double TotalDamage { get; private set; } = double.NaN;
-        public double DamagePerMin { get; private set; } = double.NaN;
-        public double TotalMonsterDamage { get; private set; } = double.NaN;
-        public double MonsterDamagePerMin { get; private set; } = double.NaN;
-        public double TotalAllyDamage { get; private set; } = double.NaN;
-        public double AllyDamagePerMin { get; private set; } = double.NaN;
-
-        public double AvgDamage { get; private set; } = double.NaN;
-        public double AvgMonsterDamage { get; private set; } = double.NaN;
-        public double AvgAllyDamage { get; private set; } = double.NaN;
-        #endregion
-
-        #region Stagger Dealt
-        public double TotalStagger { get; private set; } = double.NaN;
-        public double StaggerPerMin { get; private set; } = double.NaN;
-        public double AvgStagger { get; private set; } = double.NaN;
-
-        #endregion
-
-        #region Enemies Killed
-        public int TotalEnemiesKilled { get; private set; } = 0;
-        public double EnemiesKilledPerMin { get; private set; } = double.NaN;
-        public int TotalElitesKilled { get; private set; } = 0;
-        public double ElitesKilledPerMin { get; private set; } = double.NaN;
-        public int TotalSpecialsKilled { get; private set; } = 0;
-        public double SpecialsKilledPerMin { get; private set; } = double.NaN;
-        #endregion
-
-        #region Overkill Damage
-        public double TotalOverkillDamage { get; private set; } = double.NaN;
-        public double OverkillDamagePerMin { get; private set; } = double.NaN;
-        public double AvgOverkillDamage { get; private set; } = double.NaN;
-        #endregion
-
-        #region Headshots
-        public int Headshots { get; private set; } = 0;
-        public double HeadshotsPerMin { get; private set; } = double.NaN;
-        #endregion
-
-        #region Damage Taken
-        public double TotalDamageTaken { get; private set; } = double.NaN;
-        public double DamageTakenPerMin { get; private set; } = double.NaN;
-        public double FriendlyFireTaken { get; private set; } = double.NaN;
-        public double FriendlyFireTakenPerMin { get; private set; } = double.NaN;
-        #endregion
-
-        #region Temp HP Generated
-        public double TotalUncappedTempHPGained { get; private set; } = double.NaN;
-        public double UncappedTempHPGainedPerMin { get; private set; } = double.NaN;
-        public double TotalCappedTempHPGained { get; private set; } = double.NaN;
-        public double CappedTempHPGainedPerMin { get; private set; } = double.NaN;
-        #endregion
-
-        #region Player State
-        public List<(float time, PLAYER_STATE state)> PlayerStateTimes { get; private set; } = new List<(float time, PLAYER_STATE state)>();
-        public int TimesDowned { get; private set; } = 0;
-        public int TimesDied { get; private set; } = 0;
-        public double TimeDownedPercent { get; private set; } = double.NaN;
-        public double TimeDeadPercent { get; private set; } = double.NaN;
-        public double TimeAlivePercent { get; private set; } = double.NaN;
-        #endregion
-        #endregion
-
-        #region Recalculate
-        public void RecalculateStats()
-        {
-            Duration = Events.Last()?.Time ?? 0;
-            DurationMinutes = Duration / 60;
-
-            var damageEvents = Events.Where(e => e is Damage_Dealt).Cast<Damage_Dealt>();
-            var numDamageEvents = damageEvents.Count();
-            TotalDamage = damageEvents.Sum(e => e.Damage);
-            DamagePerMin = TotalDamage / DurationMinutes;
-            AvgDamage = TotalDamage / numDamageEvents;
-
-            var monsterDamageEvents = damageEvents.Where(e => e.Target == DAMAGE_TARGET.Monster);
-            var numMonsterDamageEvents = monsterDamageEvents.Count();
-            TotalMonsterDamage = monsterDamageEvents.Sum(e => e.Damage);
-            MonsterDamagePerMin = TotalMonsterDamage / DurationMinutes;
-            AvgMonsterDamage = TotalMonsterDamage / numMonsterDamageEvents;
-
-            var allyDamageEvents = damageEvents.Where(e => e.Target == DAMAGE_TARGET.Ally);
-            var numAllyDamageEvents = allyDamageEvents.Count();
-            TotalAllyDamage = allyDamageEvents.Sum(e => e.Damage);
-            AllyDamagePerMin = TotalAllyDamage / DurationMinutes;
-            AvgAllyDamage = TotalAllyDamage / numAllyDamageEvents;
-
-            var staggerEvents = Events.Where(e => e is Enemy_Staggered).Cast<Enemy_Staggered>();
-            var numStaggerEvents = staggerEvents.Count();
-            TotalStagger = staggerEvents.Sum(e => e.StaggerDuration);
-            StaggerPerMin = TotalStagger / DurationMinutes;
-            AvgStagger = TotalAllyDamage / numStaggerEvents;
-
-            var killEvents = Events.Where(e => e is Enemy_Killed).Cast<Enemy_Killed>();
-            var eliteKillEvents = killEvents.Where(e => e.EnemyType == ENEMY_TYPE.Elite);
-            var specialKillEvents = killEvents.Where(e => e.EnemyType == ENEMY_TYPE.Special);
-            var numKillEvents = killEvents.Count();
-            var numEliteKillEvents = eliteKillEvents.Count();
-            var numSpecialKillEvents = specialKillEvents.Count();
-
-            TotalEnemiesKilled = numKillEvents;
-            TotalElitesKilled = numEliteKillEvents;
-            TotalSpecialsKilled = numSpecialKillEvents;
-
-            EnemiesKilledPerMin = TotalEnemiesKilled / DurationMinutes;
-            ElitesKilledPerMin = TotalElitesKilled / DurationMinutes;
-            SpecialsKilledPerMin = TotalSpecialsKilled / DurationMinutes;
-
-            TotalOverkillDamage = killEvents.Sum(e => e.OverkillDamage);
-            OverkillDamagePerMin = TotalOverkillDamage / DurationMinutes;
-            AvgOverkillDamage = TotalOverkillDamage / numKillEvents;
-
-            Headshots = damageEvents.Where(e => e.Headshot).Count();
-            HeadshotsPerMin = Headshots / DurationMinutes;
-
-            var damageTakenEvents = Events.Where(e => e is Damage_Taken).Cast<Damage_Taken>();
-            TotalDamageTaken = damageTakenEvents.Sum(e => e.Damage);
-            DamageTakenPerMin = TotalDamageTaken / DurationMinutes;
-            FriendlyFireTaken = damageTakenEvents.Where(e => e.Source.IsFriendlyFire()).Sum(e => e.Damage);
-            FriendlyFireTakenPerMin = FriendlyFireTaken / DurationMinutes;
-
-            var tempHPGainedEvents = Events.Where(e => e is Temp_HP_Gained).Cast<Temp_HP_Gained>();
-            TotalUncappedTempHPGained = tempHPGainedEvents.Sum(e => e.UncappedHeal);
-            UncappedTempHPGainedPerMin = TotalUncappedTempHPGained / DurationMinutes;
-            TotalCappedTempHPGained = tempHPGainedEvents.Sum(e => e.CappedHeal);
-            CappedTempHPGainedPerMin = TotalCappedTempHPGained / DurationMinutes;
-
-            CalculatePlayerStateTimes();
-        }
-
-        private void CalculatePlayerStateTimes()
-        {
-            TimesDied = 0;
-            TimesDowned = 0;
-
-            var playerStateEvents = Events.Where(e => e is Player_State).Cast<Player_State>();
-
-            if (!playerStateEvents.Any())
-            {
-                // If the player state never changed, we assume they were alive the whole time
-                TimeDeadPercent = 0;
-                TimeDownedPercent = 0;
-                TimeAlivePercent = 100;
-                PlayerStateTimes.Add((0, PLAYER_STATE.Alive));
-                return;
-            }
-
-            float currentTime = 0;
-            var currentState = PLAYER_STATE.Alive;
-
-            double timeAlive = 0;
-            double timeDowned = 0;
-            double timeDead = 0;
-
-            // Figure out the player's starting state (player can start a level dead in chaos wastes for example)
-            if (playerStateEvents.First().State == PLAYER_STATE.Alive)
-            {
-                // First event is player being rescued, consider the initial state to be dead
-                currentState = PLAYER_STATE.Dead;
-                PlayerStateTimes.Add((0, PLAYER_STATE.Dead));
-            }
-            else
-            {
-                PlayerStateTimes.Add((0, PLAYER_STATE.Alive));
-            }
-
-            // Accumulate times and states up until the last state event
-            foreach (var stateEvent in playerStateEvents)
-            {
-                if (stateEvent.State == PLAYER_STATE.Downed) TimesDowned++;
-                else if (stateEvent.State == PLAYER_STATE.Dead) TimesDied++;
-
-                AddTime(stateEvent.Time);
-                currentTime = stateEvent.Time;
-                currentState = stateEvent.State;
-                PlayerStateTimes.Add((currentTime, currentState));
-            }
-
-            // Add time between last state event and end of the game
-            AddTime(Duration);
-
-            // Calculate percentages
-            TimeAlivePercent = 100 * timeAlive / Duration;
-            TimeDownedPercent = 100 * timeDowned / Duration;
-            TimeDeadPercent = 100 * timeDead / Duration;
-
-            // Helper function
-            void AddTime(float upToTime)
-            {
-                switch (currentState)
-                {
-                    case PLAYER_STATE.Alive:
-                        timeAlive += upToTime - currentTime;
-                        break;
-                    case PLAYER_STATE.Downed:
-                        timeDowned += upToTime - currentTime;
-                        break;
-                    case PLAYER_STATE.Dead:
-                        timeDead += upToTime - currentTime;
-                        break;
-                }
-            }
-        }
-        #endregion
 
         #region From File
         public static Game FromFile(string filePath)
@@ -474,7 +263,17 @@ namespace VA.LogReader
 
             foreach(var evt in Events)
             {
-                if(evt is Weapon_Set weapons)
+                // Add every event as having happened while using the current weapons, INCLUDING the event which is a new weapon set (if applicable)
+                if (currentWeapon1 != null)
+                {
+                    currentWeapon1.Events.Add(evt);
+                }
+                if (currentWeapon2 != null)
+                {
+                    currentWeapon2.Events.Add(evt);
+                }
+
+                if (evt is Weapon_Set weapons)
                 {
                     var newWeapon1 = new WeaponData(weapons.Weapon1Owner, WEAPON_SLOT.Weapon1, weapons.Weapon1, weapons.Weapon1Rarity, weapons.Time);
                     var newWeapon2 = new WeaponData(weapons.Weapon2Owner, WEAPON_SLOT.Weapon2, weapons.Weapon2, weapons.Weapon2Rarity, weapons.Time);
@@ -484,17 +283,6 @@ namespace VA.LogReader
 
                     currentWeapon2 = newWeapon2;
                     Weapon2Datas.Add(newWeapon2);
-                }
-                else
-                {
-                    if(currentWeapon1 != null)
-                    {
-                        currentWeapon1.Events.Add(evt);
-                    }
-                    if(currentWeapon2 != null)
-                    {
-                        currentWeapon2.Events.Add(evt);
-                    }
                 }
             }
 

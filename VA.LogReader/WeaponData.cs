@@ -186,53 +186,6 @@ namespace VA.LogReader
         }
         #endregion
 
-        #region Calculated
-        #region Damage Dealt
-        public double TotalDamage { get; private set; } = double.NaN;
-        public double DamagePerMin { get; private set; } = double.NaN;
-        public double TotalMonsterDamage { get; private set; } = double.NaN;
-        public double MonsterDamagePerMin { get; private set; } = double.NaN;
-        public double TotalAllyDamage { get; private set; } = double.NaN;
-        public double AllyDamagePerMin { get; private set; } = double.NaN;
-
-        public double AvgDamage { get; private set; } = double.NaN;
-        public double AvgMonsterDamage { get; private set; } = double.NaN;
-        public double AvgAllyDamage { get; private set; } = double.NaN;
-        #endregion
-
-        //#region Stagger Dealt
-        //public double TotalStagger { get; private set; } = double.NaN;
-        //public double StaggerPerMin { get; private set; } = double.NaN;
-        //public double AvgStagger { get; private set; } = double.NaN;
-
-        //#endregion
-
-        #region Enemies Killed
-        public int TotalEnemiesKilled { get; private set; } = 0;
-        public double EnemiesKilledPerMin { get; private set; } = double.NaN;
-        public int TotalElitesKilled { get; private set; } = 0;
-        public double ElitesKilledPerMin { get; private set; } = double.NaN;
-        public int TotalSpecialsKilled { get; private set; } = 0;
-        public double SpecialsKilledPerMin { get; private set; } = double.NaN;
-        #endregion
-
-        #region Overkill Damage
-        public double TotalOverkillDamage { get; private set; } = double.NaN;
-        public double OverkillDamagePerMin { get; private set; } = double.NaN;
-        public double AvgOverkillDamage { get; private set; } = double.NaN;
-        #endregion
-
-        #region Headshots
-        public int Headshots { get; private set; } = 0;
-        public double HeadshotsPerMin { get; private set; } = double.NaN;
-        public double HeadshotPercentage { get; private set; } = double.NaN;
-        #endregion
-
-        #region Crits
-        public double AverageCritMultiplier { get; private set; } = double.NaN;
-        public double CritPercentage { get; private set; } = double.NaN;
-        #endregion
-        #endregion
 
         #region Public Functions
         public void CalculateItemDetails()
@@ -250,81 +203,16 @@ namespace VA.LogReader
             {
                 ItemDetails.Properties.Add(new Property(propertyEvent.Property, propertyEvent.PropertyValue));
             }
-
-
         }
 
         public void RecalculateStats()
         {
             Duration = Events.Last()?.Time - StartTime ?? 0;
             DurationMinutes = Duration / 60;
-
-            var damageEvents = Events.Where(e => e is Damage_Dealt).Cast<Damage_Dealt>().Where(e => IsSourceThisWeapon(e.Source));
-            var numDamageEvents = damageEvents.Count();
-            TotalDamage = damageEvents.Sum(e => e.Damage);
-            DamagePerMin = TotalDamage / DurationMinutes;
-            AvgDamage = TotalDamage / numDamageEvents;
-
-            var nonCritDamageEvents = damageEvents.Where(e => !e.Crit);
-            var critDamageEvents = damageEvents.Where(e => e.Crit);
-            if(nonCritDamageEvents.Any() && critDamageEvents.Any())
-            {
-                var averageNonCritDamage = nonCritDamageEvents.Average(e => e.Damage);
-                var averageCritDamage = critDamageEvents.Average(e => e.Damage);
-                AverageCritMultiplier = averageCritDamage / averageNonCritDamage;
-            }
-            var numCritDamageEvents = critDamageEvents.Count();
-            CritPercentage = 100f * numCritDamageEvents / numDamageEvents;
-
-            var monsterDamageEvents = damageEvents.Where(e => e.Target == DAMAGE_TARGET.Monster);
-            var numMonsterDamageEvents = monsterDamageEvents.Count();
-            TotalMonsterDamage = monsterDamageEvents.Sum(e => e.Damage);
-            MonsterDamagePerMin = TotalMonsterDamage / DurationMinutes;
-            AvgMonsterDamage = TotalMonsterDamage / numMonsterDamageEvents;
-
-            var allyDamageEvents = damageEvents.Where(e => e.Target == DAMAGE_TARGET.Ally);
-            var numAllyDamageEvents = allyDamageEvents.Count();
-            TotalAllyDamage = allyDamageEvents.Sum(e => e.Damage);
-            AllyDamagePerMin = TotalAllyDamage / DurationMinutes;
-            AvgAllyDamage = TotalAllyDamage / numAllyDamageEvents;
-
-            //var staggerEvents = Events.Where(e => e is Enemy_Staggered).Cast<Enemy_Staggered>().Where(e => IsSourceThisWeapon(e.Source));
-            //var numStaggerEvents = staggerEvents.Count();
-            //TotalStagger = staggerEvents.Sum(e => e.StaggerDuration);
-            //StaggerPerMin = TotalStagger / DurationMinutes;
-            //AvgStagger = TotalAllyDamage / numStaggerEvents;
-
-            var killEvents = Events.Where(e => e is Enemy_Killed).Cast<Enemy_Killed>().Where(e => IsSourceThisWeapon(e.Source));
-            var eliteKillEvents = killEvents.Where(e => e.EnemyType == ENEMY_TYPE.Elite);
-            var specialKillEvents = killEvents.Where(e => e.EnemyType == ENEMY_TYPE.Special);
-            var numKillEvents = killEvents.Count();
-            var numEliteKillEvents = eliteKillEvents.Count();
-            var numSpecialKillEvents = specialKillEvents.Count();
-
-            TotalEnemiesKilled = numKillEvents;
-            TotalElitesKilled = numEliteKillEvents;
-            TotalSpecialsKilled = numSpecialKillEvents;
-
-            EnemiesKilledPerMin = TotalEnemiesKilled / DurationMinutes;
-            ElitesKilledPerMin = TotalElitesKilled / DurationMinutes;
-            SpecialsKilledPerMin = TotalSpecialsKilled / DurationMinutes;
-
-            TotalOverkillDamage = killEvents.Sum(e => e.OverkillDamage);
-            OverkillDamagePerMin = TotalOverkillDamage / DurationMinutes;
-            AvgOverkillDamage = TotalOverkillDamage / numKillEvents;
-
-            Headshots = damageEvents.Where(e => e.Headshot).Count();
-            HeadshotsPerMin = Headshots / DurationMinutes;
-            HeadshotPercentage = 100f * (double)Headshots / numDamageEvents;
         }
 
         public WeaponData GetHeaderData() =>
             new WeaponData(Hero, Slot, WeaponId, Rarity, StartTime);
-        #endregion
-
-        #region Helper Functions
-        private bool IsSourceThisWeapon(DAMAGE_SOURCE source) => (byte)source == (byte)Slot;
-        private bool IsSourceThisWeapon(STAGGER_SOURCE source) => (byte)source == (byte)Slot;
         #endregion
     }
 

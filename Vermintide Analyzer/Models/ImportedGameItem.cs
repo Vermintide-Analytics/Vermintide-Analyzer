@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VA.LogReader;
+using Vermintide_Analyzer.Statistics;
 
 namespace Vermintide_Analyzer.Models
 {
@@ -23,6 +24,7 @@ namespace Vermintide_Analyzer.Models
         public string PathToFolder { get; private set; }
 
         public Game LoadedGame { get; set; }
+        public GameStats Stats { get; set; }
 
         public string PlayerName { get; set; }
         public string CustomNote { get; set; }
@@ -92,7 +94,8 @@ namespace Vermintide_Analyzer.Models
             }
 
             LoadedGame = Game.FromFile(gameFiles.First());
-            LoadedGame.RecalculateStats();
+            Stats = new GameStats(LoadedGame);
+            Stats.RecalculateStats();
 
             if(!string.IsNullOrWhiteSpace(CustomNote))
             {

@@ -53,8 +53,16 @@ namespace Vermintide_Analyzer.Controls
         private void Compare_Button_Clicked(object sender, RoutedEventArgs e)
         {
             new GameComparisonWindow(
-                new GameAverages(Games1.Select(gh => gh.ToGame()).ToList()),
-                new GameAverages(Games2.Select(gh => gh.ToGame()).ToList()),
+                new GameAverages(Games1.Select(gh =>
+                {
+                    var g = gh.ToGame();
+                    return (g, new GameStats(g));
+                }).ToList()),
+                new GameAverages(Games2.Select(gh =>
+                {
+                    var g = gh.ToGame();
+                    return (g, new GameStats(g));
+                }).ToList()),
                 FilterDisplay1.Filter,
                 FilterDisplay2.Filter)
             {

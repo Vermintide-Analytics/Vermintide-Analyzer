@@ -52,6 +52,28 @@ namespace Vermintide_Analyzer
                 }
             }
         }
+        public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null)
+                throw new ArgumentNullException(nameof(parent));
+
+            var queue = new Queue<DependencyObject>(new[] { parent });
+
+            while (queue.Any())
+            {
+                var reference = queue.Dequeue();
+                var count = VisualTreeHelper.GetChildrenCount(reference);
+
+                for (var i = 0; i < count; i++)
+                {
+                    var child = VisualTreeHelper.GetChild(reference, i);
+                    if (child is T children)
+                        yield return children;
+
+                    queue.Enqueue(child);
+                }
+            }
+        }
 
         public static bool ConfirmWithDialog(string prompt = "Are you sure?", string title = "") =>
             MessageBox.Show(prompt, title, MessageBoxButton.YesNo) == MessageBoxResult.Yes;

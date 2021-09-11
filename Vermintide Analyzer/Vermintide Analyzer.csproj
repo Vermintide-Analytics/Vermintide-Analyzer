@@ -210,6 +210,7 @@
       <DependentUpon>StartupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Statistics\GameAverages.cs" />
+    <Compile Include="Statistics\GameStats.cs" />
     <Compile Include="Util.cs" />
     <Page Include="Controls\AboutView.xaml">
       <SubType>Designer</SubType>

@@ -26,6 +26,7 @@ using ToastNotifications.Messages;
 using Vermintide_Analyzer.Misc;
 using Vermintide_Analyzer.Models;
 using System.Windows.Media.Animation;
+using Vermintide_Analyzer.Statistics;
 
 namespace Vermintide_Analyzer
 {
@@ -82,44 +83,46 @@ namespace Vermintide_Analyzer
         #endregion
 
         #region Stats
-        public string DamageDealt => DispDouble(Game.TotalDamage);
-        public string DamageDealtPerMin => DispDouble(Game.DamagePerMin);
-        public string MonsterDamageDealt => DispDouble(Game.TotalMonsterDamage);
-        public string MonsterDamageDealtPerMin => DispDouble(Game.MonsterDamagePerMin);
-        public string AllyDamageDealt => DispDouble(Game.TotalAllyDamage);
-        public string AllyDamageDealtPerMin => DispDouble(Game.AllyDamagePerMin);
+        public GameStats Stats => GameModel?.Stats;
+
+        public string DamageDealt => DispDouble(Stats.TotalDamage);
+        public string DamageDealtPerMin => DispDouble(Stats.DamagePerMin);
+        public string MonsterDamageDealt => DispDouble(Stats.TotalMonsterDamage);
+        public string MonsterDamageDealtPerMin => DispDouble(Stats.MonsterDamagePerMin);
+        public string AllyDamageDealt => DispDouble(Stats.TotalAllyDamage);
+        public string AllyDamageDealtPerMin => DispDouble(Stats.AllyDamagePerMin);
 
         //public string StaggerDealt => DispDouble(Game.TotalStagger);
         //public string StaggerDealtPerMin => DispDouble(Game.StaggerPerMin);
 
-        public string EnemiesKilled => Game.TotalEnemiesKilled.ToString();
-        public string EnemiesKilledPerMin => DispDouble(Game.EnemiesKilledPerMin);
-        public string ElitesKilled => Game.TotalElitesKilled.ToString();
-        public string ElitesKilledPerMin => DispDouble(Game.ElitesKilledPerMin);
-        public string SpecialsKilled => Game.TotalSpecialsKilled.ToString();
-        public string SpecialsKilledPerMin => DispDouble(Game.SpecialsKilledPerMin);
+        public string EnemiesKilled => Stats.TotalEnemiesKilled.ToString();
+        public string EnemiesKilledPerMin => DispDouble(Stats.EnemiesKilledPerMin);
+        public string ElitesKilled => Stats.TotalElitesKilled.ToString();
+        public string ElitesKilledPerMin => DispDouble(Stats.ElitesKilledPerMin);
+        public string SpecialsKilled => Stats.TotalSpecialsKilled.ToString();
+        public string SpecialsKilledPerMin => DispDouble(Stats.SpecialsKilledPerMin);
 
-        public string OverkillDamage => DispDouble(Game.TotalOverkillDamage);
-        public string OverkillDamagePerMin => DispDouble(Game.OverkillDamagePerMin);
+        public string OverkillDamage => DispDouble(Stats.TotalOverkillDamage);
+        public string OverkillDamagePerMin => DispDouble(Stats.OverkillDamagePerMin);
 
-        public string Headshots => Game.Headshots.ToString();
-        public string HeadshotsPerMin => DispDouble(Game.HeadshotsPerMin);
+        public string Headshots => Stats.Headshots.ToString();
+        public string HeadshotsPerMin => DispDouble(Stats.HeadshotsPerMin);
 
-        public string DamageTaken => DispDouble(Game.TotalDamageTaken);
-        public string DamageTakenPerMin => DispDouble(Game.DamageTakenPerMin);
-        public string FriendlyFireTaken => DispDouble(Game.FriendlyFireTaken);
-        public string FriendlyFireTakenPerMin => DispDouble(Game.FriendlyFireTakenPerMin);
+        public string DamageTaken => DispDouble(Stats.TotalDamageTaken);
+        public string DamageTakenPerMin => DispDouble(Stats.DamageTakenPerMin);
+        public string FriendlyFireTaken => DispDouble(Stats.FriendlyFireTaken);
+        public string FriendlyFireTakenPerMin => DispDouble(Stats.FriendlyFireTakenPerMin);
 
-        public string UncappedTempHPGained => DispDouble(Game.TotalUncappedTempHPGained);
-        public string UncappedTempHPGainedPerMin => DispDouble(Game.UncappedTempHPGainedPerMin);
-        public string CappedTempHPGained => DispDouble(Game.TotalCappedTempHPGained);
-        public string CappedTempHPGainedPerMin => DispDouble(Game.CappedTempHPGainedPerMin);
+        public string UncappedTempHPGained => DispDouble(Stats.TotalUncappedTempHPGained);
+        public string UncappedTempHPGainedPerMin => DispDouble(Stats.UncappedTempHPGainedPerMin);
+        public string CappedTempHPGained => DispDouble(Stats.TotalCappedTempHPGained);
+        public string CappedTempHPGainedPerMin => DispDouble(Stats.CappedTempHPGainedPerMin);
 
-        public string TimesDowned => Game.TimesDowned.ToString();
-        public string TimesDied => Game.TimesDied.ToString();
-        public string TimeDownedPercent => $"{DispDouble(Game.TimeDownedPercent)}%";
-        public string TimeDeadPercent => $"{DispDouble(Game.TimeDeadPercent)}%";
-        public string TimeAlivePercent => $"{DispDouble(Game.TimeAlivePercent)}%";
+        public string TimesDowned => Stats.TimesDowned.ToString();
+        public string TimesDied => Stats.TimesDied.ToString();
+        public string TimeDownedPercent => $"{DispDouble(Stats.TimeDownedPercent)}%";
+        public string TimeDeadPercent => $"{DispDouble(Stats.TimeDeadPercent)}%";
+        public string TimeAlivePercent => $"{DispDouble(Stats.TimeAlivePercent)}%";
         #endregion
 
         #region Misc Display Props
@@ -175,6 +178,9 @@ namespace Vermintide_Analyzer
         public bool ShowTalentTabs => TalentTabItems.Count > 1;
         public bool ShowWeapon1Tabs => Weapon1TabItems.Count > 1;
         public bool ShowWeapon2Tabs => Weapon2TabItems.Count > 1;
+
+        public float RangeFilterStart { get; set; } = float.MinValue;
+        public float RangeFilterEnd { get; set; } = float.MaxValue;
         #endregion
 
         #region Toast
@@ -188,8 +194,6 @@ namespace Vermintide_Analyzer
             ToastNotifier = Toast.MakeNotifier(this);
 
             GameModel = new GameItem(g);
-
-            Game.RecalculateStats();
 
             #region Init tab item lists
             TalentTabItems.AddRange(Game.TalentTrees.Select(tTree => new TalentTabItem(tTree, Game.Career)));
@@ -271,13 +275,13 @@ namespace Vermintide_Analyzer
 
             PermanentHealthPoints.AddRange(allHealthEvents.Select(e =>
             {
-                return Settings.Current.ShowHealthWhenDowned || Game.GetPlayerStateAtTime(e.Time) == PLAYER_STATE.Alive ?
+                return Settings.Current.ShowHealthWhenDowned || Stats.GetPlayerStateAtTime(e.Time) == PLAYER_STATE.Alive ?
                     new ScatterPoint(e.Time, e.PermanentHealth) :
                     new ScatterPoint(e.Time, 0);
             }));
             TemporaryHealthPoints.AddRange(allHealthEvents.Select(e =>
             {
-                return Settings.Current.ShowHealthWhenDowned || Game.GetPlayerStateAtTime(e.Time) == PLAYER_STATE.Alive ?
+                return Settings.Current.ShowHealthWhenDowned || Stats.GetPlayerStateAtTime(e.Time) == PLAYER_STATE.Alive ?
                     new ScatterPoint(e.Time, e.TemporaryHealth) :
                     new ScatterPoint(e.Time, 0);
             }));
@@ -292,6 +296,25 @@ namespace Vermintide_Analyzer
             //SetAxisSections(StaggerDealtChart.AxisX[0].Sections);
             SetAxisSections(DamageTakenChart.AxisX[0].Sections);
             SetAxisSections(CurrentHealthChart.AxisX[0].Sections);
+
+            InitSelectionSection(CurrentHealthChart);
+            InitSelectionSection(DamageTakenChart);
+            InitSelectionSection(DamageDealtBySourceChart);
+            InitSelectionSection(DamageDealtByTargetChart);
+            InitSelectionSection(OverkillDamageChart);
+
+            void InitSelectionSection(CartesianChart chart)
+            {
+                var section = new AxisSection()
+                {
+                    Stroke = new SolidColorBrush(Colors.Blue),
+                    StrokeThickness = 1,
+                    Fill = new SolidColorBrush(Color.FromArgb(60, 0, 0, 230)),
+                    Visibility = Visibility.Hidden
+                };
+                ChartSelectionRangeSections.Add(section);
+                chart.AxisX.First().Sections.Add(section);
+            }
         }
 
         private void PrettifyCharts()
@@ -378,6 +401,27 @@ namespace Vermintide_Analyzer
                 UseLayoutRounding = true
             };
 
+        private void RangeFilterUpdated()
+        {
+            // Recalculate game stats
+            Stats.RangeFilterStart = RangeFilterStart;
+            Stats.RangeFilterEnd = RangeFilterEnd;
+            Stats?.RecalculateStats();
+
+            // Update display for game stats
+            foreach (var textBlock in
+                GameStatsGrid.FindLogicalChildren<TextBlock>()
+                .Concat(PlayerStateGridsPanel.FindLogicalChildren<TextBlock>()))
+            {
+                textBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+            }
+
+            // Recalculate stats and update display for weapons
+            foreach (var weaponDisplay in this.FindVisualChildren<WeaponDataDisplay>())
+            {
+                weaponDisplay.UpdateRangeFilter(RangeFilterStart, RangeFilterEnd);
+            }
+        }
 
         private string DispDouble(double f) => f.ToString("F2");
 
@@ -563,6 +607,66 @@ namespace Vermintide_Analyzer
                 destination = int.Parse(tag);
             }
             SetVisibleChart(destination);
+        }
+
+        private Point MouseDownChartPosition = new Point(0, 0);
+        private Point CurrentMouseChartPosition = new Point(0, 0);
+
+        private List<AxisSection> ChartSelectionRangeSections = new List<AxisSection>();
+
+        private void Chart_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is CartesianChart chart)
+            {
+                MouseDownChartPosition = chart.ConvertToChartValues(e.GetPosition(chart));
+                CurrentMouseChartPosition = MouseDownChartPosition;
+
+                foreach (var section in ChartSelectionRangeSections)
+                {
+                    section.SectionOffset = MouseDownChartPosition.X;
+                    section.SectionWidth = 0;
+                }
+            }
+        }
+
+        private void Chart_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is CartesianChart chart)
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    CurrentMouseChartPosition = chart.ConvertToChartValues(e.GetPosition(chart));
+                    foreach (var section in ChartSelectionRangeSections)
+                    {
+                        section.SectionWidth = CurrentMouseChartPosition.X - MouseDownChartPosition.X;
+                        section.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+
+        private void Chart_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is CartesianChart chart)
+            {
+                if (CurrentMouseChartPosition.Equals(MouseDownChartPosition))
+                {
+                    // If the user just clicks, remove the range filter and section
+                    foreach (var section in ChartSelectionRangeSections)
+                    {
+                        section.Visibility = Visibility.Hidden;
+                    }
+                    RangeFilterStart = float.MinValue;
+                    RangeFilterEnd = float.MaxValue;
+                }
+                else
+                {
+                    // Otherwise, trigger data updates
+                    RangeFilterStart = (float)Math.Min(MouseDownChartPosition.X, CurrentMouseChartPosition.X);
+                    RangeFilterEnd = (float)Math.Max(MouseDownChartPosition.X, CurrentMouseChartPosition.X);
+                }
+                RangeFilterUpdated();
+            }
         }
         #endregion
 

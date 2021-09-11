@@ -66,14 +66,15 @@ namespace Vermintide_Analyzer
 
         private void Startup()
         {
-            Settings.Load();
-
             BeginStep("Checking directories...");
             if(!GameRepository.Instance.CheckDirectories())
             {
                 BeginStep("Creating directories...");
                 GameRepository.Instance.CreateDirectories();
             }
+
+            BeginStep("Loading user settings...");
+            Settings.Load();
 
             BeginStep("Reading existing data...");
             var existingGameHeaders = GameRepository.Instance.ReadExistingGameHeaders();

@@ -381,6 +381,7 @@ namespace VA.LogReader
                 Duration = RoundEnd.Time;
                 ParseRoundEnd(RoundEnd);
             }
+            DurationMinutes = Duration / 60f;
 
             // Set highest damage
             foreach(var evt in Events)

@@ -12,6 +12,7 @@ namespace VA.LogReader
     {
         public string FilePath { get; set; }
         public DateTime GameStart { get; set; }
+        public double DurationMinutes { get; set; }
 
         public ParseError Error { get; private set; } = ParseError.None;
 
@@ -65,6 +66,7 @@ namespace VA.LogReader
             {
                 FilePath = g.FilePath,
                 GameStart = g.GameStart,
+                DurationMinutes = g.DurationMinutes,
                 Error = g.Error,
                 SchemaVersionMajor = g.SchemaVersionMajor,
                 SchemaVersionMinor = g.SchemaVersionMinor,

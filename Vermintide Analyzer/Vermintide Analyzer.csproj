@@ -145,6 +145,7 @@
       <DependentUpon>WeaponIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BindingDebugger.cs" />
+    <Compile Include="Converters\BoolToLongerShorter.cs" />
     <Compile Include="Converters\EnumToDescription.cs" />
     <Compile Include="Converters\BoolToOlderYounger.cs" />
     <Compile Include="Converters\RarityToIcon.cs" />

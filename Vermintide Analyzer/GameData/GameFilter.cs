@@ -88,13 +88,13 @@ namespace Vermintide_Analyzer
             }
         }
 
-        private bool mBefore = true;
+        private bool mOlder = true;
         public bool Older
         {
-            get => mBefore;
+            get => mOlder;
             set
             {
-                mBefore = value;
+                mOlder = value;
                 OnFilterChange?.Invoke(nameof(Older));
             }
         }
@@ -110,6 +110,28 @@ namespace Vermintide_Analyzer
             }
         }
 
+        private bool mLonger = true;
+        public bool Longer
+        {
+            get => mLonger;
+            set
+            {
+                mLonger = value;
+                OnFilterChange?.Invoke(nameof(Longer));
+            }
+        }
+
+        private uint? mMinutes = null;
+        public uint? Minutes
+        {
+            get => mMinutes;
+            set
+            {
+                mMinutes = value;
+                OnFilterChange?.Invoke(nameof(Minutes));
+            }
+        }
+
         public delegate void FilterChanged(string propName);
         public event FilterChanged OnFilterChange;
 
@@ -117,6 +139,7 @@ namespace Vermintide_Analyzer
 
         public bool IsMatch(GameHeader gh) =>
             MatchGameVersion(gh) &&
+            MatchGameLength(gh) &&
             MatchWithinDays(gh) &&
             MatchDifficulty(gh) &&
             MatchDeathwish(gh) &&
@@ -134,6 +157,16 @@ namespace Vermintide_Analyzer
 
             return Older && gameAge > ageThreshold ||
                     !Older && gameAge <= ageThreshold;
+        }
+
+        private bool MatchGameLength(GameHeader gh)
+        {
+            if (!Minutes.HasValue || Minutes.Value == 0) return true;
+            var gameLength = gh.DurationMinutes;
+            var lengthThreshold = Minutes.Value;
+
+            return Longer && gameLength > lengthThreshold ||
+                    !Longer && gameLength <= lengthThreshold;
         }
 
         private bool MatchDifficulty(GameHeader gh) => Difficulty.Contains(gh.Difficulty);
@@ -189,6 +222,11 @@ namespace Vermintide_Analyzer
             {
                 output.Add(emp);
             }
+            var minutes = MinutesLongToString();
+            if (minutes != null)
+            {
+                output.Add(minutes);
+            }
             var days = WithinDaysToString();
             if(days != null)
             {
@@ -204,12 +242,14 @@ namespace Vermintide_Analyzer
         }
 
         public static Regex FilterRegex { get; } = new Regex(
-            @"^((?:(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+|(?:Older|Younger) than \d+ Days) AND )*(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+|(?:Older|Younger) than \d+ Days)|ALL GAMES)$");
+            @"^((?:(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+|(?:Older|Younger) than \d+ Days|(?:Longer|Shorter) than \d+ Minutes) AND )*(?:\w+ in \(\S+\)|\w+ (?:en|dis)abled|NO \w+|(?:Older|Younger) than \d+ Days|(?:Longer|Shorter) than \d+ Minutes)|ALL GAMES)$");
 
         public void UpdateFromString(string input)
         {
             GameVersion.Clear();
             GameVersion.AddRange(ReadGameVersion(input));
+
+            (Longer, Minutes) = ReadMinutesLong(input) ?? (true, null);
 
             (Older, Days) = ReadWithinDays(input) ?? (true, null);
 
@@ -236,6 +276,11 @@ namespace Vermintide_Analyzer
             if (!GameVersion.Any()) return "NO GAME VERSION";
 
             return $"Game Version in ({GetFilterSetString(GameVersion)})";
+        }
+        private string MinutesLongToString()
+        {
+            if (!Minutes.HasValue) return null;
+            return $"{(Longer ? "Longer" : "Shorter")} than {Minutes.Value} Minutes";
         }
 
         private string WithinDaysToString()
@@ -292,6 +337,27 @@ namespace Vermintide_Analyzer
                 }
             }
             return result;
+        }
+        private static (bool longer, uint? minutes)? ReadMinutesLong(string filterString)
+        {
+            var match = Regex.Match(filterString, $@"((?:Longer)|(?:Shorter)) than (\d+) Minutes");
+            if (match == null || match.Groups.Count < 3 || string.IsNullOrEmpty(match.Groups[1].Value))
+            {
+                return null;
+            }
+
+            var longerShorterMatchString = match.Groups[1].Value;
+            bool? longer = null;
+            if (longerShorterMatchString == "Longer") longer = true;
+            else if (longerShorterMatchString == "Shorter") longer = false;
+            if (longer is null) return null;
+
+            var matchString = match.Groups[2].Value;
+            var parseSuccess = uint.TryParse(matchString, out uint matchInt);
+
+            if (!parseSuccess) return null;
+
+            return (longer.Value, matchInt);
         }
 
         private static (bool before, uint? days)? ReadWithinDays(string filterString)

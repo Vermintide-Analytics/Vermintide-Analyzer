@@ -63,6 +63,7 @@ namespace Vermintide_Analyzer.Controls
         public List<string> MissionStrings { get; set; } = new List<string>();
         public List<string> OnslaughtStrings { get; set; } = new List<string>();
         public string DaysString { get; set; } = "";
+        public string MinutesString { get; set; } = "";
 
         public List<string> GameVersionValues => GameRepository.Instance.GameVersions.ToList();
         public List<string> CareerFilterValues => GameFilter.FilterOptions(typeof(CAREER)).ToList();
@@ -81,6 +82,12 @@ namespace Vermintide_Analyzer.Controls
         {
             "Older",
             "Younger"
+        };
+
+        public string[] LongerShorter { get; } = new string[2]
+        {
+            "Longer",
+            "Shorter"
         };
 
         public FilterDisplay()
@@ -106,6 +113,7 @@ namespace Vermintide_Analyzer.Controls
 
             GameVersionDropdown.ResetSelection();
             DaysTextBox.Text = "";
+            MinutesTextBox.Text = "";
             CareerDropdown.ResetSelection();
             DifficultyDropdown.ResetSelection();
             MissionDropdown.ResetSelection();
@@ -127,8 +135,11 @@ namespace Vermintide_Analyzer.Controls
 
             GameVersionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
             OlderYoungerComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
+            LongerShorterComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
             DaysString = Filter.Days.HasValue ? Filter.Days.ToString() : "";
+            MinutesString = Filter.Minutes.HasValue ? Filter.Minutes.ToString() : "";
             DaysTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            MinutesTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             CareerDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
             DifficultyDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
             MissionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
@@ -174,6 +185,14 @@ namespace Vermintide_Analyzer.Controls
         {
             var parseSuccess = uint.TryParse(DaysTextBox.Text, out uint withinDays);
             Filter.Days = parseSuccess ? (uint?)withinDays : null;
+
+            RaiseFilterChanged();
+        }
+
+        private void MinutesLongTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var parseSuccess = uint.TryParse(MinutesTextBox.Text, out uint minutesLong);
+            Filter.Minutes = parseSuccess ? (uint?)minutesLong : null;
 
             RaiseFilterChanged();
         }

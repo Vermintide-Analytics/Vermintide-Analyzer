@@ -57,12 +57,12 @@ namespace Vermintide_Analyzer.Controls
                 {
                     var g = gh.ToGame();
                     return (g, new GameStats(g));
-                }).ToList()),
+                }).Where(tuple => tuple.g.Duration > 0).ToList()),
                 new GameAverages(Games2.Select(gh =>
                 {
                     var g = gh.ToGame();
                     return (g, new GameStats(g));
-                }).ToList()),
+                }).Where(tuple => tuple.g.Duration > 0).ToList()),
                 FilterDisplay1.Filter,
                 FilterDisplay2.Filter)
             {

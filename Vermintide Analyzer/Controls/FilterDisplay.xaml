@@ -78,6 +78,15 @@
                         InitiallySelected="{Binding DifficultyFilterValues}"
                         AllValues="{Binding DifficultyFilterValues}"
                         SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+                <StackPanel Grid.Column="0">
+                    <Label Content="Mission" />
+                    <local:MultiSelectComboBox x:Name="MissionDropdown"
+                        ItemSource="{Binding MissionFilterValues}"
+                        Selected="{Binding MissionStrings}"
+                        InitiallySelected="{Binding MissionFilterValues}"
+                        AllValues="{Binding MissionFilterValues}"
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
+                </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="5,0,0,0">
                 <Label Content="Deathwish" />
@@ -109,16 +118,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <Label Content="Mission" />
-                <local:MultiSelectComboBox x:Name="MissionDropdown"
-                        ItemSource="{Binding MissionFilterValues}"
-                        Selected="{Binding MissionStrings}"
-                        InitiallySelected="{Binding MissionFilterValues}"
-                        AllValues="{Binding MissionFilterValues}"
-                        SelectionChanged="MultiSelectComboBox_SelectionChanged"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1"
+            <StackPanel Grid.Column="0"
                         Orientation="Horizontal"
                         VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <ComboBox x:Name="OlderYoungerComboBox"
@@ -132,6 +132,21 @@
                          Text="{Binding DaysString}"
                          TextChanged="WithinDaysTextBox_TextChanged"/>
                 <TextBlock Foreground="{StaticResource ThemeLighter}" Text=" Days" />
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <ComboBox x:Name="LongerShorterComboBox"
+                          ItemsSource="{Binding LongerShorter}"
+                          SelectedItem="{Binding Filter.Longer, Mode=TwoWay, Converter={StaticResource BoolToLongerShorter}}"
+                          SelectionChanged="ComboBox_SelectionChanged"/>
+                <TextBlock Foreground="{StaticResource ThemeLighter}" Text=" than " />
+                <TextBox x:Name="MinutesTextBox"
+                         MinWidth="50"
+                         MaxWidth="50"
+                         Text="{Binding MinutesString}"
+                         TextChanged="MinutesLongTextBox_TextChanged"/>
+                <TextBlock Foreground="{StaticResource ThemeLighter}" Text=" Minutes" />
             </StackPanel>
         </Grid>
         

@@ -106,7 +106,16 @@ namespace Vermintide_Analyzer.Statistics
 
             WinLossRatio = (double)wins / losses;
 
-            foreach(var prop in statsProperties)
+            foreach (var prop in gameProperties)
+            {
+                var currentValObj = prop.GetValue(this);
+                if (currentValObj is double currentVal)
+                {
+                    prop.SetValue(this, currentVal / numGames);
+                }
+            }
+
+            foreach (var prop in statsProperties)
             {
                 var currentValObj = prop.GetValue(this);
                 if(currentValObj is double currentVal)
@@ -128,7 +137,7 @@ namespace Vermintide_Analyzer.Statistics
             }
             double GetStatsValue(GameStats stats, string propName)
             {
-                var prop = typeof(Game).GetProperty(propName);
+                var prop = typeof(GameStats).GetProperty(propName);
                 var val = prop.GetValue(stats);
                 if(prop.PropertyType == typeof(int))
                 {

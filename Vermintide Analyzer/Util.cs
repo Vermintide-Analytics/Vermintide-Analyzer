@@ -78,6 +78,12 @@ namespace Vermintide_Analyzer
         public static bool ConfirmWithDialog(string prompt = "Are you sure?", string title = "") =>
             MessageBox.Show(prompt, title, MessageBoxButton.YesNo) == MessageBoxResult.Yes;
 
+        public static void ErrorDialog(string description = "Unexpected error occurred.", string title = "") =>
+            MessageBox.Show(description, title, MessageBoxButton.OK);
+
+        public static bool OkCancelErrorDialog(string description = "Unexpected error occurred.", string title = "") =>
+            MessageBox.Show(description, title, MessageBoxButton.OKCancel) == MessageBoxResult.OK;
+
         public static bool IsLocked(this FileInfo file)
         {
             if (!file.Exists)

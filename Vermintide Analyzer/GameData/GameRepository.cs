@@ -143,6 +143,17 @@ namespace Vermintide_Analyzer
                 newGameHeaders.RemoveAll(gh => gh.IsEmpty);
             }
 
+            // Remove 'short' games (per user definition) if user settings say to do so
+            if(Settings.Current.AutoDeleteShortGames)
+            {
+                double thresholdMinutes = Settings.Current.AutoDeleteShortThreshold / 60d;
+                foreach (var gameHeader in newGameHeaders.Where(gh => gh.DurationMinutes < thresholdMinutes))
+                {
+                    File.Delete(gameHeader.FilePath);
+                }
+                newGameHeaders.RemoveAll(gh => gh.DurationMinutes < thresholdMinutes);
+            }
+
             foreach (var gameHeader in newGameHeaders)
             {
                 string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + ".VA";

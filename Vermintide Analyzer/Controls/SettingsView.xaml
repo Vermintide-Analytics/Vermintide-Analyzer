@@ -45,6 +45,12 @@
             <TextBlock Text="Auto Delete Empty Games: " ToolTip="On startup, delete games which do not include ANY damage data (damage dealt OR damage taken)." />
             <CheckBox IsChecked="{Binding AutoDeleteEmptyGames}" />
         </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock Text="Auto Delete Games Under " ToolTip="On startup, delete games which are shorter than the specified number of seconds." />
+            <TextBox x:Name="AutoDeleteShortThresholdTextBox" Text="{Binding AutoDeleteShortThreshold}" Width="35" IsEnabled="{Binding Mode=OneWay, Path=AutoDeleteShortGames}" />
+            <TextBlock Text=" Seconds " ToolTip="On startup, delete games which are shorter than the specified number of seconds." />
+            <CheckBox IsChecked="{Binding AutoDeleteShortGames}" />
+        </StackPanel>
         <Button Margin="5" HorizontalAlignment="Left" Content="Save" Click="Save_Button_Click" />
     </StackPanel>
 </UserControl>

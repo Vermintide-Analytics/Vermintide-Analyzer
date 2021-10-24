@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Newtonsoft.Json;
 
 namespace Vermintide_Analyzer
@@ -26,6 +28,8 @@ namespace Vermintide_Analyzer
         public bool ConfirmDeleteGames { get; set; }
         public bool IncludeCustomNoteInExport { get; set; }
         public bool AutoDeleteEmptyGames { get; set; }
+        public bool AutoDeleteShortGames { get; set; }
+        public uint AutoDeleteShortThreshold { get; set; }
         #endregion
 
         #region Constructor (set default values here)
@@ -37,6 +41,8 @@ namespace Vermintide_Analyzer
             ConfirmDeleteGames = true;
             IncludeCustomNoteInExport = true;
             AutoDeleteEmptyGames = true;
+            AutoDeleteShortGames = false;
+            AutoDeleteShortThreshold = 3 * 60; // 3 minutes
         }
         #endregion
 
@@ -53,7 +59,22 @@ namespace Vermintide_Analyzer
         {
             if(File.Exists(FilePath))
             {
-                Current = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(FilePath));
+                JsonSerializerSettings deserializeSettings = new JsonSerializerSettings();
+                deserializeSettings.Error = (sender, errArgs) =>
+                {
+                    Util.SafeInvoke(() =>
+                    {
+                        bool ok = Util.OkCancelErrorDialog($"Failed to load user settings.\n\n{errArgs.ErrorContext.Error.Message}\n\nVermintide Analyzer must close. You can try manually editing settings and restarting the application, or just contact the developer.\n\nPress 'OK' to open settings file, or 'Cancel' otherwise.");
+                        if(ok)
+                        {
+                            // Open JSON file in default editor
+                            Process.Start(Settings.FilePath);
+                        }
+                        Application.Current.Shutdown();
+                    });
+                };
+
+                Current = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(FilePath), deserializeSettings);
             }
             else
             {

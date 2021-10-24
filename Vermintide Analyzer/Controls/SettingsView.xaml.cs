@@ -28,6 +28,17 @@ namespace Vermintide_Analyzer.Controls
         public bool ConfirmDeleteGames { get; set; } = Settings.Current.ConfirmDeleteGames;
         public bool IncludeCustomNoteInExport { get; set; } = Settings.Current.IncludeCustomNoteInExport;
         public bool AutoDeleteEmptyGames { get; set; } = Settings.Current.AutoDeleteEmptyGames;
+        public bool AutoDeleteShortGames
+        {
+            get => mAutoDeleteShortGames;
+            set
+            {
+                mAutoDeleteShortGames = value;
+                AutoDeleteShortThresholdTextBox.GetBindingExpression(TextBox.IsEnabledProperty).UpdateTarget();
+            }
+        }
+        private bool mAutoDeleteShortGames = Settings.Current.AutoDeleteShortGames;
+        public uint AutoDeleteShortThreshold { get; set; } = Settings.Current.AutoDeleteShortThreshold;
         #endregion
 
         public SettingsView()
@@ -44,6 +55,8 @@ namespace Vermintide_Analyzer.Controls
             Settings.Current.ConfirmDeleteGames = ConfirmDeleteGames;
             Settings.Current.IncludeCustomNoteInExport = IncludeCustomNoteInExport;
             Settings.Current.AutoDeleteEmptyGames = AutoDeleteEmptyGames;
+            Settings.Current.AutoDeleteShortGames = AutoDeleteShortGames;
+            Settings.Current.AutoDeleteShortThreshold = AutoDeleteShortThreshold;
 
             bool success = Settings.Save();
             if (success)

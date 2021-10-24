@@ -46,7 +46,7 @@
             <CheckBox IsChecked="{Binding AutoDeleteEmptyGames}" />
         </StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Text="Auto Delete Games Under " ToolTip="On startup, delete games which are shorter than the specified number of seconds." />
+            <TextBlock Text="Auto Delete Games Shorter Than " ToolTip="On startup, delete games which are shorter than the specified number of seconds." />
             <TextBox x:Name="AutoDeleteShortThresholdTextBox" Text="{Binding AutoDeleteShortThreshold}" Width="35" IsEnabled="{Binding Mode=OneWay, Path=AutoDeleteShortGames}" />
             <TextBlock Text=" Seconds " ToolTip="On startup, delete games which are shorter than the specified number of seconds." />
             <CheckBox IsChecked="{Binding AutoDeleteShortGames}" />

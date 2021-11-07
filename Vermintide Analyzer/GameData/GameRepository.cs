@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VA.LogReader;
 using Microsoft.Win32;
 using System.IO.Compression;
 using Vermintide_Analyzer.Models;
+using System.Globalization;
 
 namespace Vermintide_Analyzer
 {
@@ -28,15 +27,15 @@ namespace Vermintide_Analyzer
         }
         #endregion
 
-        private static readonly string NewGamesDir = Environment.ExpandEnvironmentVariables(Const.NEW_LOG_DIR);
+        private static readonly string ConsoleLogsDir = Environment.ExpandEnvironmentVariables(Const.CONSOLE_LOG_DIR);
         private static readonly string AppDataDir = Environment.ExpandEnvironmentVariables(Const.APP_DATA_DIR);
         private static readonly string AllGamesRootDir = Path.Combine(AppDataDir, Const.GAME_DIR);
-        private static readonly string LocalGamesRootDir = Path.Combine(AllGamesRootDir, Schema.SCHEMA_VERSION);
         private static readonly string InvalidGamesDir = Path.Combine(AllGamesRootDir, "Invalid");
         private static readonly string DataDir = Path.Combine(AppDataDir, Const.DATA_DIR);
         public static readonly string TempDir = Path.Combine(AppDataDir, Const.TEMP_DIR);
         private static readonly string GameNotesFilePath = Path.Combine(DataDir, "Custom-Game-Notes.txt");
         private static readonly string GameFiltersFilePath = Path.Combine(DataDir, "Game-Filters.txt");
+        private static readonly string LatestReadLogDateFilePath = Path.Combine(DataDir, "Latest-Read-Log.txt");
 
         public List<GameHeader> GameHeaders { get; private set; } = new List<GameHeader>();
         public List<GameHeader> NewGameHeaders { get; private set; } = new List<GameHeader>();
@@ -52,55 +51,24 @@ namespace Vermintide_Analyzer
         public Dictionary<string, string> GameNotes { get; private set; } = new Dictionary<string, string>();
         public Dictionary<string, string> GameFilters { get; private set; } = new Dictionary<string, string>();
 
-        public bool CheckDirectories()
-        {
-            foreach (var difficultyName in Enum.GetNames(typeof(DIFFICULTY)))
-            {
-                foreach (var careerName in Enum.GetNames(typeof(CAREER)))
-                {
-                    if (!Directory.Exists(Path.Combine(LocalGamesRootDir, difficultyName, careerName)))
-                    {
-                        return false;
-                    }
-                }
-            }
-            if(!Directory.Exists(InvalidGamesDir))
-            {
-                return false;
-            }
-            if(!Directory.Exists(DataDir))
-            {
-                return false;
-            }
-            if (!Directory.Exists(TempDir))
-            {
-                return false;
-            }
-            return true;
-        }
+        public bool CheckDirectories() =>
+            Directory.Exists(InvalidGamesDir) &&
+            Directory.Exists(DataDir) &&
+            Directory.Exists(TempDir);
 
         public void CreateDirectories()
         {
-            // Initialize directories for game logs
-            foreach (var difficultyName in Enum.GetNames(typeof(DIFFICULTY)))
-            {
-                foreach (var careerName in Enum.GetNames(typeof(CAREER)))
-                {
-                    Directory.CreateDirectory(Path.Combine(LocalGamesRootDir, difficultyName, careerName));
-                }
-            }
             Directory.CreateDirectory(InvalidGamesDir);
             Directory.CreateDirectory(DataDir);
             Directory.CreateDirectory(TempDir);
         }
 
-
         public IEnumerable<GameHeader> ReadExistingGameHeaders()
         {
-            var filePaths = Directory.GetFiles(LocalGamesRootDir, "*.VA", SearchOption.AllDirectories);
+            var filePaths = Directory.GetFiles(AllGamesRootDir, "*.VA", SearchOption.TopDirectoryOnly);
             var existingGameHeaders = filePaths.Select(path => GameHeader.FromGame(Game.FromFile(path)));
 
-            existingGameHeaders = FilterInvalidGames(existingGameHeaders, true);
+            existingGameHeaders = FilterInvalidGames(existingGameHeaders, InvalidGameStrategy.MoveToInvalid);
 
             GameHeaders.AddRange(existingGameHeaders);
             return existingGameHeaders;
@@ -111,27 +79,24 @@ namespace Vermintide_Analyzer
             var filePaths = Directory.GetFiles(InvalidGamesDir, "*.VA");
             var existingGameHeaders = filePaths.Select(path => GameHeader.FromGame(Game.FromFile(path)));
 
-            existingGameHeaders = FilterInvalidGames(existingGameHeaders.ToList(), false, true);
+            existingGameHeaders = FilterInvalidGames(existingGameHeaders.ToList(), InvalidGameStrategy.MoveFromInvalid);
 
             GameHeaders.AddRange(existingGameHeaders);
             return existingGameHeaders;
         }
 
-        public string GetTargetFolder(GameHeader gh) =>
-            Path.Combine(
-                LocalGamesRootDir,
-                Enum.GetName(typeof(DIFFICULTY), gh.Difficulty),
-                Enum.GetName(typeof(CAREER), gh.Career));
+        public string GenerateGameFileName(GameHeader gh) =>
+            $"[{gh.DifficultyName}] {gh.CareerName} {gh.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT)}.VA";
 
         public IEnumerable<GameHeader> ReadAndMoveNewGameHeaders()
         {
-            var filePaths = Directory.GetFiles(NewGamesDir, "*.VA", SearchOption.TopDirectoryOnly);
+            var filePaths = Directory.GetFiles(TempDir, "*.VA", SearchOption.TopDirectoryOnly);
             var newGameHeaders = filePaths
                 .Where(path => !(new FileInfo(path).IsLocked()))
                 .Select(path => GameHeader.FromGame(Game.FromFile(path)))
                 .ToList();
 
-            newGameHeaders = FilterInvalidGames(newGameHeaders, true).ToList();
+            newGameHeaders = FilterInvalidGames(newGameHeaders, InvalidGameStrategy.MoveToInvalid).ToList();
 
             // Remove empty games if user settings say to do so
             if(Settings.Current.AutoDeleteEmptyGames)
@@ -156,12 +121,8 @@ namespace Vermintide_Analyzer
 
             foreach (var gameHeader in newGameHeaders)
             {
-                string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + ".VA";
-
-                string newLocation =
-                    Path.Combine(
-                        GetTargetFolder(gameHeader),
-                        fileName);
+                string fileName = GenerateGameFileName(gameHeader);
+                string newLocation = Path.Combine(AllGamesRootDir, fileName);
 
                 try
                 {
@@ -177,6 +138,196 @@ namespace Vermintide_Analyzer
             return newGameHeaders;
         }
 
+        private const string LOG_TIME_FORMAT = "HH:mm:ss.fff";
+        private const string TIMESPAN_FORMAT = @"hh\:mm\:ss\.fff";
+        private static readonly int LOG_TIME_FORMAT_LENGTH = LOG_TIME_FORMAT.Length;
+        private const string GAME_LOG_PREFIX = "[Lua] [MOD][Vermintide Analytics][INFO] ";
+        private const string GAME_LOG_PREFIX_WITH_TIMESTAMP = "--:--:--.--- " + GAME_LOG_PREFIX;
+        private static readonly int GAME_LOG_PREFIX_WITH_TIMESTAMP_LENGTH = GAME_LOG_PREFIX_WITH_TIMESTAMP.Length;
+        /// <summary>
+        /// Reads Vermintide 2's console logs and transfers relevant data into separate files for each game.
+        /// </summary>
+        /// <returns>List of errors</returns>
+        public List<string> ReadAndMoveNewGameLogs()
+        {
+            List<string> errors = new List<string>();
+
+            // Find out what the most recent log file we've read was the last time we came through this function
+            DateTime latestReadLogDate = DateTime.MinValue;
+            if(File.Exists(LatestReadLogDateFilePath))
+            {
+                if(long.TryParse(File.ReadAllText(LatestReadLogDateFilePath), out long ticks))
+                {
+                    latestReadLogDate = new DateTime(ticks);
+                }
+            }
+
+            // Get all files that were created after the most recently read log was
+            var filePaths = Directory.GetFiles(ConsoleLogsDir, "*.log", SearchOption.TopDirectoryOnly).Where(path => File.GetCreationTime(path) > latestReadLogDate);
+
+            foreach(var file in filePaths)
+            {
+                DateTime fileCreationTime = File.GetCreationTime(file);
+                TimeSpan firstTimestamp = TimeSpan.Zero;
+                DateTime currentGameStart = DateTime.MinValue;
+
+                List<string> analyticsLogLines = new List<string>();
+
+                try
+                {
+                    // Keep as much unnecessary logic out of the main loop as possible
+                    // Assume that the first UTC timestamp in the log file represents the same time as the file creation time
+                    // So, store the first UTC timestamp, so we can compare later UTC timestamps relative to this one.
+                    foreach (var line in File.ReadLines(file))
+                    {
+                        var timestampCharacters = line.Substring(0, LOG_TIME_FORMAT_LENGTH);
+                        if (TimeSpan.TryParseExact(timestampCharacters, TIMESPAN_FORMAT, null, TimeSpanStyles.None, out firstTimestamp))
+                        {
+                            // Stop once we've found the first timestamp
+                            break;
+                        }
+                    }
+                }
+                catch
+                {
+                    errors.Add($"Could not read file \"{file}\". Vermintide Analyzer may not have permission to read it.");
+                    continue;
+                }
+
+                // If we didn't find any first timestamp, something has gone terribly wrong, and we ought to skip this file.
+                if(firstTimestamp == TimeSpan.Zero)
+                {
+                    errors.Add($"Could not find timestamps in file \"{file}\". Contact ");
+                    continue;
+                }
+
+                int previousTime = 0;
+                int hoursToAdd = 0;
+                foreach (var line in File.ReadLines(file))
+                {
+                    if(line.Length > 12)
+                    {
+                        // For every line, we still have a little bit of timestamp-related work to do
+                        // Since the timestamps store hours but not days, we can't tell from a given
+                        // timestamp whether it is before or after the beginning of the log. But if we 
+                        string hourStr = line.Substring(0, 2);
+                        string timeColon = line.Substring(2, 1);
+                        string minuteStr = line.Substring(3, 2);
+                        if (timeColon == ":" && int.TryParse(hourStr + minuteStr, out int logTime))
+                        {
+                            if (logTime < previousTime)
+                            {
+                                // If we sense a time rollover, everything this log and beyond is the next day, so
+                                // add 24 hours onto the relative times.
+                                hoursToAdd += 24;
+                            }
+                            previousTime = logTime;
+                        }
+
+                        // Collect relevant Analytics logs
+                        if (line.Contains(GAME_LOG_PREFIX))
+                        {
+                            var lineNoPrefix = line.Substring(GAME_LOG_PREFIX_WITH_TIMESTAMP_LENGTH, line.Length - GAME_LOG_PREFIX_WITH_TIMESTAMP_LENGTH);
+                            if (lineNoPrefix.StartsWith("$") ||
+                                lineNoPrefix.StartsWith("SCHEMA VERSION") ||
+                                lineNoPrefix.StartsWith("GAME VERSION") ||
+                                lineNoPrefix.StartsWith("DEATHWISH") ||
+                                lineNoPrefix.StartsWith("ONSLAUGHT") ||
+                                lineNoPrefix.StartsWith("EMPOWERED"))
+                            {
+
+                                if (lineNoPrefix.Contains("RoundStart"))
+                                {
+                                    // If for some reason we encounter RoundStart before RoundEnd for a previous game,
+                                    // Close out the previous game
+                                    if (currentGameStart != DateTime.MinValue)
+                                    {
+                                        bool success = WriteOutLogs(ref currentGameStart, analyticsLogLines);
+                                        if (!success)
+                                        {
+                                            errors.Add($"Could not write out logs for game \"{line}\"");
+                                        }
+                                    }
+
+                                    // We can determine the start time of this game by comparing the timestamp of this log
+                                    // with the first timestamp (keeping in mind UTC day rollovers).
+                                    var timestampCharacters = line.Substring(0, LOG_TIME_FORMAT_LENGTH);
+                                    if (!TimeSpan.TryParseExact(timestampCharacters, TIMESPAN_FORMAT, null, TimeSpanStyles.None, out TimeSpan gameStartTimeSpan))
+                                    {
+                                        // Error reading the start time, give up on this file because something is wrong
+                                        errors.Add($"Could not parse timestamp of game start log \"{line}\"");
+                                        continue;
+                                    }
+                                    currentGameStart = fileCreationTime + (gameStartTimeSpan - firstTimestamp) + TimeSpan.FromHours(hoursToAdd);
+                                }
+
+                                analyticsLogLines.Add(lineNoPrefix);
+
+                                if (lineNoPrefix.Contains("RoundEnd"))
+                                {
+                                    if (currentGameStart != DateTime.MinValue)
+                                    {
+                                        // Split things up by game. A log containing RoundEnd will be the last log for a single game. So, split off
+                                        // the collected logs and write to file
+                                        bool success = WriteOutLogs(ref currentGameStart, analyticsLogLines);
+                                        if (!success)
+                                        {
+                                            errors.Add($"Could not write out logs for game \"{line}\"");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        errors.Add($"Encountered Round-End log before a Round-Start \"{line}\"");
+                                        analyticsLogLines.Clear();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // If we have stored some lines and we are left with an unwritten game, write it out
+                // This covers cases where Vermintide crashes mid-game, and thus we don't get a RoundEnd log.
+                if(analyticsLogLines.Any() && currentGameStart != DateTime.MinValue)
+                {
+                    // Split things up by game. A log containing RoundEnd will be the last log for a single game. So, split off
+                    // the collected logs and write to file
+                    bool success = WriteOutLogs(ref currentGameStart, analyticsLogLines);
+                    if (!success)
+                    {
+                        errors.Add($"Could not write out logs for game at end of \"{file}\"");
+                    }
+                }
+            }
+
+            if(filePaths.Any())
+            {
+                var newLatestReadLogDate = filePaths.Max(path => File.GetCreationTime(path));
+                File.WriteAllText(LatestReadLogDateFilePath, newLatestReadLogDate.Ticks.ToString());
+            }
+
+            return errors;
+
+            // Helper
+            bool WriteOutLogs(ref DateTime gameStart, List<string> lines)
+            {
+                bool success = true;
+
+                try
+                {
+                    File.WriteAllLines(Path.Combine(TempDir, $"{gameStart.ToString(Game.LOG_DATE_TIME_FORMAT)}.VA"), lines);
+                }
+                catch
+                {
+                    success = false;
+                }
+
+                lines.Clear();
+                gameStart = DateTime.MinValue;
+                return success;
+            }
+        }
+        
         public void WriteGameNotesToDisk() => File.WriteAllLines(GameNotesFilePath, GameNotes.Select(kvp => $"{kvp.Key},{kvp.Value}"));
 
         public void ReadGameNotesFromDisk()
@@ -248,7 +399,7 @@ namespace Vermintide_Analyzer
                 scrubbedPlayerName = string.Join("_", Settings.Current.PlayerName.Split(Path.GetInvalidFileNameChars()));
             }
 
-            var dirName = scrubbedPlayerName + "_" + game.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT);
+            var dirName = scrubbedPlayerName + " - " + game.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT);
             var newTempDirPath = Path.Combine(TempDir, dirName);
 
             try
@@ -279,7 +430,7 @@ namespace Vermintide_Analyzer
             {
                 DefaultExt = $"{ImportedGameItem.EXPORT_EXTENSION}",
                 AddExtension = true,
-                FileName = $"{scrubbedPlayerName}{(string.IsNullOrWhiteSpace(scrubbedPlayerName) ? "" : "_")}{gameFile.NameWithoutExtension()}.{ImportedGameItem.EXPORT_EXTENSION}"
+                FileName = $"{scrubbedPlayerName}{(string.IsNullOrWhiteSpace(scrubbedPlayerName) ? "" : " - ")}{gameFile.NameWithoutExtension()}.{ImportedGameItem.EXPORT_EXTENSION}"
             };
 
             bool exported = false;
@@ -352,8 +503,19 @@ namespace Vermintide_Analyzer
             InvalidGames.Clear();
         }
 
-        private IEnumerable<GameHeader> FilterInvalidGames(IEnumerable<GameHeader> games, bool moveInvalid, bool moveValid = false)
+        // Enum to determine whether we ought to be moving games INTO the invalid
+        // directory or OUT of the invalid directory
+        private enum InvalidGameStrategy
         {
+            MoveToInvalid,
+            MoveFromInvalid
+        }
+
+        private IEnumerable<GameHeader> FilterInvalidGames(IEnumerable<GameHeader> games, InvalidGameStrategy strategy)
+        {
+            bool moveInvalid = strategy == InvalidGameStrategy.MoveToInvalid;
+            bool moveValid = strategy == InvalidGameStrategy.MoveFromInvalid;
+
             var invalidGames = games.Where(g => g.Error.HasError());
             var valids = games.Except(invalidGames);
             var invalids = invalidGames.Select(gh => new InvalidGame(gh));
@@ -375,12 +537,8 @@ namespace Vermintide_Analyzer
                 // Move valid items to their correct location
                 foreach (var gameHeader in valids)
                 {
-                    string fileName = gameHeader.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT) + $".VA";
-
-                    string newLocation =
-                        Path.Combine(
-                            GetTargetFolder(gameHeader),
-                            fileName);
+                    string fileName = GenerateGameFileName(gameHeader);
+                    string newLocation = Path.Combine(AllGamesRootDir, fileName);
 
                     try
                     {

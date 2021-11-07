@@ -32,24 +32,24 @@
 
             <local:CareerDashboard Grid.Row="0" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Mercenary" />
             <local:CareerDashboard Grid.Row="0" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Huntsman" />
-            <local:CareerDashboard Grid.Row="0" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Foot_Knight" />
-            <local:CareerDashboard Grid.Row="0" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Grail_Knight" />
-            <local:CareerDashboard Grid.Row="1" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Ranger_Veteran" />
+            <local:CareerDashboard Grid.Row="0" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="FootKnight" />
+            <local:CareerDashboard Grid.Row="0" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="GrailKnight" />
+            <local:CareerDashboard Grid.Row="1" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="RangerVeteran" />
             <local:CareerDashboard Grid.Row="1" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Ironbreaker" />
             <local:CareerDashboard Grid.Row="1" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Slayer" />
-            <local:CareerDashboard Grid.Row="1" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Outcast_Engineer" />
+            <local:CareerDashboard Grid.Row="1" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="OutcastEngineer" />
             <local:CareerDashboard Grid.Row="2" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Waystalker" />
             <local:CareerDashboard Grid.Row="2" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Handmaiden" />
             <local:CareerDashboard Grid.Row="2" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Shade" />
-            <local:CareerDashboard Grid.Row="2" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Sister_of_the_Thorn" />
-            <local:CareerDashboard Grid.Row="3" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Witch_Hunter_Captain" />
-            <local:CareerDashboard Grid.Row="3" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Bounty_Hunter" />
+            <local:CareerDashboard Grid.Row="2" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="SisterOfTheThorn" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="WitchHunterCaptain" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="BountyHunter" />
             <local:CareerDashboard Grid.Row="3" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Zealot" />
-            <local:CareerDashboard Grid.Row="3" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Saltzpyre_UNKNOWN" />
-            <local:CareerDashboard Grid.Row="4" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="Battle_Wizard" />
+            <local:CareerDashboard Grid.Row="3" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="SaltzpyreUNKNOWN" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="BattleWizard" />
             <local:CareerDashboard Grid.Row="4" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Pyromancer" />
             <local:CareerDashboard Grid.Row="4" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Unchained" />
-            <local:CareerDashboard Grid.Row="4" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Sienna_UNKNOWN" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="SiennaUNKNOWN" />
 
         </Grid>
         <StackPanel Grid.Column="1" Margin="10">

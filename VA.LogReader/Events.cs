@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace VA.LogReader
 {
@@ -9,38 +7,45 @@ namespace VA.LogReader
         public DIFFICULTY Difficulty { get; private set; }
         public CAREER Career { get; private set; }
         public CAMPAIGN Campaign { get; private set; }
-        public byte Mission { get; private set; }
+        public MISSION Mission { get; private set; }
 
-        private Round_Start(uint payload)
+        private Round_Start(string[] payload)
         {
-            Difficulty = (DIFFICULTY)((payload & Bitmask.DIFFICULTY) >> Bitshift.DIFFICULTY);
-            Career = (CAREER)((payload & Bitmask.CAREER) >> Bitshift.CAREER);
-            byte campaignVal = (byte)((payload & Bitmask.CAMPAIGN) >> Bitshift.CAMPAIGN);
-            if(Enum.IsDefined(typeof(CAMPAIGN), campaignVal))
+            Difficulty = (DIFFICULTY)Enum.Parse(typeof(DIFFICULTY), payload[0]);
+            Career = (CAREER)Enum.Parse(typeof(CAREER), payload[1]);
+            
+            if(Enum.TryParse(payload[2], out CAMPAIGN camp))
             {
-                Campaign = (CAMPAIGN)campaignVal;
+                Campaign = camp;
             }
             else
             {
                 Campaign = CAMPAIGN.Unknown;
             }
 
-            Mission = (byte)((payload & Bitmask.MISSION) >> Bitshift.MISSION);
+            if (Enum.TryParse(payload[3], out MISSION mission))
+            {
+                Mission = mission;
+            }
+            else
+            {
+                Mission = MISSION.Unknown;
+            }
         }
 
-        public static Event Create(uint payload) => new Round_Start(payload);
+        public static Event Create(string[] payload) => new Round_Start(payload);
     }
 
     public class Player_State : Event
     {
         public PLAYER_STATE State { get; private set; }
 
-        private Player_State(uint payload)
+        private Player_State(string[] payload)
         {
-            State = (PLAYER_STATE)((payload & Bitmask.PLAYER_STATE) >> Bitshift.PLAYER_STATE);
+            State = (PLAYER_STATE)Enum.Parse(typeof(PLAYER_STATE), payload[0]);
         }
 
-        public static Event Create(uint payload) => new Player_State(payload);
+        public static Event Create(string[] payload) => new Player_State(payload);
     }
 
 
@@ -49,13 +54,13 @@ namespace VA.LogReader
         public float PermanentHealth { get; private set; }
         public float TemporaryHealth { get; private set; }
 
-        private Current_Health(uint payload)
+        private Current_Health(string[] payload)
         {
-            PermanentHealth = ((payload & Bitmask.PERMANENT_HEALTH) >> Bitshift.PERMANENT_HEALTH);
-            TemporaryHealth = ((payload & Bitmask.TEMPORARY_HEALTH) >> Bitshift.TEMPORARY_HEALTH);
+            PermanentHealth = float.Parse(payload[0]);
+            TemporaryHealth = float.Parse(payload[1]);
         }
 
-        public static Event Create(uint payload) => new Current_Health(payload);
+        public static Event Create(string[] payload) => new Current_Health(payload);
     }
     
     public class Damage_Dealt : Event
@@ -66,15 +71,15 @@ namespace VA.LogReader
         public DAMAGE_SOURCE Source { get; private set; }
         public float Damage { get; private set; }
 
-        private Damage_Dealt(uint payload)
+        private Damage_Dealt(string[] payload)
         {
-            Crit = ((payload & Bitmask.CRIT) >> Bitshift.CRIT) == 1;
-            Headshot = ((payload & Bitmask.HEADSHOT) >> Bitshift.HEADSHOT) == 1;
-            Target = (DAMAGE_TARGET)((payload & Bitmask.TARGET) >> Bitshift.TARGET);
-            Source = (DAMAGE_SOURCE)((payload & Bitmask.DAMAGE_SOURCE) >> Bitshift.DAMAGE_SOURCE);
-            Damage = ((payload & Bitmask.DAMAGE_INT) >> Bitshift.DAMAGE_INT) + ((payload & Bitmask.DAMAGE_FRACTION) >> Bitshift.DAMAGE_FRACTION) / 4.0f;
+            Crit = payload[0] == "Crit";
+            Headshot = payload[1] == "Headshot";
+            Target = (DAMAGE_TARGET)Enum.Parse(typeof(DAMAGE_TARGET), payload[2]);
+            Source = (DAMAGE_SOURCE)Enum.Parse(typeof(DAMAGE_SOURCE), payload[3]);
+            Damage = float.Parse(payload[4]);
         }
-        public static Event Create(uint payload) => new Damage_Dealt(payload);
+        public static Event Create(string[] payload) => new Damage_Dealt(payload);
     }
 
     public class Temp_HP_Gained : Event
@@ -82,13 +87,13 @@ namespace VA.LogReader
         public float UncappedHeal { get; private set; }
         public float CappedHeal { get; private set; }
 
-        private Temp_HP_Gained(uint payload)
+        private Temp_HP_Gained(string[] payload)
         {
-            UncappedHeal = ((payload & Bitmask.UNCAPPED_HEAL_INT) >> Bitshift.UNCAPPED_HEAL_INT) + ((payload & Bitmask.UNCAPPED_HEAL_FRACTION) >> Bitshift.UNCAPPED_HEAL_FRACTION) / 4.0f;
-            CappedHeal = ((payload & Bitmask.CAPPED_HEAL_INT) >> Bitshift.CAPPED_HEAL_INT) + ((payload & Bitmask.CAPPED_HEAL_FRACTION) >> Bitshift.CAPPED_HEAL_FRACTION) / 4.0f;
+            UncappedHeal = float.Parse(payload[0]);
+            CappedHeal = float.Parse(payload[1]);
         }
 
-        public static Event Create(uint payload) => new Temp_HP_Gained(payload);
+        public static Event Create(string[] payload) => new Temp_HP_Gained(payload);
     }
 
     public class Damage_Taken : Event
@@ -96,13 +101,13 @@ namespace VA.LogReader
         public DAMAGE_TAKEN_SOURCE Source { get; private set; }
         public float Damage { get; private set; }
 
-        private Damage_Taken(uint payload)
+        private Damage_Taken(string[] payload)
         {
-            Source = (DAMAGE_TAKEN_SOURCE)((payload & Bitmask.DAMAGE_TAKEN_SOURCE) >> Bitshift.DAMAGE_TAKEN_SOURCE);
-            Damage = ((payload & Bitmask.DAMAGE_INT) >> Bitshift.DAMAGE_INT) + ((payload & Bitmask.DAMAGE_FRACTION) >> Bitshift.DAMAGE_FRACTION) / 4.0f;
+            Source = (DAMAGE_TAKEN_SOURCE)Enum.Parse(typeof(DAMAGE_TAKEN_SOURCE), payload[0]);
+            Damage = float.Parse(payload[1]);
         }
 
-        public static Event Create(uint payload) => new Damage_Taken(payload);
+        public static Event Create(string[] payload) => new Damage_Taken(payload);
     }
 
     public class Enemy_Killed : Event
@@ -111,14 +116,14 @@ namespace VA.LogReader
         public DAMAGE_SOURCE Source { get; private set; }
         public float OverkillDamage { get; private set; }
 
-        private Enemy_Killed(uint payload)
+        private Enemy_Killed(string[] payload)
         {
-            EnemyType = (ENEMY_TYPE)((payload & Bitmask.ENEMY_TYPE) >> Bitshift.ENEMY_TYPE);
-            Source = (DAMAGE_SOURCE)((payload & Bitmask.DAMAGE_SOURCE) >> Bitshift.DAMAGE_SOURCE);
-            OverkillDamage = ((payload & Bitmask.DAMAGE_INT) >> Bitshift.DAMAGE_INT) + ((payload & Bitmask.DAMAGE_FRACTION) >> Bitshift.DAMAGE_FRACTION) / 4.0f;
+            EnemyType = (ENEMY_TYPE)Enum.Parse(typeof(ENEMY_TYPE), payload[0]);
+            Source = (DAMAGE_SOURCE)Enum.Parse(typeof(DAMAGE_SOURCE), payload[1]);
+            OverkillDamage = float.Parse(payload[2]);
         }
 
-        public static Event Create(uint payload) => new Enemy_Killed(payload);
+        public static Event Create(string[] payload) => new Enemy_Killed(payload);
     }
 
     public class Enemy_Staggered : Event
@@ -127,70 +132,59 @@ namespace VA.LogReader
         public STAGGER_SOURCE Source { get; private set; }
         public float StaggerDuration { get; private set; }
 
-        private Enemy_Staggered(uint payload)
+        private Enemy_Staggered(string[] payload)
         {
-            StaggerLevel = (byte)((payload & Bitmask.STAGGER_LEVEL) >> Bitshift.STAGGER_LEVEL);
-            Source = (STAGGER_SOURCE)((payload & Bitmask.STAGGER_SOURCE) >> Bitshift.STAGGER_SOURCE);
-            StaggerDuration = ((payload & Bitmask.STAGGER_DURATION) >> Bitshift.STAGGER_DURATION) / 1000f;
+            StaggerLevel = byte.Parse(payload[0]);
+            Source = (STAGGER_SOURCE)Enum.Parse(typeof(STAGGER_SOURCE), payload[1]);
+            StaggerDuration = float.Parse(payload[2]) / 1000f;
         }
 
-        public static Event Create(uint payload) => new Enemy_Staggered(payload);
+        public static Event Create(string[] payload) => new Enemy_Staggered(payload);
     }
 
     public class Talent_Tree : Event
     {
-        public bool R1C1 { get; private set; }
-        public bool R1C2 { get; private set; }
-        public bool R1C3 { get; private set; }
+        public bool R1C1 => TalentsArray[0];
+        public bool R1C2 => TalentsArray[1];
+        public bool R1C3 => TalentsArray[2];
 
-        public bool R2C1 { get; private set; }
-        public bool R2C2 { get; private set; }
-        public bool R2C3 { get; private set; }
+        public bool R2C1 => TalentsArray[3];
+        public bool R2C2 => TalentsArray[4];
+        public bool R2C3 => TalentsArray[5];
 
-        public bool R3C1 { get; private set; }
-        public bool R3C2 { get; private set; }
-        public bool R3C3 { get; private set; }
+        public bool R3C1 => TalentsArray[6];
+        public bool R3C2 => TalentsArray[7];
+        public bool R3C3 => TalentsArray[8];
 
-        public bool R4C1 { get; private set; }
-        public bool R4C2 { get; private set; }
-        public bool R4C3 { get; private set; }
+        public bool R4C1 => TalentsArray[9];
+        public bool R4C2 => TalentsArray[10];
+        public bool R4C3 => TalentsArray[11];
 
-        public bool R5C1 { get; private set; }
-        public bool R5C2 { get; private set; }
-        public bool R5C3 { get; private set; }
+        public bool R5C1 => TalentsArray[12];
+        public bool R5C2 => TalentsArray[13];
+        public bool R5C3 => TalentsArray[14];
 
-        public bool R6C1 { get; private set; }
-        public bool R6C2 { get; private set; }
-        public bool R6C3 { get; private set; }
+        public bool R6C1 => TalentsArray[15];
+        public bool R6C2 => TalentsArray[16];
+        public bool R6C3 => TalentsArray[17];
 
-        private Talent_Tree(uint payload)
+
+        private bool[] TalentsArray = new bool[6*3];
+
+        private Talent_Tree(string[] payload)
         {
-            R1C1 = payload % 2 > 0; payload >>= 1;
-            R1C2 = payload % 2 > 0; payload >>= 1;
-            R1C3 = payload % 2 > 0; payload >>= 1;
+            for(int count = 0; count < TalentsArray.Length; count++)
+            {
+                TalentsArray[count] = false;
+            }
 
-            R2C1 = payload % 2 > 0; payload >>= 1;
-            R2C2 = payload % 2 > 0; payload >>= 1;
-            R2C3 = payload % 2 > 0; payload >>= 1;
-
-            R3C1 = payload % 2 > 0; payload >>= 1;
-            R3C2 = payload % 2 > 0; payload >>= 1;
-            R3C3 = payload % 2 > 0; payload >>= 1;
-
-            R4C1 = payload % 2 > 0; payload >>= 1;
-            R4C2 = payload % 2 > 0; payload >>= 1;
-            R4C3 = payload % 2 > 0; payload >>= 1;
-
-            R5C1 = payload % 2 > 0; payload >>= 1;
-            R5C2 = payload % 2 > 0; payload >>= 1;
-            R5C3 = payload % 2 > 0; payload >>= 1;
-
-            R6C1 = payload % 2 > 0; payload >>= 1;
-            R6C2 = payload % 2 > 0; payload >>= 1;
-            R6C3 = payload % 2 > 0;
+            foreach(var talent in payload)
+            {
+                TalentsArray[int.Parse(talent)] = true;
+            }
         }
 
-        public static Event Create(uint payload) => new Talent_Tree(payload);
+        public static Event Create(string[] payload) => new Talent_Tree(payload);
     }
 
     public class Weapon_Set : Event
@@ -201,22 +195,22 @@ namespace VA.LogReader
         public RARITY Weapon1Rarity { get; private set; }
         public RARITY Weapon2Rarity { get; private set; }
 
-        public byte Weapon1 { get; private set; }
-        public byte Weapon2 { get; private set; }
+        public WEAPON Weapon1 { get; private set; }
+        public WEAPON Weapon2 { get; private set; }
 
-        private Weapon_Set(uint payload)
+        private Weapon_Set(string[] payload)
         {
-            Weapon1Owner = (HERO)((payload & Bitmask.WEAPON1_OWNER) >> Bitshift.WEAPON1_OWNER);
-            Weapon2Owner = (HERO)((payload & Bitmask.WEAPON2_OWNER) >> Bitshift.WEAPON2_OWNER);
+            Weapon1Owner = (HERO)Enum.Parse(typeof(HERO), payload[0]);
+            Weapon2Owner = (HERO)Enum.Parse(typeof(HERO), payload[1]);
 
-            Weapon1Rarity = (RARITY)((payload & Bitmask.WEAPON1_RARITY) >> Bitshift.WEAPON1_RARITY);
-            Weapon2Rarity = (RARITY)((payload & Bitmask.WEAPON2_RARITY) >> Bitshift.WEAPON2_RARITY);
+            Weapon1Rarity = (RARITY)Enum.Parse(typeof(RARITY), payload[2]);
+            Weapon2Rarity = (RARITY)Enum.Parse(typeof(RARITY), payload[3]);
 
-            Weapon1 = (byte)((payload & Bitmask.WEAPON1) >> Bitshift.WEAPON1);
-            Weapon2 = (byte)((payload & Bitmask.WEAPON2) >> Bitshift.WEAPON2);
+            Weapon1 = (WEAPON)Enum.Parse(typeof(WEAPON), payload[4]);
+            Weapon2 = (WEAPON)Enum.Parse(typeof(WEAPON), payload[5]);
         }
 
-        public static Event Create(uint payload) => new Weapon_Set(payload);
+        public static Event Create(string[] payload) => new Weapon_Set(payload);
     }
 
     public class Trait_Gained : Event
@@ -224,13 +218,13 @@ namespace VA.LogReader
         public TRAIT_SOURCE Source { get; private set; }
         public TRAIT Trait { get; private set; }
 
-        private Trait_Gained(uint payload)
+        private Trait_Gained(string[] payload)
         {
-            Source = (TRAIT_SOURCE)((payload & Bitmask.TRAIT_SOURCE) >> Bitshift.TRAIT_SOURCE);
-            Trait = (TRAIT)((payload & Bitmask.TRAIT) >> Bitshift.TRAIT);
+            Source = (TRAIT_SOURCE)Enum.Parse(typeof(TRAIT_SOURCE), payload[0]);
+            Trait = (TRAIT)Enum.Parse(typeof(TRAIT), payload[1]);
         }
 
-        public static Event Create(uint payload) => new Trait_Gained(payload);
+        public static Event Create(string[] payload) => new Trait_Gained(payload);
     }
 
     public class Property_Gained : Event
@@ -239,26 +233,26 @@ namespace VA.LogReader
         public PROPERTY Property { get; private set; }
         public float PropertyValue { get; private set; }
 
-        private Property_Gained(uint payload)
+        private Property_Gained(string[] payload)
         {
-            Source = (PROPERTY_SOURCE)((payload & Bitmask.PROPERTY_SOURCE) >> Bitshift.PROPERTY_SOURCE);
-            Property = (PROPERTY)((payload & Bitmask.PROPERTY) >> Bitshift.PROPERTY);
-            PropertyValue = ((payload & Bitmask.PROPERTY_VALUE) >> Bitshift.PROPERTY_VALUE) / 10f;
+            Source = (PROPERTY_SOURCE)Enum.Parse(typeof(PROPERTY_SOURCE), payload[0]);
+            Property = (PROPERTY)Enum.Parse(typeof(PROPERTY), payload[1]);
+            PropertyValue = float.Parse(payload[2]) / 10f;
         }
 
-        public static Event Create(uint payload) => new Property_Gained(payload);
+        public static Event Create(string[] payload) => new Property_Gained(payload);
     }
 
     public class Round_End : Event
     {
         public ROUND_RESULT Result { get; private set; }
 
-        private Round_End(uint payload)
+        private Round_End(string[] payload)
         {
-            Result = (ROUND_RESULT)((payload & Bitmask.ROUND_RESULT) >> Bitshift.ROUND_RESULT);
+            Result = (ROUND_RESULT)Enum.Parse(typeof(ROUND_RESULT), payload[0]);
         }
 
-        public static Event Create(uint payload) => new Round_End(payload);
+        public static Event Create(string[] payload) => new Round_End(payload);
     }
 
 }

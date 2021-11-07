@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace VA.LogReader
 {
@@ -74,7 +73,7 @@ namespace VA.LogReader
 
         public string CampaignName => Campaign.ForDisplay();
 
-        public string MissionName => Mission.ToString().Replace("_", " ");
+        public string MissionName => Mission.ForDisplay();
         public string MissionTooltip => Mission.GetAttributeOfType<DescriptionAttribute>()?.Description ?? "";
 
         public string CareerName => Career.ForDisplay();
@@ -90,6 +89,8 @@ namespace VA.LogReader
 
 
         #region From File
+        private const string EVENT_MARKER = "$";
+        private const string EVENT_DELIMITER = "|";
         public static Game FromFile(string filePath)
         {
             if(!File.Exists(filePath))
@@ -104,55 +105,89 @@ namespace VA.LogReader
 
             List<Event> events = new List<Event>();
 
-            using (FileStream reader = File.OpenRead(filePath))
+            // Read header lines
+            try
             {
-                byte[] buffer = new byte[Event.BYTES];
-                int lastReadCount = 0;
-
-                // Read header, which is the first HEADER_BYTES bytes
-                byte[] headerBuffer = new byte[HEADER_BYTES];
-                lastReadCount = reader.Read(headerBuffer, 0, HEADER_BYTES);
-                if(lastReadCount < HEADER_BYTES)
+                var headerDataRegex = new Regex(".*: (.*)");
+                var versionRegex = new Regex("(\\d*)\\.(\\d*)");
+                foreach (var line in File.ReadAllLines(filePath))
                 {
-                    g.Error = ParseError.BadHeader;
-                    return g;
-                }
-                g.ParseHeader(headerBuffer);
-                if(!g.ValidateSchemaVersion())
-                {
-                    g.Error = ParseError.SchemaMismatch;
-                    return g;
-                }
-
-                lastReadCount = reader.Read(buffer, 0, Event.BYTES);
-                while (lastReadCount == Event.BYTES)
-                {
-                    var eventType = Event.GetEventType(buffer[2]);
-                    if (!eventType.HasValue)
+                    if (line.StartsWith(EVENT_MARKER))
                     {
-                        Console.WriteLine($"Bad event type \"{buffer[2] >> Bitshift.EVENT_TYPE}\", skipping...");
-                        lastReadCount = reader.Read(buffer, 0, Event.BYTES);
-                        continue;
+                        // We've reached the end of the header data
+                        break;
                     }
-                    var newEvent = Event.CreateEvent(eventType.Value, buffer);
-                    if(newEvent != null)
-                    {
-                        events.Add(newEvent);
-                    }
-                    lastReadCount = reader.Read(buffer, 0, Event.BYTES);
-                }
 
-                // The data wasn't a multiple of Event.BYTES bytes, say something
-                if (lastReadCount > 0)
+                    if (line.StartsWith("SCHEMA VERSION"))
+                    {
+                        var schemaVersion = headerDataRegex.Match(line).Groups[1].Value;
+                        var versionMatch = versionRegex.Match(schemaVersion);
+                        g.SchemaVersionMajor = byte.Parse(versionMatch.Groups[1].Value);
+                        g.SchemaVersionMinor = byte.Parse(versionMatch.Groups[2].Value);
+                    }
+                    else if (line.StartsWith("GAME VERSION"))
+                    {
+                        var gameVersion = headerDataRegex.Match(line).Groups[1].Value;
+                        var versionMatch = versionRegex.Match(gameVersion);
+                        g.GameVersionMajor = byte.Parse(versionMatch.Groups[1].Value);
+                        g.GameVersionMinor = byte.Parse(versionMatch.Groups[2].Value);
+                    }
+                    else if (line.StartsWith("DEATHWISH"))
+                    {
+                        var state = headerDataRegex.Match(line).Groups[1].Value;
+                        g.Deathwish = state == "On";
+                    }
+                    else if (line.StartsWith("ONSLAUGHT"))
+                    {
+                        var state = headerDataRegex.Match(line).Groups[1].Value;
+                        g.Onslaught = (ONSLAUGHT_TYPE)Enum.Parse(typeof(ONSLAUGHT_TYPE), state);
+                    }
+                    else if (line.StartsWith("EMPOWERED"))
+                    {
+                        var state = headerDataRegex.Match(line).Groups[1].Value;
+                        g.Empowered = state == "On";
+                    }
+                }
+            }
+            catch
+            {
+                g.Error = ParseError.BadHeader;
+                return g;
+            }
+
+            if (!g.ValidateSchemaVersion())
+            {
+                g.Error = ParseError.SchemaMismatch;
+                return g;
+            }
+
+            // Read data lines
+            var eventSplitArr = new string[] { EVENT_MARKER };
+            var eventDetailSplitArr = new string[] { EVENT_DELIMITER };
+            foreach(var line in File.ReadAllLines(filePath))
+            {
+                if(line.StartsWith(EVENT_MARKER))
                 {
-                    throw new InvalidDataException();
+                    var eventStrings = line.Split(eventSplitArr, StringSplitOptions.RemoveEmptyEntries);
+                    foreach(var eventString in eventStrings)
+                    {
+                        var eventDetails = eventString.Split(eventDetailSplitArr, StringSplitOptions.RemoveEmptyEntries);
+                        // If we have an event broken down into more/less than 3 parts, it's not valid
+                        if(eventDetails.Length == 3)
+                        {
+                            var newEvent = Event.CreateEvent(eventDetails[0], eventDetails[1], eventDetails[2]);
+                            if (newEvent != null)
+                            {
+                                events.Add(newEvent);
+                            }
+                        }
+                    }
                 }
             }
 
             // Process events
             TrimToFirstRound(events);
             RemoveRedundantEvents(events);
-            SetTrueTimes(events);
 
             g.Events = events;
 
@@ -180,7 +215,7 @@ namespace VA.LogReader
 
         private static DateTime? StartTimeFromFileName(string fileName)
         {
-            string dateTimeString = fileName.Replace(".VA", "");
+            string dateTimeString = fileName.Replace(".VA", "").Split(' ').Last();
             if(DateTime.TryParseExact(dateTimeString, LOG_DATE_TIME_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime result))
             {
                 return result;
@@ -188,39 +223,16 @@ namespace VA.LogReader
             return null;
         }
 
-        private void ParseHeader(byte[] bytes)
-        {
-            SchemaVersionMajor = bytes[0];
-            SchemaVersionMinor = bytes[1];
-
-            GameVersionMajor = bytes[2];
-            GameVersionMinor = bytes[3];
-
-            Deathwish = bytes[4] > 0;
-            Onslaught = (ONSLAUGHT_TYPE)bytes[5];
-            Empowered = bytes[6] > 0;
-        }
-
         private bool ValidateSchemaVersion() =>
-            SchemaVersionMajor == Schema.SCHEMA_VERSION_MAJOR &&
-            SchemaVersionMinor == Schema.SCHEMA_VERSION_MINOR;
+            SchemaVersionMajor <= Schema.SCHEMA_VERSION_MAJOR &&
+            SchemaVersionMinor <= Schema.SCHEMA_VERSION_MINOR;
 
         private void ParseRoundStart(Round_Start evt)
         {
             Difficulty = evt.Difficulty;
             Career = evt.Career;
             Campaign = evt.Campaign;
-            var shift = Campaign.MissionEnumShift();
-            long adjustedMissionVal = evt.Mission << shift;
-
-            if(Enum.IsDefined(typeof(MISSION), adjustedMissionVal))
-            {
-                Mission = (MISSION)adjustedMissionVal;
-            }
-            else
-            {
-                Mission = MISSION.Unknown;
-            }
+            Mission = evt.Mission;
         }
 
         private void ParseRoundEnd(Round_End evt)
@@ -233,7 +245,7 @@ namespace VA.LogReader
             FillDataForItem(Necklace, TRAIT_SOURCE.Necklace, PROPERTY_SOURCE.Necklace);
             FillDataForItem(Charm, TRAIT_SOURCE.Charm, PROPERTY_SOURCE.Charm);
             FillDataForItem(Trinket, TRAIT_SOURCE.Trinket, PROPERTY_SOURCE.Trinket);
-            FillDataForItem(ChaosWastesProperties, null, PROPERTY_SOURCE.Chaos_Wastes);
+            FillDataForItem(ChaosWastesProperties, null, PROPERTY_SOURCE.ChaosWastes);
 
             void FillDataForItem(ItemDetails item, TRAIT_SOURCE? traitSource, PROPERTY_SOURCE? propertySource)
             {
@@ -399,7 +411,7 @@ namespace VA.LogReader
 
         private static void TrimToFirstRound(List<Event> events)
         {
-            var start = events.FirstOrDefault(e => e.Type == EventType.Round_Start);
+            var start = events.FirstOrDefault(e => e is Round_Start);
 
             if (start != null)
             {
@@ -407,7 +419,7 @@ namespace VA.LogReader
                 events.RemoveRange(0, startIndex);
             }
 
-            var end = events.FirstOrDefault(e => e.Type == EventType.Round_End);
+            var end = events.FirstOrDefault(e => e is Round_End);
 
             if (end != null)
             {
@@ -428,24 +440,6 @@ namespace VA.LogReader
                 {
                     events.Remove(currentHealthEevents[count - 1]);
                 }
-            }
-        }
-
-
-        public const float TIME_ROLLOVER = 655.35f;
-        public static void SetTrueTimes(List<Event> events)
-        {
-            float lastTime = 0;
-            float largeScaleTime = 0;
-            foreach (var e in events)
-            {
-                if (e.RawTime < lastTime)
-                {
-                    largeScaleTime += TIME_ROLLOVER;
-                }
-
-                e.Time = e.RawTime + largeScaleTime;
-                lastTime = e.RawTime;
             }
         }
         #endregion

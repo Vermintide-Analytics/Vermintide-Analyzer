@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VA.LogReader;
 using Vermintide_Analyzer.Statistics;
 
@@ -39,7 +36,7 @@ namespace Vermintide_Analyzer.Models
             PathToFolder = pathToFolder;
 
             // Mission is required
-            Mission = ReadMetadataFileText(MissionFileName).Replace(" ", "_").FromDisplay<MISSION>();
+            Mission = ReadMetadataFileText(MissionFileName).FromDisplay<MISSION>();
             // Career is required
             Career = ReadMetadataFileText(CareerFileName).FromDisplay<CAREER>();
 

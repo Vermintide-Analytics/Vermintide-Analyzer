@@ -1,13 +1,4 @@
-﻿using LiveCharts;
-using System.Linq;
-using System.Windows;
-using VA.LogReader;
-using LiveCharts.Defaults;
-using System;
-using System.Collections.Generic;
-using Vermintide_Analyzer.Controls;
-using LiveCharts.Geared;
-using System.Windows.Media;
+﻿using System.Windows;
 using ToastNotifications;
 using Vermintide_Analyzer.Misc;
 using ToastNotifications.Messages;

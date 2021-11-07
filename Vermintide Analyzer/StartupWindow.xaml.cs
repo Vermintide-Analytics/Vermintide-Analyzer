@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using VA.LogReader;
 
 namespace Vermintide_Analyzer
 {
@@ -76,7 +67,10 @@ namespace Vermintide_Analyzer
             BeginStep("Loading user settings...");
             Settings.Load();
 
-            BeginStep("Reading existing data...");
+            BeginStep("Gathering latest data...");
+            GameRepository.Instance.ReadAndMoveNewGameLogs();
+
+            BeginStep("Reading games...");
             var existingGameHeaders = GameRepository.Instance.ReadExistingGameHeaders();
             var previouslyInvalidGameHeaders = GameRepository.Instance.ReadPreviouslyInvalidGameHeaders();
             LogDetail($"Found {existingGameHeaders.Count() + previouslyInvalidGameHeaders.Count()} existing games.");

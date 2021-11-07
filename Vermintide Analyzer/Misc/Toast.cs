@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using ToastNotifications;
-using ToastNotifications.Core;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 

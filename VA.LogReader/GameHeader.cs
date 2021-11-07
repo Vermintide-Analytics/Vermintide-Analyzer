@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VA.LogReader
 {
@@ -46,7 +43,7 @@ namespace VA.LogReader
 
         public string CampaignName => Campaign.ForDisplay();
 
-        public string MissionName => Mission.ToString().Replace("_", " ");
+        public string MissionName => Mission.ForDisplay();
 
         public string MissionTooltip => Mission.GetAttributeOfType<DescriptionAttribute>()?.Description ?? "";
 

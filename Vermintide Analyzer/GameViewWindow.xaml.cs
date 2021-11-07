@@ -5,23 +5,15 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using VA.LogReader;
 using Vermintide_Analyzer.Controls;
 using Vermintide_Analyzer.Dialogs;
 using ToastNotifications;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Position;
-using ToastNotifications.Messages.Core;
 using ToastNotifications.Messages;
 using Vermintide_Analyzer.Misc;
 using Vermintide_Analyzer.Models;
@@ -126,7 +118,7 @@ namespace Vermintide_Analyzer
         #endregion
 
         #region Misc Display Props
-        public bool IsChaosWastes => Game.Campaign == CAMPAIGN.Chaos_Wastes;
+        public bool IsChaosWastes => Game.Campaign == CAMPAIGN.ChaosWastes;
         public int ChartTitleHeight => 40;
         public int ChartHeight => 390;
         public int ChartSeparatorHeight => 1;
@@ -228,11 +220,11 @@ namespace Vermintide_Analyzer
         #region Private
         private void ConstructSeries()
         {
-            var allDamageEvents = Game.Events.Where(e => e.Type == EventType.Damage_Dealt).Cast<Damage_Dealt>();
+            var allDamageEvents = Game.Events.Where(e => e is Damage_Dealt).Cast<Damage_Dealt>();
             AllDamagePoints.AddRange(allDamageEvents.Select(e => (e, new ScatterPoint(e.Time, e.Damage))));
-            var allDamageTakenEvents = Game.Events.Where(e => e.Type == EventType.Damage_Taken).Cast<Damage_Taken>();
+            var allDamageTakenEvents = Game.Events.Where(e => e is Damage_Taken).Cast<Damage_Taken>();
             AllDamageTakenPoints.AddRange(allDamageTakenEvents.Select(e => (e, new ScatterPoint(e.Time, e.Damage))));
-            var allStaggerEvents = Game.Events.Where(e => e.Type == EventType.Enemy_Staggered).Cast<Enemy_Staggered>();
+            var allStaggerEvents = Game.Events.Where(e => e is Enemy_Staggered).Cast<Enemy_Staggered>();
             AllStaggerPoints.AddRange(allStaggerEvents.Select(e => (e, new ScatterPoint(e.Time, e.StaggerDuration))));
 
             PlainDamagePoints.AddRange(AllDamagePoints.Where(p => p.Item1.Target == DAMAGE_TARGET.Enemy).Select(p => p.Item2));
@@ -259,7 +251,7 @@ namespace Vermintide_Analyzer
             MonsterDamageTakenPoints.AddRange(AllDamageTakenPoints.Where(p => p.Item1.Source == DAMAGE_TAKEN_SOURCE.Monster).Select(p => p.Item2));
             FriendlyFireTakenPoints.AddRange(AllDamageTakenPoints.Where(p => p.Item1.Source.IsFriendlyFire()).Select(p => p.Item2));
 
-            var allHealthEvents = Game.Events.Where(e => e.Type == EventType.Current_Health).Cast<Current_Health>().ToList();
+            var allHealthEvents = Game.Events.Where(e => e is Current_Health).Cast<Current_Health>().ToList();
             var dupeEvts = new List<Current_Health>();
             for(int i = 1; i < allHealthEvents.Count; i++)
             {
@@ -319,7 +311,7 @@ namespace Vermintide_Analyzer
 
         private void PrettifyCharts()
         {
-            var healthEvents = Game.Events.Where(e => e.Type == EventType.Current_Health).Cast<Current_Health>();
+            var healthEvents = Game.Events.Where(e => e is Current_Health).Cast<Current_Health>();
 
             if(healthEvents.Any())
             {
@@ -347,7 +339,7 @@ namespace Vermintide_Analyzer
         private void SetAxisSections(SectionsCollection collection)
         {
             collection.Clear();
-            foreach (var stateEvt in Game.Events.Where(evt => evt.Type == EventType.Player_State).Cast<Player_State>())
+            foreach (var stateEvt in Game.Events.Where(evt => evt is Player_State).Cast<Player_State>())
             {
                 collection.Add(CreatePlayerStateChangeMarker(stateEvt));
             }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace VA.LogReader
 {
@@ -34,8 +32,20 @@ namespace VA.LogReader
             var attributes = memInfo[0].GetCustomAttributes(typeof(T), false);
             return (attributes.Length > 0) ? (T)attributes[0] : null;
         }
-        public static string ForDisplay(this Enum enumVal) => Enum.GetName(enumVal.GetType(), enumVal).Replace("_", " ");
-        public static T FromDisplay<T>(this string str) where T : Enum => (T)Enum.Parse(typeof(T), str.Replace(" ", "_"));
+        public static string ForDisplay(this Enum enumVal) => Enum.GetName(enumVal.GetType(), enumVal).SplitCamelCase();
+        public static T FromDisplay<T>(this string str) where T : Enum => (T)Enum.Parse(typeof(T), str.Replace(" ", ""));
+        public static string SplitCamelCase(this string str)
+        {
+            return Regex.Replace(
+                Regex.Replace(
+                    str,
+                    @"(\P{Ll})(\P{Ll}\p{Ll})",
+                    "$1 $2"
+                ),
+                @"(\p{Ll})(\P{Ll})",
+                "$1 $2"
+            );
+        }
 
         #region DIFFICULTY
         public static bool IsRecruit(this DIFFICULTY d) => d == DIFFICULTY.Recruit;
@@ -54,90 +64,72 @@ namespace VA.LogReader
         #region CAREER
         public static bool IsMercenary(this CAREER c) => c == CAREER.Mercenary;
         public static bool IsHuntsman(this CAREER c) => c == CAREER.Huntsman;
-        public static bool IsFoot_Knight(this CAREER c) => c == CAREER.Foot_Knight;
-        public static bool IsGrail_Knight(this CAREER c) => c == CAREER.Grail_Knight;
+        public static bool IsFootKnight(this CAREER c) => c == CAREER.FootKnight;
+        public static bool IsGrailKnight(this CAREER c) => c == CAREER.GrailKnight;
 
-        public static bool IsRanger_Veteran(this CAREER c) => c == CAREER.Ranger_Veteran;
+        public static bool IsRangerVeteran(this CAREER c) => c == CAREER.RangerVeteran;
         public static bool IsIronbreaker(this CAREER c) => c == CAREER.Ironbreaker;
         public static bool IsSlayer(this CAREER c) => c == CAREER.Slayer;
-        public static bool IsOutcast_Engineer(this CAREER c) => c == CAREER.Outcast_Engineer;
+        public static bool IsOutcastEngineer(this CAREER c) => c == CAREER.OutcastEngineer;
 
         public static bool IsWaystalker(this CAREER c) => c == CAREER.Waystalker;
         public static bool IsHandmaiden(this CAREER c) => c == CAREER.Handmaiden;
         public static bool IsShade(this CAREER c) => c == CAREER.Shade;
-        public static bool IsSister_of_the_Thorn(this CAREER c) => c == CAREER.Sister_of_the_Thorn;
+        public static bool IsSisterOfTheThorn(this CAREER c) => c == CAREER.SisterOfTheThorn;
 
-        public static bool IsWitch_Hunter_Captain(this CAREER c) => c == CAREER.Witch_Hunter_Captain;
-        public static bool IsBounty_Hunter(this CAREER c) => c == CAREER.Bounty_Hunter;
+        public static bool IsWitchHunterCaptain(this CAREER c) => c == CAREER.WitchHunterCaptain;
+        public static bool IsBountyHunter(this CAREER c) => c == CAREER.BountyHunter;
         public static bool IsZealot(this CAREER c) => c == CAREER.Zealot;
-        public static bool IsSaltzpyre_UNKNOWN(this CAREER c) => c == CAREER.Saltzpyre_UNKNOWN;
+        public static bool IsSaltzpyreUNKNOWN(this CAREER c) => c == CAREER.SaltzpyreUNKNOWN;
 
-        public static bool IsBattle_Wizard(this CAREER c) => c == CAREER.Battle_Wizard;
+        public static bool IsBattleWizard(this CAREER c) => c == CAREER.BattleWizard;
         public static bool IsPyromancer(this CAREER c) => c == CAREER.Pyromancer;
         public static bool IsUnchained(this CAREER c) => c == CAREER.Unchained;
-        public static bool IsSienna_UNKNOWN(this CAREER c) => c == CAREER.Sienna_UNKNOWN;
+        public static bool IsSiennaUNKNOWN(this CAREER c) => c == CAREER.SiennaUNKNOWN;
 
         public static HERO Hero(this CAREER career) =>
             (HERO)((byte)career / 4);
-        #endregion
-        
-        #region CAMPAIGN
-        public static int MissionEnumShift(this CAMPAIGN c)
-        {
-            switch (c)
-            {
-                case CAMPAIGN.Misc: return Enums.MISC_MISSION_SHIFT;
-                case CAMPAIGN.Helmgart: return Enums.HELMGART_MISSION_SHIFT;
-                case CAMPAIGN.Drachenfels: return Enums.DRACHENFELS_MISSION_SHIFT;
-                case CAMPAIGN.Bogenhafen: return Enums.BOGENHAFEN_MISSION_SHIFT;
-                case CAMPAIGN.Ubersreik: return Enums.UBERSREIK_MISSION_SHIFT;
-                case CAMPAIGN.Winds_of_Magic: return Enums.WOM_MISSION_SHIFT;
-                case CAMPAIGN.Chaos_Wastes: return Enums.CHAOS_WASTES_MISSION_SHIFT;
-                case CAMPAIGN.Weave: return Enums.WEAVES_MISSION_SHIFT;
-            }
-            return 0;
-        }
         #endregion
 
         #region MISSION
         public static CAMPAIGN Campaign(this MISSION m)
         {
             long l = (long)m;
-            if (l >> Enums.WEAVES_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Weave;
-            }
-            if (l >> Enums.CHAOS_WASTES_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Chaos_Wastes;
-            }
-            if (l >> Enums.WOM_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Winds_of_Magic;
-            }
-            if (l >> Enums.UBERSREIK_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Ubersreik;
-            }
-            if (l >> Enums.BOGENHAFEN_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Bogenhafen;
-            }
-            if (l >> Enums.DRACHENFELS_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Drachenfels;
-            }
-            if (l >> Enums.HELMGART_MISSION_SHIFT > 0)
-            {
-                return CAMPAIGN.Helmgart;
-            }
-            if (l >> Enums.MISC_MISSION_SHIFT > 0)
+            if(l > 10000)
             {
                 return CAMPAIGN.Misc;
             }
+            if (l > 600)
+            {
+                return CAMPAIGN.Weave;
+            }
+            if (l > 500)
+            {
+                return CAMPAIGN.ChaosWastes;
+            }
+            if (l > 400)
+            {
+                return CAMPAIGN.WindsOfMagic;
+            }
+            if (l > 300)
+            {
+                return CAMPAIGN.Ubersreik;
+            }
+            if (l > 200)
+            {
+                return CAMPAIGN.Bogenhafen;
+            }
+            if (l > 100)
+            {
+                return CAMPAIGN.Drachenfels;
+            }
+            if (l > 0)
+            {
+                return CAMPAIGN.Helmgart;
+            }
             return CAMPAIGN.Unknown;
         }
-        public static bool IsChaosWastes(this MISSION m) => m.Campaign() == CAMPAIGN.Chaos_Wastes;
+        public static bool IsChaosWastes(this MISSION m) => m.Campaign() == CAMPAIGN.ChaosWastes;
         #endregion
 
         #region DAMAGE_TAKEN_SOURCE

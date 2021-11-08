@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace VA.LogReader
 {
     public abstract class Event
     {
-        public const int BYTES = 6;
+        // The data from the mod contains numbers in en-US culture, that is, commas are
+        // optional thousands separators and periods separate integer and decimal portion.
+        // We need to specify that we parse these numbers with this culture, else we read
+        // numbers in wrong.
+        public static readonly CultureInfo ParseCulture = CultureInfo.CreateSpecificCulture("en-US");
 
         public float Time { get; set; }
 
@@ -43,5 +48,12 @@ namespace VA.LogReader
             { "TraitGained", Trait_Gained.Create },
             { "PropertyGained", Property_Gained.Create },
         };
+
+        #region Parse Utility
+        protected byte GetByte(string input) => byte.Parse(input, ParseCulture);
+        protected T GetEnum<T>(string input) => (T)Enum.Parse(typeof(T), input);
+        protected float GetFloat(string input) => float.Parse(input, ParseCulture);
+        protected int GetInt(string input) => int.Parse(input, ParseCulture);
+        #endregion
     }
 }

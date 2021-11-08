@@ -11,8 +11,8 @@ namespace VA.LogReader
 
         private Round_Start(string[] payload)
         {
-            Difficulty = (DIFFICULTY)Enum.Parse(typeof(DIFFICULTY), payload[0]);
-            Career = (CAREER)Enum.Parse(typeof(CAREER), payload[1]);
+            Difficulty = GetEnum<DIFFICULTY>(payload[0]);
+            Career = GetEnum<CAREER>(payload[1]);
             
             if(Enum.TryParse(payload[2], out CAMPAIGN camp))
             {
@@ -42,7 +42,7 @@ namespace VA.LogReader
 
         private Player_State(string[] payload)
         {
-            State = (PLAYER_STATE)Enum.Parse(typeof(PLAYER_STATE), payload[0]);
+            State = GetEnum<PLAYER_STATE>(payload[0]);
         }
 
         public static Event Create(string[] payload) => new Player_State(payload);
@@ -56,8 +56,8 @@ namespace VA.LogReader
 
         private Current_Health(string[] payload)
         {
-            PermanentHealth = float.Parse(payload[0]);
-            TemporaryHealth = float.Parse(payload[1]);
+            PermanentHealth = GetFloat(payload[0]);
+            TemporaryHealth = GetFloat(payload[1]);
         }
 
         public static Event Create(string[] payload) => new Current_Health(payload);
@@ -75,9 +75,9 @@ namespace VA.LogReader
         {
             Crit = payload[0] == "Crit";
             Headshot = payload[1] == "Headshot";
-            Target = (DAMAGE_TARGET)Enum.Parse(typeof(DAMAGE_TARGET), payload[2]);
-            Source = (DAMAGE_SOURCE)Enum.Parse(typeof(DAMAGE_SOURCE), payload[3]);
-            Damage = float.Parse(payload[4]);
+            Target = GetEnum<DAMAGE_TARGET>(payload[2]);
+            Source = GetEnum<DAMAGE_SOURCE>(payload[3]);
+            Damage = GetFloat(payload[4]);
         }
         public static Event Create(string[] payload) => new Damage_Dealt(payload);
     }
@@ -89,8 +89,8 @@ namespace VA.LogReader
 
         private Temp_HP_Gained(string[] payload)
         {
-            UncappedHeal = float.Parse(payload[0]);
-            CappedHeal = float.Parse(payload[1]);
+            UncappedHeal = GetFloat(payload[0]);
+            CappedHeal = GetFloat(payload[1]);
         }
 
         public static Event Create(string[] payload) => new Temp_HP_Gained(payload);
@@ -103,8 +103,8 @@ namespace VA.LogReader
 
         private Damage_Taken(string[] payload)
         {
-            Source = (DAMAGE_TAKEN_SOURCE)Enum.Parse(typeof(DAMAGE_TAKEN_SOURCE), payload[0]);
-            Damage = float.Parse(payload[1]);
+            Source = GetEnum<DAMAGE_TAKEN_SOURCE>(payload[0]);
+            Damage = GetFloat(payload[1]);
         }
 
         public static Event Create(string[] payload) => new Damage_Taken(payload);
@@ -118,9 +118,9 @@ namespace VA.LogReader
 
         private Enemy_Killed(string[] payload)
         {
-            EnemyType = (ENEMY_TYPE)Enum.Parse(typeof(ENEMY_TYPE), payload[0]);
-            Source = (DAMAGE_SOURCE)Enum.Parse(typeof(DAMAGE_SOURCE), payload[1]);
-            OverkillDamage = float.Parse(payload[2]);
+            EnemyType = GetEnum<ENEMY_TYPE>(payload[0]);
+            Source = GetEnum<DAMAGE_SOURCE>(payload[1]);
+            OverkillDamage = GetFloat(payload[2]);
         }
 
         public static Event Create(string[] payload) => new Enemy_Killed(payload);
@@ -134,9 +134,9 @@ namespace VA.LogReader
 
         private Enemy_Staggered(string[] payload)
         {
-            StaggerLevel = byte.Parse(payload[0]);
-            Source = (STAGGER_SOURCE)Enum.Parse(typeof(STAGGER_SOURCE), payload[1]);
-            StaggerDuration = float.Parse(payload[2]) / 1000f;
+            StaggerLevel = GetByte(payload[0]);
+            Source = GetEnum<STAGGER_SOURCE>(payload[1]);
+            StaggerDuration = GetFloat(payload[2]) / 1000f;
         }
 
         public static Event Create(string[] payload) => new Enemy_Staggered(payload);
@@ -180,7 +180,7 @@ namespace VA.LogReader
 
             foreach(var talent in payload)
             {
-                TalentsArray[int.Parse(talent)] = true;
+                TalentsArray[GetInt(talent)] = true;
             }
         }
 
@@ -200,14 +200,14 @@ namespace VA.LogReader
 
         private Weapon_Set(string[] payload)
         {
-            Weapon1Owner = (HERO)Enum.Parse(typeof(HERO), payload[0]);
-            Weapon2Owner = (HERO)Enum.Parse(typeof(HERO), payload[1]);
+            Weapon1Owner = GetEnum<HERO>(payload[0]);
+            Weapon2Owner = GetEnum<HERO>(payload[1]);
 
-            Weapon1Rarity = (RARITY)Enum.Parse(typeof(RARITY), payload[2]);
-            Weapon2Rarity = (RARITY)Enum.Parse(typeof(RARITY), payload[3]);
+            Weapon1Rarity = GetEnum<RARITY>(payload[2]);
+            Weapon2Rarity = GetEnum<RARITY>(payload[3]);
 
-            Weapon1 = (WEAPON)Enum.Parse(typeof(WEAPON), payload[4]);
-            Weapon2 = (WEAPON)Enum.Parse(typeof(WEAPON), payload[5]);
+            Weapon1 = GetEnum<WEAPON>(payload[4]);
+            Weapon2 = GetEnum<WEAPON>(payload[5]);
         }
 
         public static Event Create(string[] payload) => new Weapon_Set(payload);
@@ -220,8 +220,8 @@ namespace VA.LogReader
 
         private Trait_Gained(string[] payload)
         {
-            Source = (TRAIT_SOURCE)Enum.Parse(typeof(TRAIT_SOURCE), payload[0]);
-            Trait = (TRAIT)Enum.Parse(typeof(TRAIT), payload[1]);
+            Source = GetEnum<TRAIT_SOURCE>(payload[0]);
+            Trait = GetEnum<TRAIT>(payload[1]);
         }
 
         public static Event Create(string[] payload) => new Trait_Gained(payload);
@@ -235,9 +235,9 @@ namespace VA.LogReader
 
         private Property_Gained(string[] payload)
         {
-            Source = (PROPERTY_SOURCE)Enum.Parse(typeof(PROPERTY_SOURCE), payload[0]);
-            Property = (PROPERTY)Enum.Parse(typeof(PROPERTY), payload[1]);
-            PropertyValue = float.Parse(payload[2]) / 10f;
+            Source = GetEnum<PROPERTY_SOURCE>(payload[0]);
+            Property = GetEnum<PROPERTY>(payload[1]);
+            PropertyValue = GetFloat(payload[2]) / 10f;
         }
 
         public static Event Create(string[] payload) => new Property_Gained(payload);
@@ -249,7 +249,7 @@ namespace VA.LogReader
 
         private Round_End(string[] payload)
         {
-            Result = (ROUND_RESULT)Enum.Parse(typeof(ROUND_RESULT), payload[0]);
+            Result = GetEnum<ROUND_RESULT>(payload[0]);
         }
 
         public static Event Create(string[] payload) => new Round_End(payload);

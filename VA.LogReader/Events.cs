@@ -206,8 +206,16 @@ namespace VA.LogReader
             Weapon1Rarity = GetEnum<RARITY>(payload[2]);
             Weapon2Rarity = GetEnum<RARITY>(payload[3]);
 
-            Weapon1 = GetEnum<WEAPON>(payload[4]);
-            Weapon2 = GetEnum<WEAPON>(payload[5]);
+            try
+            {
+                Weapon1 = GetEnum<WEAPON>(payload[4]);
+            }
+            catch { Weapon1 = WEAPON.Unknown; }
+            try
+            {
+                Weapon2 = GetEnum<WEAPON>(payload[5]);
+            }
+            catch { Weapon2 = WEAPON.Unknown; }
         }
 
         public static Event Create(string[] payload) => new Weapon_Set(payload);

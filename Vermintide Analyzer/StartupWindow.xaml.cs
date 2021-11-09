@@ -67,15 +67,17 @@ namespace Vermintide_Analyzer
             BeginStep("Loading user settings...");
             Settings.Load();
 
-            BeginStep("Gathering latest data...");
+            BeginStep("Gathering latest console logs...");
             GameRepository.Instance.ReadAndMoveNewGameLogs();
 
-            BeginStep("Reading games...");
+            BeginStep("Reading old games...");
             var existingGameHeaders = GameRepository.Instance.ReadExistingGameHeaders();
             var previouslyInvalidGameHeaders = GameRepository.Instance.ReadPreviouslyInvalidGameHeaders();
-            LogDetail($"Found {existingGameHeaders.Count() + previouslyInvalidGameHeaders.Count()} existing games.");
+            LogDetail($"Found {existingGameHeaders.Count() + previouslyInvalidGameHeaders.Count()} old games.");
 
-            BeginStep("Reading new data...");
+            BeginStep("Reading new games...");
+            // Temporary bandaid for some mistakes I make in the mod output
+            GameRepository.Instance.FixNewGameData();
             var newGameHeaders = GameRepository.Instance.ReadAndMoveNewGameHeaders();
             LogDetail($"Found {newGameHeaders.Count()} new games.");
 

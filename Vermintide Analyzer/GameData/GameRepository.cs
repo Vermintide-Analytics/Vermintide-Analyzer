@@ -88,6 +88,19 @@ namespace Vermintide_Analyzer
         public string GenerateGameFileName(GameHeader gh) =>
             $"[{gh.DifficultyName}] {gh.CareerName} {gh.GameStart.ToString(Game.LOG_DATE_TIME_FORMAT)}.VA";
 
+        public void FixNewGameData()
+        {
+            // Fix some mistakes that I make in the mod output
+            var filePaths = Directory.GetFiles(TempDir, "*.VA", SearchOption.TopDirectoryOnly);
+            foreach(var path in filePaths)
+            {
+                var text = File.ReadAllText(path);
+                var fixedText = text.Replace("BounterHunter", "BountyHunter");
+
+                File.WriteAllText(path, fixedText);
+            }
+        }
+
         public IEnumerable<GameHeader> ReadAndMoveNewGameHeaders()
         {
             var filePaths = Directory.GetFiles(TempDir, "*.VA", SearchOption.TopDirectoryOnly);

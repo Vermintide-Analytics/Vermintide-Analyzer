@@ -3,7 +3,6 @@ using Vermintide_Analyzer.Statistics;
 
 namespace Vermintide_Analyzer.Models
 {
-
     public class GameItem
     {
         public Game Game { get; set; }

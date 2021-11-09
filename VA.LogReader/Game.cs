@@ -164,22 +164,26 @@ namespace VA.LogReader
             // Read data lines
             var eventSplitArr = new string[] { EVENT_MARKER };
             var eventDetailSplitArr = new string[] { EVENT_DELIMITER };
-            foreach(var line in File.ReadAllLines(filePath))
+            foreach (var line in File.ReadAllLines(filePath))
             {
-                if(line.StartsWith(EVENT_MARKER))
+                if (line.StartsWith(EVENT_MARKER))
                 {
                     var eventStrings = line.Split(eventSplitArr, StringSplitOptions.RemoveEmptyEntries);
-                    foreach(var eventString in eventStrings)
+                    foreach (var eventString in eventStrings)
                     {
                         var eventDetails = eventString.Split(eventDetailSplitArr, StringSplitOptions.RemoveEmptyEntries);
                         // If we have an event broken down into more/less than 3 parts, it's not valid
-                        if(eventDetails.Length == 3)
+                        if (eventDetails.Length == 3)
                         {
-                            var newEvent = Event.CreateEvent(eventDetails[0], eventDetails[1], eventDetails[2]);
-                            if (newEvent != null)
+                            try
                             {
-                                events.Add(newEvent);
+                                var newEvent = Event.CreateEvent(eventDetails[0], eventDetails[1], eventDetails[2]);
+                                if (newEvent != null)
+                                {
+                                    events.Add(newEvent);
+                                }
                             }
+                            catch { /* Ignore malformed events */ }
                         }
                     }
                 }

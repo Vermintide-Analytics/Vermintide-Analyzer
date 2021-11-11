@@ -26,6 +26,8 @@ namespace VA.LogReader
         public byte GameVersionMajor { get; private set; }
         public byte GameVersionMinor { get; private set; }
 
+        public bool IsHost { get; private set; }
+
         public bool Deathwish { get; private set; }
         public ONSLAUGHT_TYPE Onslaught { get; private set; }
         public bool Empowered { get; private set; }
@@ -131,6 +133,11 @@ namespace VA.LogReader
                         var versionMatch = versionRegex.Match(gameVersion);
                         g.GameVersionMajor = byte.Parse(versionMatch.Groups[1].Value);
                         g.GameVersionMinor = byte.Parse(versionMatch.Groups[2].Value);
+                    }
+                    else if (line.StartsWith("HOST"))
+                    {
+                        var state = headerDataRegex.Match(line).Groups[1].Value;
+                        g.IsHost = bool.Parse(state);
                     }
                     else if (line.StartsWith("DEATHWISH"))
                     {

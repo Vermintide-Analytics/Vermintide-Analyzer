@@ -69,6 +69,7 @@
             <converters:TrueCollapsedFalseVisible x:Key="TrueCollapsedFalseVisible" />
             <converters:DifficultyToIcon x:Key="DifficultyToIcon" />
             <converters:WeaponToIcon x:Key="WeaponToIcon" />
+            <converters:NetworkPingToBrush x:Key="NetworkPingToBrush" />
             <converters:RoundResultToBrush x:Key="RoundResultToBrush" />
             <converters:CareerToPortrait x:Key="CareerToPortrait"/>
             <converters:RarityToIcon x:Key="RarityToIcon"/>

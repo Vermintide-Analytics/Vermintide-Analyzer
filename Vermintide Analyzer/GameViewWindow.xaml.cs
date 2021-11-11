@@ -77,6 +77,8 @@ namespace Vermintide_Analyzer
         #region Stats
         public GameStats Stats => GameModel?.Stats;
 
+        public string AveragePing => Stats.AvgPing.ToString(); 
+
         public string DamageDealt => DispDouble(Stats.TotalDamage);
         public string DamageDealtPerMin => DispDouble(Stats.DamagePerMin);
         public string MonsterDamageDealt => DispDouble(Stats.TotalMonsterDamage);
@@ -84,8 +86,10 @@ namespace Vermintide_Analyzer
         public string AllyDamageDealt => DispDouble(Stats.TotalAllyDamage);
         public string AllyDamageDealtPerMin => DispDouble(Stats.AllyDamagePerMin);
 
-        //public string StaggerDealt => DispDouble(Game.TotalStagger);
-        //public string StaggerDealtPerMin => DispDouble(Game.StaggerPerMin);
+        public string StaggersDealt => Stats.NumStaggers.ToString();
+        public string StaggersDealtPerMin => DispDouble(Stats.NumStaggersPerMin);
+        public string StaggerLengthDealt => DispDouble(Stats.TotalStaggerLength);
+        public string StaggerLengthDealtPerMin => DispDouble(Stats.StaggerLengthPerMin);
 
         public string EnemiesKilled => Stats.TotalEnemiesKilled.ToString();
         public string EnemiesKilledPerMin => DispDouble(Stats.EnemiesKilledPerMin);
@@ -152,6 +156,8 @@ namespace Vermintide_Analyzer
                 return $"{span.Minutes} minutes, {span.Seconds} seconds";
             }
         }
+
+        public string HostText => Game.IsHost ? "Yes" : "No";
 
         public string ScreenshotWatermarkText => PlayerNameOverride ?? Settings.Current.PlayerName ?? "";
         public string PlayerNameOverride { get; set; }

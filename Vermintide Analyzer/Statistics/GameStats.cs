@@ -32,9 +32,10 @@ namespace Vermintide_Analyzer.Statistics
         #endregion
 
         #region Stagger Dealt
-        public double TotalStagger { get; private set; } = double.NaN;
-        public double StaggerPerMin { get; private set; } = double.NaN;
-        public double AvgStagger { get; private set; } = double.NaN;
+        public int NumStaggers { get; private set; } = 0;
+        public double NumStaggersPerMin { get; private set; } = double.NaN;
+        public double TotalStaggerLength { get; private set; } = double.NaN;
+        public double StaggerLengthPerMin { get; private set; } = double.NaN;
 
         #endregion
 
@@ -80,6 +81,10 @@ namespace Vermintide_Analyzer.Statistics
         public double TimeDeadPercent { get; private set; } = double.NaN;
         public double TimeAlivePercent { get; private set; } = double.NaN;
         #endregion
+
+        #region Network Latency
+        public int AvgPing { get; private set; } = -1;
+        #endregion
         #endregion
 
         #region Recalculate
@@ -91,6 +96,12 @@ namespace Vermintide_Analyzer.Statistics
             var durationMinutes = Math.Max((end - start) / 60d, 0);
 
             var allEvents = Game.Events.Where(e => e.Time >= start && e.Time <= end);
+
+            var latencyEvents = allEvents.Where(e => e is Latency_Data).Cast<Latency_Data>();
+            if(latencyEvents.Any())
+            {
+                AvgPing = (int)latencyEvents.Average(e => e.Latency);
+            }
 
             var damageEvents = allEvents.Where(e => e is Damage_Dealt).Cast<Damage_Dealt>();
             var numDamageEvents = damageEvents.Count();
@@ -110,11 +121,11 @@ namespace Vermintide_Analyzer.Statistics
             AllyDamagePerMin = TotalAllyDamage / durationMinutes;
             AvgAllyDamage = TotalAllyDamage / numAllyDamageEvents;
 
-            var staggerEvents = allEvents.Where(e => e is Enemy_Staggered).Cast<Enemy_Staggered>();
-            var numStaggerEvents = staggerEvents.Count();
-            TotalStagger = staggerEvents.Sum(e => e.StaggerDuration);
-            StaggerPerMin = TotalStagger / durationMinutes;
-            AvgStagger = TotalAllyDamage / numStaggerEvents;
+            var staggerEvents = allEvents.Where(e => e is Stagger_Data).Cast<Stagger_Data>();
+            NumStaggers = staggerEvents.Sum(e => e.NumStaggers);
+            TotalStaggerLength = staggerEvents.Sum(e => e.TotalStaggerTime);
+            NumStaggersPerMin = NumStaggers / durationMinutes;
+            StaggerLengthPerMin = TotalStaggerLength / durationMinutes;
 
             var killEvents = allEvents.Where(e => e is Enemy_Killed).Cast<Enemy_Killed>();
             var eliteKillEvents = killEvents.Where(e => e.EnemyType == ENEMY_TYPE.Elite);

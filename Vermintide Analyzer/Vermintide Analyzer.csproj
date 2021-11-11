@@ -153,6 +153,7 @@
     <Compile Include="Converters\FormatDouble.cs" />
     <Compile Include="Converters\NullableBoolToYesNoEither.cs" />
     <Compile Include="Converters\GameToDifficultyModifierString.cs" />
+    <Compile Include="Converters\NetworkPingToBrush.cs" />
     <Compile Include="Dialogs\StringPromptDialog.xaml.cs">
       <DependentUpon>StringPromptDialog.xaml</DependentUpon>
     </Compile>

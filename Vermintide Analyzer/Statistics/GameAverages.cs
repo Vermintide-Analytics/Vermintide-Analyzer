@@ -37,7 +37,7 @@ namespace Vermintide_Analyzer.Statistics
         [AverageFromGameStats(nameof(GameStats.SpecialsKilledPerMin))]
         public double SpecialsKilledPerMin { get; private set; } = 0;
 
-        [AverageFromGameStats(nameof(GameStats.StaggerPerMin))]
+        [AverageFromGameStats(nameof(GameStats.StaggerLengthPerMin))]
         public double StaggerDealtPerMin { get; private set; } = 0;
 
         [AverageFromGameStats(nameof(GameStats.DamageTakenPerMin))]

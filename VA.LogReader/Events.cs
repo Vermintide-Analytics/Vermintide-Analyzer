@@ -126,6 +126,7 @@ namespace VA.LogReader
         public static Event Create(string[] payload) => new Enemy_Killed(payload);
     }
 
+    // Deprecated
     public class Enemy_Staggered : Event
     {
         public byte StaggerLevel { get; private set; }
@@ -140,6 +141,32 @@ namespace VA.LogReader
         }
 
         public static Event Create(string[] payload) => new Enemy_Staggered(payload);
+    }
+
+    public class Stagger_Data : Event
+    {
+        public int NumStaggers { get; private set; }
+        public float TotalStaggerTime { get; private set; }
+
+        private Stagger_Data(string[] payload)
+        {
+            NumStaggers = GetInt(payload[0]);
+            TotalStaggerTime = GetFloat(payload[1]);
+        }
+
+        public static Event Create(string[] payload) => new Stagger_Data(payload);
+    }
+
+    public class Latency_Data : Event
+    {
+        public int Latency { get; private set; }
+
+        private Latency_Data(string[] payload)
+        {
+            Latency = GetInt(payload[0]);
+        }
+
+        public static Event Create(string[] payload) => new Latency_Data(payload);
     }
 
     public class Talent_Tree : Event
@@ -262,5 +289,4 @@ namespace VA.LogReader
 
         public static Event Create(string[] payload) => new Round_End(payload);
     }
-
 }

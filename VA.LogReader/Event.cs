@@ -47,6 +47,8 @@ namespace VA.LogReader
             { "TempHPGained", Temp_HP_Gained.Create },
             { "TraitGained", Trait_Gained.Create },
             { "PropertyGained", Property_Gained.Create },
+            { "StaggerData", Stagger_Data.Create },
+            { "LatencyData", Latency_Data.Create },
         };
 
         #region Parse Utility

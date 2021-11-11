@@ -210,7 +210,7 @@ namespace Vermintide_Analyzer
                 // If we didn't find any first timestamp, something has gone terribly wrong, and we ought to skip this file.
                 if(firstTimestamp == TimeSpan.Zero)
                 {
-                    errors.Add($"Could not find timestamps in file \"{file}\". Contact ");
+                    errors.Add($"Could not find timestamps in file \"{file}\". Contact developer");
                     continue;
                 }
 
@@ -244,6 +244,7 @@ namespace Vermintide_Analyzer
                             if (lineNoPrefix.StartsWith("$") ||
                                 lineNoPrefix.StartsWith("SCHEMA VERSION") ||
                                 lineNoPrefix.StartsWith("GAME VERSION") ||
+                                lineNoPrefix.StartsWith("HOST") ||
                                 lineNoPrefix.StartsWith("DEATHWISH") ||
                                 lineNoPrefix.StartsWith("ONSLAUGHT") ||
                                 lineNoPrefix.StartsWith("EMPOWERED"))

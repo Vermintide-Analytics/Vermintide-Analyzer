@@ -106,6 +106,16 @@
                         </TabControl.ContentTemplate>
                     </TabControl>
                     <DockPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" LastChildFill="False">
+                        <StackPanel DockPanel.Dock="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Was Host: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding HostText}" />
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Game.IsHost, Converter={StaticResource TrueCollapsedFalseVisible}}" Orientation="Horizontal">
+                                <TextBlock Text="Average Ping: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding AveragePing}" Foreground="{Binding Stats.AvgPing, Converter={StaticResource NetworkPingToBrush}}"/>
+                            </StackPanel>
+                        </StackPanel>
                         <StackPanel DockPanel.Dock="Right">
                             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right"
                                         Visibility="{Binding HasPlayerNameOverride, Converter={StaticResource TrueVisibleFalseCollapsed}}" >
@@ -197,7 +207,7 @@
                         </Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Foreground" Value="{StaticResource ThemeLighter}" />
-                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="Margin" Value="3" />
                             <Setter Property="TextAlignment" Value="Right" />
                         </Style>
                     </Grid.Resources>
@@ -212,7 +222,8 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
-                                <!--<RowDefinition />-->
+                                <RowDefinition />
+                                <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
@@ -265,16 +276,6 @@
                                 <TextBlock Text="{Binding AllyDamageDealtPerMin}" />
                             </Border>
 
-                            <!--<Border Grid.Row="4" Grid.Column="0" ToolTip="Measures seconds of stagger applied to enemies." >
-                                <TextBlock Text="Stagger dealt" FontWeight="Bold" TextAlignment="Left" />
-                            </Border>
-                            <Border Grid.Row="4" Grid.Column="1" >
-                                <TextBlock Text="{Binding StaggerDealt}" />
-                            </Border>
-                            <Border Grid.Row="4" Grid.Column="2" >
-                                <TextBlock Text="{Binding StaggerDealtPerMin}" />
-                            </Border>-->
-
                             <Border Grid.Row="4" Grid.Column="0" >
                                 <TextBlock Text="Overkill damage" FontWeight="Bold" TextAlignment="Left" ToolTip="Damage dealt beyond enemies' remaining health (wasted damage)." />
                             </Border>
@@ -285,83 +286,103 @@
                                 <TextBlock Text="{Binding OverkillDamagePerMin}" />
                             </Border>
 
-                            <Border Grid.Row="5" Grid.Column="0" >
-                                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" ToolTip="Total number of enemies killed (INCLUDING elites and specials)" />
+                            <Border Grid.Row="5" Grid.Column="0" ToolTip="Number of times staggering an enemy." >
+                                <TextBlock Text="Staggers dealt" FontWeight="Bold" TextAlignment="Left" />
                             </Border>
                             <Border Grid.Row="5" Grid.Column="1" >
-                                <TextBlock Text="{Binding EnemiesKilled}" />
+                                <TextBlock Text="{Binding StaggersDealt}" />
                             </Border>
                             <Border Grid.Row="5" Grid.Column="2" >
-                                <TextBlock Text="{Binding EnemiesKilledPerMin}" />
+                                <TextBlock Text="{Binding StaggersDealtPerMin}" />
                             </Border>
 
-                            <Border Grid.Row="6" Grid.Column="0" >
-                                <TextBlock Text="(Elites)" FontWeight="Bold" ToolTip="Total number of elite enemies killed (Stormvermin, Chaos Warriors, etc.)" />
+                            <Border Grid.Row="6" Grid.Column="0" ToolTip="Seconds of stagger applied to enemies." >
+                                <TextBlock Text="Stagger duration" FontWeight="Bold" TextAlignment="Left" />
                             </Border>
                             <Border Grid.Row="6" Grid.Column="1" >
-                                <TextBlock Text="{Binding ElitesKilled}" />
+                                <TextBlock Text="{Binding StaggerLengthDealt}" />
                             </Border>
                             <Border Grid.Row="6" Grid.Column="2" >
-                                <TextBlock Text="{Binding ElitesKilledPerMin}" />
+                                <TextBlock Text="{Binding StaggerLengthDealtPerMin}" />
                             </Border>
 
                             <Border Grid.Row="7" Grid.Column="0" >
-                                <TextBlock Text="(Specials)" FontWeight="Bold" ToolTip="Total number of special enemies killed (Assassins, Blightstormers, etc.)" />
+                                <TextBlock Text="Enemies Killed" FontWeight="Bold" TextAlignment="Left" ToolTip="Total number of enemies killed (INCLUDING elites and specials)" />
                             </Border>
                             <Border Grid.Row="7" Grid.Column="1" >
-                                <TextBlock Text="{Binding SpecialsKilled}" />
+                                <TextBlock Text="{Binding EnemiesKilled}" />
                             </Border>
                             <Border Grid.Row="7" Grid.Column="2" >
-                                <TextBlock Text="{Binding SpecialsKilledPerMin}" />
+                                <TextBlock Text="{Binding EnemiesKilledPerMin}" />
                             </Border>
 
                             <Border Grid.Row="8" Grid.Column="0" >
-                                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" ToolTip="Includes all hits against the 'head' hitzone (and 'neck' in a couple cases, to match game logic). Does not include hits to non-head 'weakspots' like the backside of a Stormfiend" />
+                                <TextBlock Text="(Elites)" FontWeight="Bold" ToolTip="Total number of elite enemies killed (Stormvermin, Chaos Warriors, etc.)" />
                             </Border>
                             <Border Grid.Row="8" Grid.Column="1" >
-                                <TextBlock Text="{Binding Headshots}" />
+                                <TextBlock Text="{Binding ElitesKilled}" />
                             </Border>
                             <Border Grid.Row="8" Grid.Column="2" >
-                                <TextBlock Text="{Binding HeadshotsPerMin}" />
+                                <TextBlock Text="{Binding ElitesKilledPerMin}" />
                             </Border>
 
                             <Border Grid.Row="9" Grid.Column="0" >
-                                <TextBlock Text="Damage Taken" FontWeight="Bold" TextAlignment="Left" ToolTip="Total damage taken from all sources (INCLUDING friendly fire)" />
+                                <TextBlock Text="(Specials)" FontWeight="Bold" ToolTip="Total number of special enemies killed (Assassins, Blightstormers, etc.)" />
                             </Border>
                             <Border Grid.Row="9" Grid.Column="1" >
-                                <TextBlock Text="{Binding DamageTaken}" />
+                                <TextBlock Text="{Binding SpecialsKilled}" />
                             </Border>
                             <Border Grid.Row="9" Grid.Column="2" >
-                                <TextBlock Text="{Binding DamageTakenPerMin}" />
+                                <TextBlock Text="{Binding SpecialsKilledPerMin}" />
                             </Border>
 
                             <Border Grid.Row="10" Grid.Column="0" >
-                                <TextBlock Text="(Friendly Fire)" FontWeight="Bold" TextAlignment="Right" ToolTip="Damage taken from allies (INCLUDING yourself)" />
+                                <TextBlock Text="Headshots" FontWeight="Bold" TextAlignment="Left" ToolTip="Includes all hits against the 'head' hitzone (and 'neck' in a couple cases, to match game logic). Does not include hits to non-head 'weakspots' like the backside of a Stormfiend" />
                             </Border>
                             <Border Grid.Row="10" Grid.Column="1" >
-                                <TextBlock Text="{Binding FriendlyFireTaken}" />
+                                <TextBlock Text="{Binding Headshots}" />
                             </Border>
                             <Border Grid.Row="10" Grid.Column="2" >
-                                <TextBlock Text="{Binding FriendlyFireTakenPerMin}" />
+                                <TextBlock Text="{Binding HeadshotsPerMin}" />
                             </Border>
 
                             <Border Grid.Row="11" Grid.Column="0" >
-                                <TextBlock Text="THP (uncapped)" FontWeight="Bold" ToolTip="Temporary HP gained, INCLUDING what is wasted beyond your maximum health." />
+                                <TextBlock Text="Damage Taken" FontWeight="Bold" TextAlignment="Left" ToolTip="Total damage taken from all sources (INCLUDING friendly fire)" />
                             </Border>
                             <Border Grid.Row="11" Grid.Column="1" >
-                                <TextBlock Text="{Binding UncappedTempHPGained}" />
+                                <TextBlock Text="{Binding DamageTaken}" />
                             </Border>
                             <Border Grid.Row="11" Grid.Column="2" >
-                                <TextBlock Text="{Binding UncappedTempHPGainedPerMin}" />
+                                <TextBlock Text="{Binding DamageTakenPerMin}" />
                             </Border>
 
                             <Border Grid.Row="12" Grid.Column="0" >
-                                <TextBlock Text="THP (capped)" FontWeight="Bold" ToolTip="Temporary HP gained, EXCLUDING what is wasted beyond your maximum health." />
+                                <TextBlock Text="(Friendly Fire)" FontWeight="Bold" TextAlignment="Right" ToolTip="Damage taken from allies (INCLUDING yourself)" />
                             </Border>
                             <Border Grid.Row="12" Grid.Column="1" >
-                                <TextBlock Text="{Binding CappedTempHPGained}" />
+                                <TextBlock Text="{Binding FriendlyFireTaken}" />
                             </Border>
                             <Border Grid.Row="12" Grid.Column="2" >
+                                <TextBlock Text="{Binding FriendlyFireTakenPerMin}" />
+                            </Border>
+
+                            <Border Grid.Row="13" Grid.Column="0" >
+                                <TextBlock Text="THP (uncapped)" FontWeight="Bold" ToolTip="Temporary HP gained, INCLUDING what is wasted beyond your maximum health." />
+                            </Border>
+                            <Border Grid.Row="13" Grid.Column="1" >
+                                <TextBlock Text="{Binding UncappedTempHPGained}" />
+                            </Border>
+                            <Border Grid.Row="13" Grid.Column="2" >
+                                <TextBlock Text="{Binding UncappedTempHPGainedPerMin}" />
+                            </Border>
+
+                            <Border Grid.Row="14" Grid.Column="0" >
+                                <TextBlock Text="THP (capped)" FontWeight="Bold" ToolTip="Temporary HP gained, EXCLUDING what is wasted beyond your maximum health." />
+                            </Border>
+                            <Border Grid.Row="14" Grid.Column="1" >
+                                <TextBlock Text="{Binding CappedTempHPGained}" />
+                            </Border>
+                            <Border Grid.Row="14" Grid.Column="2" >
                                 <TextBlock Text="{Binding CappedTempHPGainedPerMin}" />
                             </Border>
 
@@ -369,9 +390,10 @@
                             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
-                            <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
-                            <Border Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
+                            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
+                            <Border Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                             <Border Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
+                            <Border Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                         </Grid>
                         <StackPanel x:Name="PlayerStateGridsPanel" Margin="5" DockPanel.Dock="Left">
                             <Grid Margin="5" Background="{StaticResource GreenBackground}">

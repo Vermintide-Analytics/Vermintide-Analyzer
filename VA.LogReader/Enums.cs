@@ -67,7 +67,7 @@ namespace VA.LogReader
 		WitchHunterCaptain = 12,
 		BountyHunter = 13,
 		Zealot = 14,
-		SaltzpyreUNKNOWN = 15,
+		WarriorPriest = 15,
 	
 		BattleWizard = 16,
 		Pyromancer = 17,
@@ -440,6 +440,12 @@ namespace VA.LogReader
 		wh_fencing_sword,
 		wh_dual_wield_axe_falchion,
 		wh_2h_billhook,
+		wh_1h_hammer,
+		wh_hammer_shield,
+		wh_dual_hammer,
+		wh_2h_hammer,
+		wh_flail_shield,
+		wh_hammer_book,
 
 		wh_brace_of_pistols = 3501,
 		wh_crossbow,

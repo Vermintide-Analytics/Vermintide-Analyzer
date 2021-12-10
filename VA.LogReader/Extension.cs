@@ -80,7 +80,7 @@ namespace VA.LogReader
         public static bool IsWitchHunterCaptain(this CAREER c) => c == CAREER.WitchHunterCaptain;
         public static bool IsBountyHunter(this CAREER c) => c == CAREER.BountyHunter;
         public static bool IsZealot(this CAREER c) => c == CAREER.Zealot;
-        public static bool IsSaltzpyreUNKNOWN(this CAREER c) => c == CAREER.SaltzpyreUNKNOWN;
+        public static bool IsWarriorPriest(this CAREER c) => c == CAREER.WarriorPriest;
 
         public static bool IsBattleWizard(this CAREER c) => c == CAREER.BattleWizard;
         public static bool IsPyromancer(this CAREER c) => c == CAREER.Pyromancer;

@@ -83,6 +83,12 @@ namespace VA.LogReader
             {WEAPON.wh_fencing_sword, "Rapier"},
             {WEAPON.wh_dual_wield_axe_falchion, "Axe & Falchion"},
             {WEAPON.wh_2h_billhook, "Billhook"},
+            {WEAPON.wh_1h_hammer, "Hammer"},
+            {WEAPON.wh_hammer_shield, "Hammer & Shield"},
+            {WEAPON.wh_dual_hammer, "Dual Hammers"},
+            {WEAPON.wh_2h_hammer, "Two-Handed Hammer"},
+            {WEAPON.wh_flail_shield, "Flail & Shield"},
+            {WEAPON.wh_hammer_book, "Hammer & Book"},
 
             {WEAPON.wh_brace_of_pistols, "Brace of Pistols" },
             {WEAPON.wh_crossbow, "Crossbow" },

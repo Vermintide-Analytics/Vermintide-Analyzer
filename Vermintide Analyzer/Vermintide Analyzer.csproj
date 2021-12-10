@@ -373,7 +373,7 @@
     <Resource Include="Images\Career Portraits\Sienna UNKNOWN.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Career Portraits\Saltzpyre UNKNOWN.png" />
+    <Resource Include="Images\Career Portraits\Warrior Priest.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Weapons\Bardin\Axe &amp; Shield.png" />
@@ -471,7 +471,6 @@
     <Resource Include="Images\Difficulties\Cataclysm4.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\Talents\Saltzpyre UNKNOWN\" />
     <Folder Include="Images\Talents\Sienna UNKNOWN\" />
   </ItemGroup>
   <ItemGroup>
@@ -830,6 +829,34 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Misc\ItemFrame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Talents\Warrior Priest\talent-01.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-02.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-03.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-04.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-05.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-06.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-07.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-08.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-09.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-10.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-11.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-12.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-13.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-14.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-15.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-16.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-17.png" />
+    <Resource Include="Images\Talents\Warrior Priest\talent-18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Weapons\Victor\Dual Hammers.png" />
+    <Resource Include="Images\Weapons\Victor\Flail &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Victor\Hammer &amp; Book.png" />
+    <Resource Include="Images\Weapons\Victor\Hammer &amp; Shield.png" />
+    <Resource Include="Images\Weapons\Victor\Hammer.png" />
+    <Resource Include="Images\Weapons\Victor\Two-Handed Hammer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

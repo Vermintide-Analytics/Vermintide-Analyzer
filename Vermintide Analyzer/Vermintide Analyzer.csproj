@@ -456,8 +456,8 @@
     <Resource Include="Images\Weapons\Unknown.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Difficulties\Cataclysm2.png" />
-    <Resource Include="Images\Difficulties\Cataclysm3.png" />
+    <Resource Include="Images\Difficulties\Cataclysm 2.png" />
+    <Resource Include="Images\Difficulties\Cataclysm 3.png" />
     <Resource Include="Images\Difficulties\Cataclysm.png" />
     <Resource Include="Images\Difficulties\Champion.png" />
     <Resource Include="Images\Difficulties\Legend.png" />
@@ -468,7 +468,7 @@
     <Resource Include="Images\Misc\New.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Difficulties\Cataclysm4.png" />
+    <Resource Include="Images\Difficulties\Cataclysm 4.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Talents\Sienna UNKNOWN\" />

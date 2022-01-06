@@ -177,8 +177,9 @@ namespace Vermintide_Analyzer
 
             // Get all files that were created after the most recently read log was
             var filePaths = Directory.GetFiles(ConsoleLogsDir, "*.log", SearchOption.TopDirectoryOnly).Where(path => File.GetCreationTime(path) > latestReadLogDate);
+            var unlockedFilePaths = filePaths.Where(path => !(new FileInfo(path).IsLocked()));
 
-            foreach(var file in filePaths)
+            foreach(var file in unlockedFilePaths)
             {
                 DateTime fileCreationTime = File.GetCreationTime(file);
                 TimeSpan firstTimestamp = TimeSpan.Zero;
@@ -314,9 +315,9 @@ namespace Vermintide_Analyzer
                 }
             }
 
-            if(filePaths.Any())
+            if(unlockedFilePaths.Any())
             {
-                var newLatestReadLogDate = filePaths.Max(path => File.GetCreationTime(path));
+                var newLatestReadLogDate = unlockedFilePaths.Max(path => File.GetCreationTime(path));
                 File.WriteAllText(LatestReadLogDateFilePath, newLatestReadLogDate.Ticks.ToString());
             }
 

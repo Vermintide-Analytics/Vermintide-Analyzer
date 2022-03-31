@@ -119,6 +119,9 @@ namespace Vermintide_Analyzer
         public string TimeDownedPercent => $"{DispDouble(Stats.TimeDownedPercent)}%";
         public string TimeDeadPercent => $"{DispDouble(Stats.TimeDeadPercent)}%";
         public string TimeAlivePercent => $"{DispDouble(Stats.TimeAlivePercent)}%";
+
+        public string HealingItemsApplied => Stats.HealingItemsApplied.ToString();
+        public string HealingClearedWounds => Stats.HealingClearedWounds.ToString();
         #endregion
 
         #region Misc Display Props

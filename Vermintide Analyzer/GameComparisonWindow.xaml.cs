@@ -35,6 +35,8 @@ namespace Vermintide_Analyzer
         public int BetterCappedTempHPColumn { get; set; } = 1;
         public int BetterTimesDownedColumn { get; set; } = 1;
         public int BetterTimesDiedColumn { get; set; } = 1;
+        public int BetterHealingItemsAppliedColumn { get; set; } = 1;
+        public int BetterWoundsClearedColumn { get; set; } = 1;
         #endregion
 
         public GameComparisonWindow(GameAverages avgs1, GameAverages avgs2, GameFilter filter1, GameFilter filter2)

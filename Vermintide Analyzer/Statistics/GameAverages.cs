@@ -54,6 +54,11 @@ namespace Vermintide_Analyzer.Statistics
         [AverageFromGameStats(nameof(GameStats.TimesDied))]
         public double TimesDied { get; private set; } = 0;
 
+        [AverageFromGameStats(nameof(GameStats.HealingItemsApplied))]
+        public double HealingItemsApplied { get; private set; } = 0;
+        [AverageFromGameStats(nameof(GameStats.HealingClearedWounds))]
+        public double HealingClearedWounds { get; private set; } = 0;
+
         public GameAverages(List<(Game game, GameStats stats)> games)
         {
             foreach(var tuple in games)

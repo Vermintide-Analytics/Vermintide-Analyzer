@@ -40,6 +40,7 @@ namespace VA.LogReader
             { "TalentTree", Talent_Tree.Create },
             { "PlayerState", Player_State.Create },
             { "CurrentHealth", Current_Health.Create },
+            { "HealingItemApplied", Healing_Item_Applied.Create },
             { "DamageDealt", Damage_Dealt.Create },
             { "EnemyStaggered", Enemy_Staggered.Create },
             { "EnemyKilled", Enemy_Killed.Create },

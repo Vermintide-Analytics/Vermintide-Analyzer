@@ -82,6 +82,11 @@ namespace Vermintide_Analyzer.Statistics
         public double TimeAlivePercent { get; private set; } = double.NaN;
         #endregion
 
+        #region Healing and Wounds
+        public int HealingItemsApplied { get; private set; } = 0;
+        public int HealingClearedWounds { get; private set; } = 0;
+        #endregion
+
         #region Network Latency
         public int AvgPing { get; private set; } = -1;
         #endregion
@@ -160,6 +165,10 @@ namespace Vermintide_Analyzer.Statistics
             UncappedTempHPGainedPerMin = TotalUncappedTempHPGained / durationMinutes;
             TotalCappedTempHPGained = tempHPGainedEvents.Sum(e => e.CappedHeal);
             CappedTempHPGainedPerMin = TotalCappedTempHPGained / durationMinutes;
+
+            var healingAppliedEvents = allEvents.Where(e => e is Healing_Item_Applied).Cast<Healing_Item_Applied>();
+            HealingItemsApplied = healingAppliedEvents.Count();
+            HealingClearedWounds = healingAppliedEvents.Where(e => e.WoundCleared).Count();
 
             CalculatePlayerStateTimes(start, end);
         }

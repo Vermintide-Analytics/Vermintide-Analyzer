@@ -396,7 +396,7 @@
                             <Border Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" BorderThickness="3" />
                         </Grid>
                         <StackPanel x:Name="PlayerStateGridsPanel" Margin="5" DockPanel.Dock="Left">
-                            <Grid Margin="5" Background="{StaticResource GreenBackground}">
+                            <Grid Margin="4" Background="{StaticResource GreenBackground}" Width="60" HorizontalAlignment="Left">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -408,7 +408,7 @@
                                     <TextBlock Grid.Row="0" Text="{Binding TimeAlivePercent}" ToolTip="Percent of time spent alive (not downed, dead, or waiting to be rescued after respawning)" />
                                 </Border>
                             </Grid>
-                            <Grid Margin="5" Background="#504000">
+                            <Grid Margin="4" Background="#504000" Width="60" HorizontalAlignment="Left">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -424,7 +424,7 @@
                                     <TextBlock Grid.Row="0" Text="{Binding TimesDowned}" ToolTip="Number of times downed" />
                                 </Border>
                             </Grid>
-                            <Grid Margin="5" Background="#450000">
+                            <Grid Margin="4" Background="#450000" Width="60" HorizontalAlignment="Left">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -438,6 +438,26 @@
                                 </Border>
                                 <Border Grid.Row="2">
                                     <TextBlock Grid.Row="0" Text="{Binding TimesDied}" ToolTip="Number of deaths" />
+                                </Border>
+                            </Grid>
+                            <Grid Margin="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0">
+                                    <TextBlock Grid.Row="0" Text="Heal Items Used" FontWeight="Bold" HorizontalAlignment="Center" ToolTip="Number of healing items (draughts and bandages) applied to you." />
+                                </Border>
+                                <Border Grid.Row="1">
+                                    <TextBlock Grid.Row="0" Text="{Binding HealingItemsApplied}" ToolTip="Number of healing items (draughts and bandages) applied to you." />
+                                </Border>
+                                <Border Grid.Row="2">
+                                    <TextBlock Grid.Row="0" Text="Wounds Cleared" FontWeight="Bold" HorizontalAlignment="Center" ToolTip="Number of healing items which cleared your wound(s)." />
+                                </Border>
+                                <Border Grid.Row="3">
+                                    <TextBlock Grid.Row="0" Text="{Binding HealingClearedWounds}" ToolTip="Number of healing items which cleared your wound(s)." />
                                 </Border>
                             </Grid>
                         </StackPanel>

@@ -190,6 +190,12 @@ namespace VA.LogReader
 		AQuietDrink = 10001,
 	}
 
+	public enum HEAL_ITEM_TYPE : byte
+	{
+		Draught = 0,
+		Bandagee = 1
+	}
+
 	public enum HITZONE : byte
 	{
 		Bodyshot = 0,

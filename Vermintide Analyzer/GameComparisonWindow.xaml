@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vermintide_Analyzer"
         mc:Ignorable="d"
-        Title="" Height="700" Width="800"
+        Title="" Height="850" Width="800"
         MinHeight="700" MinWidth="800"
         WindowStartupLocation="CenterOwner"
         Background="{StaticResource ThemeDarker}"
@@ -65,6 +65,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Rectangle Grid.Row="0" Grid.Column="{Binding BetterWinLossRatioColumn}" Fill="{StaticResource GreenBackground}" />
             <Rectangle Grid.Row="2" Grid.Column="{Binding BetterTimeAlivePercentColumn}" Fill="{StaticResource GreenBackground}" />
@@ -83,6 +85,8 @@
             <Rectangle Grid.Row="15" Grid.Column="{Binding BetterCappedTempHPColumn}" Fill="{StaticResource GreenBackground}" />
             <Rectangle Grid.Row="16" Grid.Column="{Binding BetterTimesDownedColumn}" Fill="{StaticResource GreenBackground}" />
             <Rectangle Grid.Row="17" Grid.Column="{Binding BetterTimesDiedColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="18" Grid.Column="{Binding BetterHealingItemsAppliedColumn}" Fill="{StaticResource GreenBackground}" />
+            <Rectangle Grid.Row="19" Grid.Column="{Binding BetterWoundsClearedColumn}" Fill="{StaticResource GreenBackground}" />
             
             <Border Grid.Column="1" Grid.Row="0">
                 <TextBlock Text="Win/Loss Ratio" HorizontalAlignment="Center" />
@@ -137,6 +141,12 @@
             </Border>
             <Border Grid.Column="1" Grid.Row="17">
                 <TextBlock Text="Times Killed" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="18">
+                <TextBlock Text="Healing Items Applied" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="1" Grid.Row="19">
+                <TextBlock Text="Wounds Cleared" HorizontalAlignment="Center" />
             </Border>
 
             
@@ -194,6 +204,12 @@
             <Border Grid.Column="0" Grid.Row="17">
                 <TextBlock Text="{Binding Averages1.TimesDied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
             </Border>
+            <Border Grid.Column="0" Grid.Row="18">
+                <TextBlock Text="{Binding Averages1.HealingItemsApplied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
+            <Border Grid.Column="0" Grid.Row="19">
+                <TextBlock Text="{Binding Averages1.HealingClearedWounds, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Left" />
+            </Border>
 
             
             <Border Grid.Column="2" Grid.Row="0">
@@ -249,6 +265,12 @@
             </Border>
             <Border Grid.Column="2" Grid.Row="17">
                 <TextBlock Text="{Binding Averages2.TimesDied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="18">
+                <TextBlock Text="{Binding Averages2.HealingItemsApplied, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="19">
+                <TextBlock Text="{Binding Averages2.HealingClearedWounds, Converter={StaticResource FormatDouble}}" HorizontalAlignment="Right" />
             </Border>
         </Grid>
     </StackPanel>

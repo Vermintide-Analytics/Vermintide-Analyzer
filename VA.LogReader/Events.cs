@@ -62,7 +62,31 @@ namespace VA.LogReader
 
         public static Event Create(string[] payload) => new Current_Health(payload);
     }
-    
+
+    public class Healing_Item_Applied : Event
+    {
+        public HEAL_ITEM_TYPE ItemType { get; private set; }
+        public bool WoundCleared { get; private set; }
+        public float HealAmount { get; private set; }
+
+        private Healing_Item_Applied(string[] payload)
+        {
+            ItemType = GetEnum<HEAL_ITEM_TYPE>(payload[0]);
+            // Try parsing raw "true/false" because I initially flubbed the output of the mod in this case
+            if(bool.TryParse(payload[1], out bool woundCleared))
+            {
+                WoundCleared = woundCleared;
+            }
+            else
+            {
+                WoundCleared = payload[1] == "WoundCleared";
+            }
+            HealAmount = GetFloat(payload[2]);
+        }
+
+        public static Event Create(string[] payload) => new Healing_Item_Applied(payload);
+    }
+
     public class Damage_Dealt : Event
     {
         public bool Crit { get; private set; }

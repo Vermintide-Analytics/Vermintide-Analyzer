@@ -209,7 +209,7 @@ namespace VA.LogReader
 
         public void RecalculateStats()
         {
-            Duration = Events.Last()?.Time - StartTime ?? 0;
+            Duration = Events.LastOrDefault()?.Time - StartTime ?? 0;
             DurationMinutes = Duration / 60;
         }
 

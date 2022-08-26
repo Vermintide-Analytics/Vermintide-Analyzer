@@ -193,7 +193,7 @@ namespace VA.LogReader
 	public enum HEAL_ITEM_TYPE : byte
 	{
 		Draught = 0,
-		Bandagee = 1
+		Bandage = 1
 	}
 
 	public enum HITZONE : byte

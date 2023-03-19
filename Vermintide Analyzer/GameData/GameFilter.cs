@@ -19,6 +19,17 @@ namespace Vermintide_Analyzer
             }
         }
 
+        private List<ROUND_RESULT> mResult = new List<ROUND_RESULT>();
+        public List<ROUND_RESULT> Result
+        {
+            get => mResult;
+            set
+            {
+                mResult = value;
+                OnFilterChange?.Invoke(nameof(Result));
+            }
+        }
+
         private List<DIFFICULTY> mDifficulty = new List<DIFFICULTY>();
         public List<DIFFICULTY> Difficulty
         {
@@ -136,6 +147,7 @@ namespace Vermintide_Analyzer
 
         public bool IsMatch(GameHeader gh) =>
             MatchGameVersion(gh) &&
+            MatchGameResult(gh) &&
             MatchGameLength(gh) &&
             MatchWithinDays(gh) &&
             MatchDifficulty(gh) &&
@@ -146,6 +158,7 @@ namespace Vermintide_Analyzer
             MatchMission(gh);
 
         private bool MatchGameVersion(GameHeader gh) => GameVersion.Contains(gh.GameVersion);
+        private bool MatchGameResult(GameHeader gh) => Result.Contains(gh.Result);
         private bool MatchWithinDays(GameHeader gh)
         {
             if (!Days.HasValue || Days.Value == 0) return true;
@@ -188,6 +201,11 @@ namespace Vermintide_Analyzer
             if (version != null)
             {
                 output.Add(version);
+            }
+            var result = RoundResultToString();
+            if(result != null)
+            {
+                output.Add(result);
             }
             var diff = DifficultyToString();
             if (diff != null)
@@ -246,6 +264,9 @@ namespace Vermintide_Analyzer
             GameVersion.Clear();
             GameVersion.AddRange(ReadGameVersion(input));
 
+            Result.Clear();
+            Result.AddRange(ReadRoundResult(input));
+
             (Longer, Minutes) = ReadMinutesLong(input) ?? (true, null);
 
             (Older, Days) = ReadWithinDays(input) ?? (true, null);
@@ -274,6 +295,9 @@ namespace Vermintide_Analyzer
 
             return $"Game Version in ({GetFilterSetString(GameVersion)})";
         }
+
+        private string RoundResultToString() => EnumListToString(nameof(Result), Result);
+
         private string MinutesLongToString()
         {
             if (!Minutes.HasValue) return null;
@@ -335,6 +359,9 @@ namespace Vermintide_Analyzer
             }
             return result;
         }
+
+        private static List<ROUND_RESULT> ReadRoundResult(string filterString) => ReadEnumList<ROUND_RESULT>(filterString, nameof(Result));
+
         private static (bool longer, uint? minutes)? ReadMinutesLong(string filterString)
         {
             var match = Regex.Match(filterString, $@"((?:Longer)|(?:Shorter)) than (\d+) Minutes");

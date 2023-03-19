@@ -48,6 +48,7 @@ namespace Vermintide_Analyzer.Controls
 
         public IEnumerable<string> SavedFilters => GameRepository.Instance.GameFilters.Keys.OrderBy(str => str);
 
+        public List<string> RoundResultStrings { get; set; } = new List<string>();
         public List<string> CareerStrings { get; set; } = new List<string>();
         public List<string> DifficultyStrings { get; set; } = new List<string>();
         public List<string> MissionStrings { get; set; } = new List<string>();
@@ -56,6 +57,7 @@ namespace Vermintide_Analyzer.Controls
         public string MinutesString { get; set; } = "";
 
         public List<string> GameVersionValues => GameRepository.Instance.GameVersions.ToList();
+        public List<string> RoundResultValues => GameFilter.FilterOptions(typeof(ROUND_RESULT)).ToList();
         public List<string> CareerFilterValues => GameFilter.FilterOptions(typeof(CAREER)).ToList();
         public List<string> DifficultyFilterValues => GameFilter.FilterOptions(typeof(DIFFICULTY)).ToList();
         public List<string> MissionFilterValues => GameFilter.FilterOptions(typeof(MISSION)).ToList();
@@ -102,6 +104,7 @@ namespace Vermintide_Analyzer.Controls
             EmpoweredDropdown.SelectedItem = "Either";
 
             GameVersionDropdown.ResetSelection();
+            ResultDropdown.ResetSelection();
             DaysTextBox.Text = "";
             MinutesTextBox.Text = "";
             CareerDropdown.ResetSelection();
@@ -113,6 +116,7 @@ namespace Vermintide_Analyzer.Controls
         private void RefreshBindingLists()
         {
             GameVersionDropdown.SyncSelection(Filter.GameVersion.ToList());
+            ResultDropdown.SyncSelection(Filter.Result.Select(c => c.ForDisplay()).ToList());
             CareerDropdown.SyncSelection(Filter.Career.Select(c => c.ForDisplay()).ToList());
             DifficultyDropdown.SyncSelection(Filter.Difficulty.Select(d => d.ForDisplay()).ToList());
             MissionDropdown.SyncSelection(Filter.Mission.Select(m => m.ForDisplay()).ToList());
@@ -124,6 +128,7 @@ namespace Vermintide_Analyzer.Controls
             RefreshBindingLists();
 
             GameVersionDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
+            ResultDropdown.GetBindingExpression(MultiSelectComboBox.SelectedProperty).UpdateTarget();
             OlderYoungerComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
             LongerShorterComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateTarget();
             DaysString = Filter.Days.HasValue ? Filter.Days.ToString() : "";
@@ -142,7 +147,12 @@ namespace Vermintide_Analyzer.Controls
 
         private void MultiSelectComboBox_SelectionChanged(MultiSelectComboBox source, List<string> newSelection)
         {
-            if (source == CareerDropdown)
+            if(source == ResultDropdown)
+            {
+                Filter.Result.Clear();
+                Filter.Result.AddRange(RoundResultStrings.Select(str => str.FromDisplay<ROUND_RESULT>()));
+            }
+            else if (source == CareerDropdown)
             {
                 Filter.Career.Clear();
                 Filter.Career.AddRange(CareerStrings.Select(str => str.FromDisplay<CAREER>()));

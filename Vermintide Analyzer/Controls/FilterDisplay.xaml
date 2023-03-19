@@ -47,6 +47,15 @@
                         AllValues="{Binding GameVersionValues}"
                         SelectionChanged="MultiSelectComboBox_SelectionChanged" />
             </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Label Content="Result" />
+                <local:MultiSelectComboBox x:Name="ResultDropdown"
+                        ItemSource="{Binding RoundResultValues}"
+                        Selected="{Binding RoundResultStrings}"
+                        InitiallySelected="{Binding RoundResultValues}"
+                        AllValues="{Binding RoundResultValues}"
+                        SelectionChanged="MultiSelectComboBox_SelectionChanged" />
+            </StackPanel>
         </Grid>
         <Rectangle Margin="0,5" Height="2" Fill="{StaticResource ThemeMidtone}" />
         <Grid Width="400" HorizontalAlignment="Left">

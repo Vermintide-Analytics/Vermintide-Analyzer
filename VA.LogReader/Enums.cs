@@ -72,7 +72,9 @@ namespace VA.LogReader
 		BattleWizard = 16,
 		Pyromancer = 17,
 		Unchained = 18,
-		SiennaUNKNOWN = 19
+		Necromancer = 19,
+
+		SiennaUNKNOWN = 39
 	}
 
 	public enum CAMPAIGN : byte
@@ -86,7 +88,9 @@ namespace VA.LogReader
 		Ubersreik = 5,
 		WindsOfMagic = 6,
 		ChaosWastes = 7,
-		Weave = 8
+		Weave = 8,
+		KarakAzgaraz = 9,
+		Treachery = 10
 	}
 
 	// All missions in a single enum
@@ -184,7 +188,14 @@ namespace VA.LogReader
 		[Description("Hysh drives impurity from the soul, reducing maximum health over time but increasing attack speed through renewed zeal. Standing next to beacons reverses the purging's effects.")]
 		Light = 608,
 
+		// Karak Azgaraz
+		MissionOfMercy = 701,
+		AGrudgeServedCold = 702,
+		KhazukanKazakitHa = 703,
 
+		// A Treacherous Adventure
+		TrailOfTreachery = 801,
+		TowerOfTreachery = 802,
 
 		// Misc
 		AQuietDrink = 10001,
@@ -467,13 +478,15 @@ namespace VA.LogReader
 		bw_sword,
 		bw_1h_crowbill,
 		bw_1h_flail_flaming,
+		bw_ghost_scythe,
 
 		bw_skullstaff_beam = 4501,
 		bw_skullstaff_fireball,
 		bw_skullstaff_flamethrower,
 		bw_skullstaff_geiser,
 		bw_skullstaff_spear,
-		bw_deus_01
+		bw_deus_01,
+		bw_necromancy_staff,
 	}
 
 

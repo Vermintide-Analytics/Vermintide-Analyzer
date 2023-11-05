@@ -212,7 +212,7 @@
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.1*" />
+                        <ColumnDefinition Width="1.15*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <DockPanel LastChildFill="False" Grid.Column="0">

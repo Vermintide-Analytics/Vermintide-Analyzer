@@ -858,5 +858,32 @@
     <Resource Include="Images\Weapons\Victor\Hammer.png" />
     <Resource Include="Images\Weapons\Victor\Two-Handed Hammer.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Career Portraits\Necromancer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Talents\Necromancer\talent-01.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-02.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-03.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-04.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-05.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-06.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-07.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-08.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-09.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-10.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-11.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-12.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-13.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-14.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-15.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-16.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-17.png" />
+    <Resource Include="Images\Talents\Necromancer\talent-18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Weapons\Sienna\Ensorcelled Reaper.png" />
+    <Resource Include="Images\Weapons\Sienna\Soulstealer Staff.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

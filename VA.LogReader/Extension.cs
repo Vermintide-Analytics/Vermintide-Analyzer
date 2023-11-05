@@ -85,10 +85,10 @@ namespace VA.LogReader
         public static bool IsBattleWizard(this CAREER c) => c == CAREER.BattleWizard;
         public static bool IsPyromancer(this CAREER c) => c == CAREER.Pyromancer;
         public static bool IsUnchained(this CAREER c) => c == CAREER.Unchained;
-        public static bool IsSiennaUNKNOWN(this CAREER c) => c == CAREER.SiennaUNKNOWN;
+        public static bool IsNecromanacer(this CAREER c) => c == CAREER.Necromancer;
 
         public static HERO Hero(this CAREER career) =>
-            (HERO)((byte)career / 4);
+            (HERO)(((byte)career % 20) / 4);
         #endregion
 
         #region MISSION

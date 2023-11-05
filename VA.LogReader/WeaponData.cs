@@ -105,6 +105,7 @@ namespace VA.LogReader
             {WEAPON.bw_sword, "Sword"},
             {WEAPON.bw_1h_crowbill, "Crowbill"},
             {WEAPON.bw_1h_flail_flaming, "Flaming Flail"},
+            {WEAPON.bw_ghost_scythe, "Ensorcelled Reaper"},
 
             {WEAPON.bw_skullstaff_beam, "Beam Staff" },
             {WEAPON.bw_skullstaff_fireball, "Fireball Staff" },
@@ -112,6 +113,7 @@ namespace VA.LogReader
             {WEAPON.bw_skullstaff_geiser, "Conflagration Staff" },
             {WEAPON.bw_skullstaff_spear, "Bolt Staff" },
             {WEAPON.bw_deus_01, "Coruscation Staff" },
+            {WEAPON.bw_necromancy_staff, "Soulstealer Staff" },
         };
 
         public static Dictionary<HERO, Dictionary<WEAPON, string>> Weapons = new Dictionary<HERO, Dictionary<WEAPON, string>>()

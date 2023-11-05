@@ -49,7 +49,7 @@
             <local:CareerDashboard Grid.Row="4" Grid.Column="0" DifficultyFilter="{Binding DifficultyFilter}" Career="BattleWizard" />
             <local:CareerDashboard Grid.Row="4" Grid.Column="1" DifficultyFilter="{Binding DifficultyFilter}" Career="Pyromancer" />
             <local:CareerDashboard Grid.Row="4" Grid.Column="2" DifficultyFilter="{Binding DifficultyFilter}" Career="Unchained" />
-            <local:CareerDashboard Grid.Row="4" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="SiennaUNKNOWN" />
+            <local:CareerDashboard Grid.Row="4" Grid.Column="3" DifficultyFilter="{Binding DifficultyFilter}" Career="Necromancer" />
 
         </Grid>
         <StackPanel Grid.Column="1" Margin="10">
